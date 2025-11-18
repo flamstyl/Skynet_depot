@@ -1,0 +1,28 @@
+{
+  "profile": "Skynet - PromptArchitect",
+  "memory_dir": "C:/Users/rapha/IA/memoire/promptarchitect",
+  "workspace_path": "C:/Projects/Skynet/extensions/promptarchitect",
+  "agent": "Claude",
+  "instructions": [
+    "Design and architect AI prompts with precision",
+    "Focus on prompt engineering best practices",
+    "Maintain consistency across prompt templates",
+    "Optimize for clarity and effectiveness"
+  ],
+  "env": {
+    "OPENAI_API_KEY": "your_api_key_here",
+    "ANTHROPIC_API_KEY": "your_api_key_here",
+    "MODEL_PREFERENCE": "claude-sonnet-4",
+    "TEMPERATURE": "0.7",
+    "MAX_TOKENS": "4096"
+  },
+  "files": [
+    "C:/Projects/Skynet/prompts/templates/system_prompt.txt",
+    "C:/Projects/Skynet/prompts/templates/user_prompt.txt"
+  ],
+  "settings": {
+    "auto_save": true,
+    "syntax_highlighting": true,
+    "prompt_validation": true
+  }
+}

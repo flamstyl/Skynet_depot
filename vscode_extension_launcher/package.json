@@ -1,0 +1,24 @@
+{
+  "name": "vscode-extension-launcher-skynet",
+  "version": "1.0.0",
+  "description": "VS Code Extension Launcher - Skynet Edition: Launch VS Code extensions with pre-loaded AI contexts",
+  "main": "app/main.js",
+  "scripts": {
+    "start": "electron app/main.js",
+    "dev": "electron app/main.js --dev"
+  },
+  "keywords": [
+    "vscode",
+    "extensions",
+    "launcher",
+    "skynet",
+    "electron",
+    "ai"
+  ],
+  "author": "Skynet Forge",
+  "license": "MIT",
+  "devDependencies": {
+    "electron": "^28.0.0"
+  },
+  "dependencies": {}
+}

@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'">
+  <title>VS Code Extension Launcher - Skynet Edition</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="container">
+    <!-- Header -->
+    <header class="header">
+      <div class="header-content">
+        <h1 class="title">
+          <span class="icon">⚡</span>
+          VS Code Extension Launcher
+        </h1>
+        <div class="subtitle">Skynet Edition v1.0</div>
+      </div>
+      <div class="header-actions">
+        <button id="refresh-btn" class="btn btn-secondary" title="Refresh extensions">
+          <span class="btn-icon">🔄</span>
+          Refresh
+        </button>
+        <button id="logs-btn" class="btn btn-secondary" title="View logs">
+          <span class="btn-icon">📋</span>
+          Logs
+        </button>
+      </div>
+    </header>
+
+    <!-- Status Bar -->
+    <div class="status-bar" id="status-bar">
+      <div class="status-indicator" id="vscode-status">
+        <span class="status-dot"></span>
+        <span class="status-text">Checking VS Code...</span>
+      </div>
+      <div class="status-info" id="extension-count">
+        Loading extensions...
+      </div>
+    </div>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <!-- Extensions List -->
+      <section class="extensions-section">
+        <div class="section-header">
+          <h2>Available Extensions</h2>
+          <div class="filter-controls">
+            <label class="checkbox-label">
+              <input type="checkbox" id="show-disabled" />
+              <span>Show disabled</span>
+            </label>
+          </div>
+        </div>
+
+        <div class="extensions-grid" id="extensions-grid">
+          <!-- Extensions will be loaded here -->
+          <div class="loading-state">
+            <div class="spinner"></div>
+            <p>Loading extensions...</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Context Panel -->
+      <aside class="context-panel" id="context-panel">
+        <div class="panel-header">
+          <h3>Context Details</h3>
+          <button id="close-context-btn" class="btn-close" title="Close panel">×</button>
+        </div>
+
+        <div class="panel-content" id="context-content">
+          <div class="empty-state">
+            <span class="empty-icon">📦</span>
+            <p>Select an extension to view its context</p>
+          </div>
+        </div>
+      </aside>
+    </main>
+
+    <!-- Logs Modal -->
+    <div class="modal" id="logs-modal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2>Application Logs</h2>
+          <div class="modal-actions">
+            <button id="clear-logs-btn" class="btn btn-secondary btn-sm">Clear Logs</button>
+            <button id="close-logs-btn" class="btn-close">×</button>
+          </div>
+        </div>
+        <div class="modal-body">
+          <pre class="logs-content" id="logs-content">Loading logs...</pre>
+        </div>
+      </div>
+    </div>
+
+    <!-- Notification Toast -->
+    <div class="toast" id="toast">
+      <span class="toast-icon" id="toast-icon">ℹ️</span>
+      <span class="toast-message" id="toast-message"></span>
+    </div>
+  </div>
+
+  <script src="index.js"></script>
+</body>
+</html>
