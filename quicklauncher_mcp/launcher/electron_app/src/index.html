@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QuickLauncher MCP</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div id="app">
+        <!-- Search Input -->
+        <div class="search-container">
+            <div class="search-prefix" id="searchPrefix">
+                <span id="modeIndicator">🔍</span>
+            </div>
+            <input
+                type="text"
+                id="searchInput"
+                placeholder="Search apps, files, or type > for AI..."
+                autocomplete="off"
+                spellcheck="false"
+            />
+        </div>
+
+        <!-- Results Container -->
+        <div class="results-container" id="resultsContainer">
+            <!-- Results will be dynamically injected here -->
+        </div>
+
+        <!-- AI Response Container -->
+        <div class="ai-response-container" id="aiResponseContainer" style="display: none;">
+            <div class="ai-response-content" id="aiResponseContent">
+                <!-- AI response will be rendered here -->
+            </div>
+        </div>
+
+        <!-- Loading Indicator -->
+        <div class="loading-indicator" id="loadingIndicator" style="display: none;">
+            <div class="spinner"></div>
+            <span>Searching...</span>
+        </div>
+
+        <!-- Status Bar -->
+        <div class="status-bar" id="statusBar">
+            <div class="status-left">
+                <span id="resultsCount">0 results</span>
+            </div>
+            <div class="status-right">
+                <span id="backendStatus" class="status-dot status-offline"></span>
+                <span class="status-label">Backend</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/search.js"></script>
+    <script src="js/ai_prompt.js"></script>
+    <script src="js/plugins.js"></script>
+    <script src="js/actions.js"></script>
+
+    <script>
+        // Initialize app
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log('QuickLauncher MCP UI loaded');
+
+            // Focus search input
+            document.getElementById('searchInput').focus();
+
+            // Initialize plugins
+            PluginManager.init();
+
+            // Check backend status
+            SearchManager.checkBackendStatus();
+        });
+
+        // Clear input when window is hidden
+        window.electronAPI.onWindowHidden(() => {
+            document.getElementById('searchInput').value = '';
+            ResultsManager.clearResults();
+            AIPromptManager.hideAIResponse();
+        });
+    </script>
+</body>
+</html>

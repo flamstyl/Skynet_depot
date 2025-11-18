@@ -1,0 +1,99 @@
+{
+  "app": {
+    "name": "QuickLauncher MCP",
+    "version": "1.0.0",
+    "autoStart": true,
+    "checkUpdates": true
+  },
+  "hotkeys": {
+    "main": "Alt+Space",
+    "aiMode": "Alt+A",
+    "settings": "Alt+,",
+    "rebuildIndex": "Ctrl+R"
+  },
+  "ui": {
+    "theme": "dark",
+    "windowWidth": 700,
+    "windowHeight": 500,
+    "maxResults": 10,
+    "animationsEnabled": true,
+    "fontSize": 16
+  },
+  "search": {
+    "debounceDelay": 150,
+    "fuzzyMatching": true,
+    "caseSensitive": false,
+    "includeHiddenFiles": false,
+    "maxResultsPerType": 5
+  },
+  "indexing": {
+    "autoRebuild": true,
+    "rebuildInterval": 86400,
+    "scanStartMenu": true,
+    "scanDesktop": true,
+    "scanDocuments": true,
+    "scanDownloads": true,
+    "customDirectories": [],
+    "excludePatterns": [
+      "node_modules",
+      ".git",
+      "__pycache__",
+      ".vscode",
+      "AppData"
+    ],
+    "fileExtensions": [
+      ".exe",
+      ".lnk",
+      ".txt",
+      ".pdf",
+      ".docx",
+      ".xlsx",
+      ".py",
+      ".js",
+      ".md"
+    ]
+  },
+  "ai": {
+    "enabled": true,
+    "backend": "claude_cli",
+    "mode": "contextual",
+    "timeout": 30000,
+    "fallbackEnabled": true,
+    "streamResponse": false
+  },
+  "mcp": {
+    "enabled": true,
+    "serverUrl": "http://localhost:3000",
+    "syncEnabled": true,
+    "syncInterval": 300,
+    "autoSync": true,
+    "deviceId": null
+  },
+  "plugins": {
+    "enabled": true,
+    "autoUpdate": false,
+    "loadCustomPlugins": true,
+    "enabledPlugins": [
+      "open_app",
+      "search_web",
+      "system_actions"
+    ]
+  },
+  "backend": {
+    "url": "http://localhost:8765",
+    "timeout": 10000,
+    "retryAttempts": 3
+  },
+  "privacy": {
+    "sendAnalytics": false,
+    "sendCrashReports": false,
+    "storeSearchHistory": true,
+    "maxHistoryItems": 100
+  },
+  "advanced": {
+    "developerMode": false,
+    "showConsole": false,
+    "logLevel": "info",
+    "experimentalFeatures": false
+  }
+}

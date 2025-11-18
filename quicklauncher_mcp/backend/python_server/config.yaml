@@ -1,0 +1,39 @@
+# QuickLauncher Indexer Configuration
+
+# Directories to scan for files
+scan_directories:
+  - "C:\\Users\\%USERNAME%\\Desktop"
+  - "C:\\Users\\%USERNAME%\\Documents"
+  - "C:\\Users\\%USERNAME%\\Downloads"
+
+# File extensions to index
+file_extensions:
+  - .exe
+  - .lnk
+  - .txt
+  - .pdf
+  - .docx
+  - .xlsx
+  - .pptx
+  - .py
+  - .js
+  - .md
+
+# Maximum depth for directory scanning
+max_depth: 3
+
+# Patterns to exclude from indexing
+exclude_patterns:
+  - node_modules
+  - .git
+  - __pycache__
+  - .vscode
+  - .idea
+  - AppData
+  - .cache
+
+# AI Backend Configuration
+ai_backend: claude_cli  # Options: claude_cli, gemini_cli, api
+
+# MCP Server URL
+mcp_url: http://localhost:3000
