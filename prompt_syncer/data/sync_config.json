@@ -1,0 +1,8 @@
+{
+  "skynet_prompts_dir": "C:/Users/rapha/Skynet_Drive_Core/prompts",
+  "agents_target_dir": "C:/Users/rapha/IA/agents_contexts",
+  "vscode_promptarchitect_dir": "C:/Users/rapha/AppData/Roaming/Code/User/promptarchitect_templates",
+  "backup_enabled": true,
+  "backup_dir": "C:/Users/rapha/Skynet_Drive_Core/prompts_backup",
+  "sync_history_file": "sync_history.json"
+}
