@@ -1,0 +1,181 @@
+<Page
+    x:Class="ClipboardPro.Desktop.Views.OCRPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Background="{StaticResource BackgroundPrimary}">
+
+    <Grid Padding="32">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- Page Title -->
+        <StackPanel Grid.Row="0" Margin="0,0,0,24">
+            <TextBlock Text="OCR - Text Extraction" Style="{StaticResource PageTitleStyle}"/>
+            <TextBlock Text="Extract text from images in your clipboard"
+                      Foreground="{StaticResource TextSecondary}"
+                      FontSize="14"/>
+        </StackPanel>
+
+        <!-- Content -->
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="20"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <!-- Image Preview -->
+            <Border Grid.Column="0" Style="{StaticResource CardStyle}">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <TextBlock Grid.Row="0" Text="Image Preview" Style="{StaticResource SectionTitleStyle}"/>
+
+                    <Grid Grid.Row="1" Background="{StaticResource BackgroundTertiary}" CornerRadius="4">
+                        <!-- Image display -->
+                        <Image x:Name="ImagePreview"
+                              Stretch="Uniform"
+                              Visibility="Collapsed"/>
+
+                        <!-- Placeholder -->
+                        <StackPanel x:Name="ImagePlaceholder"
+                                   HorizontalAlignment="Center"
+                                   VerticalAlignment="Center"
+                                   Spacing="16">
+                            <FontIcon Glyph="&#xEB9F;"
+                                     FontSize="64"
+                                     Foreground="{StaticResource TextTertiary}"/>
+                            <TextBlock Text="No image selected"
+                                      Foreground="{StaticResource TextTertiary}"
+                                      FontSize="16"/>
+                            <TextBlock Text="Copy an image to clipboard or select from history"
+                                      Foreground="{StaticResource TextTertiary}"
+                                      FontSize="12"
+                                      HorizontalAlignment="Center"/>
+                        </StackPanel>
+                    </Grid>
+
+                    <!-- Actions -->
+                    <StackPanel Grid.Row="2" Orientation="Horizontal" Spacing="12" Margin="0,16,0,0">
+                        <ComboBox x:Name="LanguageComboBox"
+                                 PlaceholderText="Language"
+                                 Width="150">
+                            <ComboBoxItem Content="English" Tag="eng" IsSelected="True"/>
+                            <ComboBoxItem Content="French" Tag="fra"/>
+                            <ComboBoxItem Content="Spanish" Tag="spa"/>
+                            <ComboBoxItem Content="German" Tag="deu"/>
+                        </ComboBox>
+
+                        <Button Content="Extract Text" Click="ExtractText_Click">
+                            <Button.Template>
+                                <ControlTemplate TargetType="Button">
+                                    <Border Background="{StaticResource PrimaryBrush}"
+                                           CornerRadius="4"
+                                           Padding="20,10">
+                                        <StackPanel Orientation="Horizontal" Spacing="8">
+                                            <FontIcon Glyph="&#xE8B7;" FontSize="16" Foreground="White"/>
+                                            <TextBlock Text="{TemplateBinding Content}" Foreground="White" FontWeight="SemiBold"/>
+                                        </StackPanel>
+                                    </Border>
+                                </ControlTemplate>
+                            </Button.Template>
+                        </Button>
+
+                        <Button Content="Load from History" Click="LoadFromHistory_Click"/>
+                    </StackPanel>
+                </Grid>
+            </Border>
+
+            <!-- Extracted Text -->
+            <Border Grid.Column="2" Style="{StaticResource CardStyle}">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <TextBlock Grid.Row="0" Text="Extracted Text" Style="{StaticResource SectionTitleStyle}"/>
+
+                    <!-- Stats -->
+                    <Grid Grid.Row="1" Margin="0,0,0,12">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+
+                        <StackPanel Grid.Column="0" Orientation="Horizontal" Spacing="8" Margin="0,0,24,0">
+                            <FontIcon Glyph="&#xE8EA;" FontSize="14" Foreground="{StaticResource TextTertiary}"/>
+                            <TextBlock x:Name="ConfidenceText"
+                                      Text="Confidence: --"
+                                      Foreground="{StaticResource TextSecondary}"
+                                      FontSize="12"/>
+                        </StackPanel>
+
+                        <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="8" Margin="0,0,24,0">
+                            <FontIcon Glyph="&#xE8E9;" FontSize="14" Foreground="{StaticResource TextTertiary}"/>
+                            <TextBlock x:Name="WordCountText"
+                                      Text="Words: --"
+                                      Foreground="{StaticResource TextSecondary}"
+                                      FontSize="12"/>
+                        </StackPanel>
+
+                        <StackPanel Grid.Column="2" Orientation="Horizontal" Spacing="8">
+                            <FontIcon Glyph="&#xE916;" FontSize="14" Foreground="{StaticResource TextTertiary}"/>
+                            <TextBlock x:Name="ProcessingTimeText"
+                                      Text="Time: --"
+                                      Foreground="{StaticResource TextSecondary}"
+                                      FontSize="12"/>
+                        </StackPanel>
+                    </Grid>
+
+                    <!-- Text Box -->
+                    <TextBox Grid.Row="2"
+                            x:Name="ExtractedTextBox"
+                            TextWrapping="Wrap"
+                            AcceptsReturn="True"
+                            ScrollViewer.VerticalScrollBarVisibility="Auto"
+                            PlaceholderText="Extracted text will appear here..."
+                            IsReadOnly="False">
+                        <TextBox.Resources>
+                            <SolidColorBrush x:Key="TextControlBackground" Color="#1E293B"/>
+                            <SolidColorBrush x:Key="TextControlForeground" Color="#F1F5F9"/>
+                        </TextBox.Resources>
+                    </TextBox>
+
+                    <!-- Actions -->
+                    <StackPanel Grid.Row="3" Orientation="Horizontal" Spacing="12" Margin="0,16,0,0">
+                        <Button Content="Copy to Clipboard" Click="CopyText_Click">
+                            <Button.Template>
+                                <ControlTemplate TargetType="Button">
+                                    <Border Background="{StaticResource SuccessBrush}"
+                                           CornerRadius="4"
+                                           Padding="16,8">
+                                        <StackPanel Orientation="Horizontal" Spacing="8">
+                                            <FontIcon Glyph="&#xE8C8;" FontSize="16" Foreground="White"/>
+                                            <TextBlock Text="{TemplateBinding Content}" Foreground="White"/>
+                                        </StackPanel>
+                                    </Border>
+                                </ControlTemplate>
+                            </Button.Template>
+                        </Button>
+
+                        <Button Content="Save" Click="SaveText_Click"/>
+                        <Button Content="Clear" Click="ClearOCR_Click"/>
+                    </StackPanel>
+                </Grid>
+            </Border>
+        </Grid>
+    </Grid>
+</Page>
