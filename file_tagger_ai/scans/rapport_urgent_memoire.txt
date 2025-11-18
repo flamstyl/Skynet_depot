@@ -1,0 +1,22 @@
+URGENT - RAPPORT DE MÉMOIRE SYSTÈME
+
+Date: 2025-11-17
+Agent: SAF
+Priorité: HAUTE
+
+Le système de mémoire court-terme atteint sa capacité maximale.
+Utilisation actuelle: 87%
+
+Actions requises IMMÉDIATEMENT:
+1. Purger les anciens logs (> 30 jours)
+2. Archiver les conversations non essentielles
+3. Optimiser les embeddings vectoriels
+
+Impact si non traité:
+- Dégradation des performances
+- Perte potentielle de contexte
+- Ralentissement des agents
+
+Recommandation: Intervention dans les 24h.
+
+Rapport généré automatiquement par le module de monitoring.
