@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MCP Forge - Agent Builder</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/builder.css') }}">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-left">
+                <h1>🛠️ MCP Forge</h1>
+                <span class="subtitle">AI Agent Builder</span>
+            </div>
+            <div class="header-right">
+                <button class="btn btn-secondary" onclick="showTemplates()">📋 Templates</button>
+                <button class="btn btn-secondary" onclick="loadAgents()">📂 Load</button>
+                <button class="btn btn-secondary" onclick="showPreview()">👁️ Preview</button>
+                <button class="btn btn-primary" onclick="saveAgent()">💾 Save</button>
+                <button class="btn btn-success" onclick="exportAgent()">🚀 Export</button>
+            </div>
+        </header>
+
+        <div class="main-content">
+            <!-- Sidebar - Component Library -->
+            <aside class="sidebar">
+                <h3>Components</h3>
+                <div class="component-section">
+                    <h4>⚡ Triggers</h4>
+                    <div id="triggers-list" class="component-list"></div>
+                </div>
+                <div class="component-section">
+                    <h4>🎯 Actions</h4>
+                    <div id="actions-list" class="component-list"></div>
+                </div>
+                <div class="component-section">
+                    <h4>🔀 Conditions</h4>
+                    <div id="conditions-list" class="component-list"></div>
+                </div>
+                <div class="component-section">
+                    <h4>🔗 Integrations</h4>
+                    <div id="integrations-list" class="component-list"></div>
+                </div>
+            </aside>
+
+            <!-- Canvas Area -->
+            <main class="canvas-area">
+                <div class="canvas-header">
+                    <div class="agent-info">
+                        <input type="text" id="agent-name" placeholder="Agent Name" class="input-field large">
+                        <input type="text" id="agent-description" placeholder="Description" class="input-field">
+                    </div>
+                    <div class="agent-config">
+                        <select id="agent-model" class="select-field">
+                            <option value="">Select Model</option>
+                            <option value="claude-3-5-sonnet-20241022">Claude 3.5 Sonnet</option>
+                            <option value="claude-3-opus-20240229">Claude 3 Opus</option>
+                            <option value="gpt-4-turbo-preview">GPT-4 Turbo</option>
+                            <option value="gpt-3.5-turbo">GPT-3.5 Turbo</option>
+                        </select>
+                    </div>
+                </div>
+                <div id="canvas" class="canvas"></div>
+            </main>
+
+            <!-- Properties Panel -->
+            <aside class="properties-panel">
+                <h3>Properties</h3>
+                <div id="properties-content" class="properties-content">
+                    <p class="hint">Select a component to edit its properties</p>
+                </div>
+
+                <!-- Agent Configuration -->
+                <div class="config-section">
+                    <h4>Agent Configuration</h4>
+                    <label>Role</label>
+                    <input type="text" id="agent-role" placeholder="e.g., Senior Code Reviewer" class="input-field">
+
+                    <label>Instructions</label>
+                    <textarea id="agent-instructions" placeholder="Enter agent instructions (one per line)" class="textarea-field" rows="6"></textarea>
+
+                    <h4>Actions</h4>
+                    <button class="btn btn-secondary btn-sm" onclick="testDryRun()">🧪 Dry Run</button>
+                    <button class="btn btn-secondary btn-sm" onclick="validateWithAI()">✅ Validate</button>
+                </div>
+            </aside>
+        </div>
+    </div>
+
+    <!-- Modals -->
+    <div id="modal-overlay" class="modal-overlay" style="display: none;">
+        <div class="modal">
+            <div class="modal-header">
+                <h3 id="modal-title">Modal</h3>
+                <button class="modal-close" onclick="closeModal()">&times;</button>
+            </div>
+            <div class="modal-body" id="modal-body"></div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeModal()">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/builder.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/canvas.js') }}"></script>
+</body>
+</html>
