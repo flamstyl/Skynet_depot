@@ -1,0 +1,22 @@
+{
+  "id": "claude",
+  "name": "Claude CLI",
+  "description": "Anthropic's Claude Code assistant - full-featured AI development environment",
+  "exec": "claude --chat",
+  "working_dir": "",
+  "env": {},
+  "context": {
+    "memory_dir": "",
+    "task_file": "tasks.json",
+    "profile": "Skynet Development Agent",
+    "capabilities": [
+      "Code generation",
+      "Debugging",
+      "Refactoring",
+      "Documentation",
+      "System architecture"
+    ]
+  },
+  "color": "#6B46C1",
+  "icon": "claude_icon.png"
+}

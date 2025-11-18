@@ -1,0 +1,22 @@
+{
+  "id": "gemini",
+  "name": "Gemini CLI",
+  "description": "Google's Gemini - multimodal AI assistant with vision capabilities",
+  "exec": "gemini-cli",
+  "working_dir": "",
+  "env": {},
+  "context": {
+    "memory_dir": "",
+    "task_file": "tasks.json",
+    "profile": "Skynet Research Agent",
+    "capabilities": [
+      "Image analysis",
+      "Video understanding",
+      "Long context processing",
+      "Multimodal reasoning",
+      "Code generation"
+    ]
+  },
+  "color": "#4285F4",
+  "icon": "gemini_icon.png"
+}
