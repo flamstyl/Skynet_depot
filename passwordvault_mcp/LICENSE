@@ -1,0 +1,48 @@
+MIT License
+
+Copyright (c) 2025 Skynet Team
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+---
+
+SECURITY DISCLAIMER
+
+This password manager ("PasswordVault MCP") is provided as-is without any
+warranties regarding security, data integrity, or fitness for any particular
+purpose.
+
+Users are responsible for:
+- Choosing a strong master password
+- Regularly backing up their encrypted vault file
+- Securing their local environment
+- Understanding the security model and limitations
+
+The authors and contributors shall not be held liable for any data loss,
+security breach, or damages resulting from the use of this software.
+
+BEST PRACTICES:
+- Use a unique, strong master password (16+ characters)
+- Enable 2FA on critical accounts stored in the vault
+- Regularly update the software to receive security patches
+- Never store your master password in plain text
+- Test your backups regularly
+
+By using this software, you acknowledge that you have read and understood
+these terms and agree to use the software at your own risk.

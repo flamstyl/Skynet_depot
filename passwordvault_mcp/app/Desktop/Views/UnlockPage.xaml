@@ -1,0 +1,61 @@
+<Page x:Class="PasswordVault.Views.UnlockPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      Background="{StaticResource BackgroundDark}"
+      Title="Unlock Vault">
+
+    <Grid>
+        <Border Width="400"
+                Height="300"
+                Background="{StaticResource BackgroundMedium}"
+                CornerRadius="8"
+                VerticalAlignment="Center"
+                HorizontalAlignment="Center"
+                Padding="40">
+
+            <StackPanel>
+                <!-- Icon/Logo -->
+                <TextBlock Text="🔐"
+                          FontSize="48"
+                          HorizontalAlignment="Center"
+                          Margin="0,0,0,20"/>
+
+                <!-- Title -->
+                <TextBlock Text="PasswordVault"
+                          FontSize="24"
+                          FontWeight="Bold"
+                          Foreground="{StaticResource ForegroundPrimary}"
+                          HorizontalAlignment="Center"
+                          Margin="0,0,0,8"/>
+
+                <TextBlock Text="Skynet Secure Vault"
+                          FontSize="14"
+                          Foreground="{StaticResource ForegroundSecondary}"
+                          HorizontalAlignment="Center"
+                          Margin="0,0,0,30"/>
+
+                <!-- Master Password Input -->
+                <TextBlock Text="Master Password"
+                          Foreground="{StaticResource ForegroundSecondary}"
+                          Margin="0,0,0,8"/>
+
+                <PasswordBox x:Name="MasterPasswordBox"
+                            Style="{StaticResource ModernPasswordBox}"
+                            Margin="0,0,0,20"/>
+
+                <!-- Unlock Button -->
+                <Button Content="Unlock Vault"
+                        Style="{StaticResource ModernButton}"
+                        Click="UnlockButton_Click"
+                        IsDefault="True"/>
+
+                <!-- Error Message -->
+                <TextBlock x:Name="ErrorText"
+                          Foreground="{StaticResource AccentRed}"
+                          HorizontalAlignment="Center"
+                          Margin="0,15,0,0"
+                          Visibility="Collapsed"/>
+            </StackPanel>
+        </Border>
+    </Grid>
+</Page>

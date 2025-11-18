@@ -1,0 +1,54 @@
+{
+  "name": "PasswordVault MCP Server",
+  "version": "1.0.0",
+  "channel": "skynet_passwordvault",
+  "description": "Gestionnaire de mots de passe sécurisé avec sync chiffrée et audit IA",
+
+  "sync": {
+    "enabled": true,
+    "encrypted_only": true,
+    "strategy": "last_write_wins",
+    "conflict_resolution": "merge",
+    "max_devices": 5
+  },
+
+  "ai": {
+    "provider": "anthropic",
+    "model": "claude-sonnet-4-5-20250929",
+    "features": {
+      "security_audit": true,
+      "password_improvement": true,
+      "risk_detection": true
+    },
+    "privacy": {
+      "send_passwords": false,
+      "send_usernames": false,
+      "metadata_only": true
+    }
+  },
+
+  "hibp": {
+    "enabled": true,
+    "cache_enabled": true,
+    "cache_duration_hours": 24,
+    "rate_limit": {
+      "requests_per_minute": 10
+    }
+  },
+
+  "security": {
+    "https_only": false,
+    "localhost_only": true,
+    "cors_origins": [
+      "http://localhost:*"
+    ],
+    "max_vault_size_mb": 10
+  },
+
+  "logging": {
+    "level": "info",
+    "log_requests": true,
+    "log_sync": true,
+    "log_ai_calls": true
+  }
+}
