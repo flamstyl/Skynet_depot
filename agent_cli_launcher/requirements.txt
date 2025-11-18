@@ -1,0 +1,3 @@
+# Skynet Agent CLI Launcher - Dependencies
+
+PyQt5>=5.15.0
