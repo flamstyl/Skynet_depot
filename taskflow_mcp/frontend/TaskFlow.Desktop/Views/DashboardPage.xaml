@@ -1,0 +1,183 @@
+<Page
+    x:Class="TaskFlow.Desktop.Views.DashboardPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <Grid Padding="24">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <!-- Header -->
+        <TextBlock
+            Grid.Row="0"
+            Text="Task Dashboard"
+            FontSize="28"
+            FontWeight="Bold"
+            Margin="0,0,0,16" />
+
+        <!-- Filters -->
+        <StackPanel Grid.Row="1" Orientation="Horizontal" Spacing="12" Margin="0,0,0,16">
+            <ComboBox
+                x:Name="SourceFilter"
+                Header="Source"
+                PlaceholderText="All Sources"
+                Width="150"
+                SelectionChanged="Filter_Changed">
+                <x:String>All</x:String>
+                <x:String>Gmail</x:String>
+                <x:String>GitHub</x:String>
+                <x:String>Trello</x:String>
+                <x:String>Notion</x:String>
+                <x:String>Slack</x:String>
+            </ComboBox>
+
+            <ComboBox
+                x:Name="StatusFilter"
+                Header="Status"
+                PlaceholderText="All Status"
+                Width="150"
+                SelectionChanged="Filter_Changed">
+                <x:String>All</x:String>
+                <x:String>Todo</x:String>
+                <x:String>InProgress</x:String>
+                <x:String>Done</x:String>
+            </ComboBox>
+
+            <TextBox
+                x:Name="SearchBox"
+                Header="Search"
+                PlaceholderText="Search tasks..."
+                Width="250"
+                TextChanged="SearchBox_TextChanged" />
+        </StackPanel>
+
+        <!-- Task List -->
+        <ScrollViewer Grid.Row="2">
+            <ListView
+                x:Name="TaskListView"
+                ItemsSource="{x:Bind ViewModel.FilteredTasks, Mode=OneWay}"
+                SelectionMode="Single"
+                SelectionChanged="TaskListView_SelectionChanged">
+
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <Grid Padding="12" Margin="0,4">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+
+                            <!-- Title -->
+                            <TextBlock
+                                Grid.Row="0"
+                                Grid.Column="0"
+                                Text="{Binding Title}"
+                                FontWeight="SemiBold"
+                                FontSize="16"
+                                TextWrapping="Wrap" />
+
+                            <!-- Priority Badge -->
+                            <Border
+                                Grid.Row="0"
+                                Grid.Column="1"
+                                Background="{ThemeResource AccentFillColorDefaultBrush}"
+                                CornerRadius="4"
+                                Padding="8,4"
+                                Margin="8,0,0,0">
+                                <TextBlock
+                                    Text="{Binding Priority}"
+                                    FontSize="12"
+                                    FontWeight="Bold" />
+                            </Border>
+
+                            <!-- Description -->
+                            <TextBlock
+                                Grid.Row="1"
+                                Grid.Column="0"
+                                Grid.ColumnSpan="2"
+                                Text="{Binding Description}"
+                                Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                                FontSize="14"
+                                TextWrapping="Wrap"
+                                MaxLines="2"
+                                Margin="0,4,0,0" />
+
+                            <!-- Tags and Source -->
+                            <StackPanel
+                                Grid.Row="2"
+                                Grid.Column="0"
+                                Grid.ColumnSpan="2"
+                                Orientation="Horizontal"
+                                Spacing="8"
+                                Margin="0,8,0,0">
+
+                                <Border Background="{ThemeResource SystemFillColorCriticalBackgroundBrush}" CornerRadius="3" Padding="6,2">
+                                    <TextBlock Text="{Binding Source}" FontSize="11" />
+                                </Border>
+
+                                <Border Background="{ThemeResource SystemFillColorSuccessBackgroundBrush}" CornerRadius="3" Padding="6,2">
+                                    <TextBlock Text="{Binding Status}" FontSize="11" />
+                                </Border>
+
+                                <!-- TODO: Render tags list -->
+                            </StackPanel>
+                        </Grid>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </ScrollViewer>
+
+        <!-- Pomodoro Section -->
+        <Border
+            Grid.Row="3"
+            Background="{ThemeResource LayerFillColorDefaultBrush}"
+            BorderBrush="{ThemeResource DividerStrokeColorDefaultBrush}"
+            BorderThickness="0,1,0,0"
+            Padding="16"
+            Margin="0,16,0,0">
+
+            <StackPanel Spacing="12">
+                <TextBlock Text="Pomodoro Timer" FontSize="18" FontWeight="SemiBold" />
+
+                <StackPanel Orientation="Horizontal" Spacing="12">
+                    <TextBlock
+                        x:Name="PomodoroTimerText"
+                        Text="25:00"
+                        FontSize="32"
+                        FontWeight="Bold"
+                        VerticalAlignment="Center" />
+
+                    <Button
+                        x:Name="PomodoroStartButton"
+                        Content="Start"
+                        Click="PomodoroStart_Click"
+                        Style="{ThemeResource AccentButtonStyle}" />
+
+                    <Button
+                        x:Name="PomodoroStopButton"
+                        Content="Stop"
+                        Click="PomodoroStop_Click"
+                        IsEnabled="False" />
+                </StackPanel>
+
+                <TextBlock
+                    x:Name="PomodoroTaskText"
+                    Text="Select a task to start Pomodoro"
+                    FontSize="14"
+                    Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
+            </StackPanel>
+        </Border>
+    </Grid>
+</Page>
