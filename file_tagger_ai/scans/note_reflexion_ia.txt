@@ -1,0 +1,21 @@
+Réflexion sur l'architecture des systèmes d'IA multi-agents
+
+Après plusieurs semaines d'observation, je constate que l'intelligence émergente
+d'un système multi-agents dépend fortement de:
+
+1. La qualité des connexions inter-agents
+2. La mémoire partagée vs mémoire locale
+3. La capacité de réflexion individuelle
+
+Le module Reflector est particulièrement intéressant car il permet une
+auto-évaluation des décisions prises par les autres agents.
+
+Questions ouvertes:
+- Comment mesurer la cohérence globale du système?
+- Quel équilibre entre autonomie et coordination?
+- Comment éviter les boucles infinies de réflexion?
+
+Cette note servira de base pour le prochain document de recherche.
+
+Auteur: Système de réflexion Skynet
+Date: 2025-11-16

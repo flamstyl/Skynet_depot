@@ -1,0 +1,32 @@
+# Configuration des Agents Skynet
+# Fichier de configuration principal
+# Dernière modification: 2025-11-15
+
+[AGENTS]
+gemini_flash = enabled
+claude_opus = enabled
+reflector = enabled
+saf = enabled
+
+[PARAMETRES]
+max_context_length = 128000
+temperature = 0.7
+top_p = 0.9
+
+[MEMOIRE]
+type = vectorstore
+embedding_model = text-embedding-3-large
+dimension = 1536
+distance_metric = cosine
+
+[LOGS]
+level = INFO
+rotation = daily
+max_size = 100MB
+
+[RAG]
+chunk_size = 512
+overlap = 50
+retrieval_top_k = 5
+
+# Ne pas modifier sans backup

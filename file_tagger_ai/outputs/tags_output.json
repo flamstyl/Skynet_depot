@@ -1,0 +1,172 @@
+[
+  {
+    "path": "/home/user/Skynet_depot/file_tagger_ai/scans/note_reflexion_ia.txt",
+    "name": "note_reflexion_ia.txt",
+    "size": 765,
+    "tags": {
+      "type": "text",
+      "content_type": "journal",
+      "urgency": "low",
+      "topics": [
+        "system",
+        "code",
+        "reflexion",
+        "journal",
+        "memoire",
+        "ia"
+      ],
+      "agents": [
+        "agent_generic",
+        "reflector"
+      ],
+      "keywords": [
+        "réflexion",
+        "agents",
+        "système",
+        "multi",
+        "mémoire"
+      ],
+      "detected_dates": [
+        "2025-11-16"
+      ],
+      "has_technical_content": true
+    }
+  },
+  {
+    "path": "/home/user/Skynet_depot/file_tagger_ai/scans/config_agents.txt",
+    "name": "config_agents.txt",
+    "size": 525,
+    "tags": {
+      "type": "text",
+      "content_type": "log",
+      "urgency": "low",
+      "topics": [
+        "log",
+        "rag",
+        "ia",
+        "config"
+      ],
+      "agents": [
+        "reflector",
+        "saf",
+        "agent_generic",
+        "gemini",
+        "claude"
+      ],
+      "keywords": [
+        "enabled",
+        "configuration",
+        "agents",
+        "skynet",
+        "fichier"
+      ],
+      "detected_dates": [
+        "2025-11-15"
+      ],
+      "has_technical_content": true
+    }
+  },
+  {
+    "path": "/home/user/Skynet_depot/file_tagger_ai/scans/rapport_urgent_memoire.txt",
+    "name": "rapport_urgent_memoire.txt",
+    "size": 562,
+    "tags": {
+      "type": "text",
+      "content_type": "technique",
+      "urgency": "high",
+      "topics": [
+        "system",
+        "code",
+        "rag",
+        "rapport",
+        "log",
+        "memoire",
+        "ia"
+      ],
+      "agents": [
+        "agent_generic",
+        "saf"
+      ],
+      "keywords": [
+        "rapport",
+        "mémoire",
+        "système",
+        "urgent",
+        "date"
+      ],
+      "detected_dates": [
+        "2025-11-17"
+      ],
+      "has_technical_content": true
+    }
+  },
+  {
+    "path": "/home/user/Skynet_depot/file_tagger_ai/scans/system_log_errors.txt",
+    "name": "system_log_errors.txt",
+    "size": 868,
+    "tags": {
+      "type": "text",
+      "content_type": "log",
+      "urgency": "high",
+      "topics": [
+        "system",
+        "code",
+        "rag",
+        "log",
+        "memoire",
+        "ia"
+      ],
+      "agents": [
+        "agent_generic",
+        "gemini",
+        "saf"
+      ],
+      "keywords": [
+        "2025",
+        "info",
+        "error",
+        "agent",
+        "warning"
+      ],
+      "detected_dates": [
+        "2025-11-18"
+      ],
+      "has_technical_content": true
+    }
+  },
+  {
+    "path": "/home/user/Skynet_depot/file_tagger_ai/scans/journal_agent_2025-11-18.txt",
+    "name": "journal_agent_2025-11-18.txt",
+    "size": 674,
+    "tags": {
+      "type": "text",
+      "content_type": "journal",
+      "urgency": "high",
+      "topics": [
+        "system",
+        "code",
+        "reflexion",
+        "rapport",
+        "journal",
+        "rag",
+        "memoire",
+        "ia"
+      ],
+      "agents": [
+        "agent_generic",
+        "gemini"
+      ],
+      "keywords": [
+        "système",
+        "agents",
+        "plus",
+        "date",
+        "2025"
+      ],
+      "detected_dates": [
+        "2025-11-18"
+      ],
+      "has_technical_content": true
+    }
+  }
+]
