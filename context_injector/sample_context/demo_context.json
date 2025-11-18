@@ -1,0 +1,88 @@
+{
+  "context_type": "skynet_memory_loader",
+  "version": "1.0",
+  "injection_timestamp": "2025-11-18",
+  "mission": {
+    "objective": "Demonstrate context injection capabilities",
+    "priority": "high",
+    "target_domain": "AI agent orchestration"
+  },
+  "system_identity": {
+    "name": "Skynet Context Injector",
+    "role": "Memory Loader",
+    "creator": "Raphaël",
+    "purpose": "Enable RAG-like context loading for CLI agents"
+  },
+  "instructions": [
+    "You are receiving this context as part of a Skynet memory injection",
+    "This JSON structure demonstrates how to load structured data into your session",
+    "Use this context to understand the user's current project and objectives",
+    "Maintain awareness of the Skynet ecosystem tools being developed"
+  ],
+  "project_context": {
+    "project_name": "Skynet Tools Suite",
+    "current_tool": "Context Injector — Memory Loader v1",
+    "ecosystem": [
+      "Skynet File Tagger — Intelligent file scanning and tagging",
+      "Context Injector — Memory loader for agents",
+      "Future tools in development"
+    ],
+    "tech_stack": {
+      "language": "Python 3.10+",
+      "gui_framework": "PyQt5",
+      "subprocess_management": "subprocess module",
+      "logging": "Python logging module"
+    }
+  },
+  "user_preferences": {
+    "coding_style": "Clean, modular, well-documented",
+    "ui_theme": "Dark mode, cyberpunk aesthetic",
+    "language": "French and English",
+    "tone": "Professional but friendly, 'mon frère' style"
+  },
+  "active_tasks": [
+    {
+      "task_id": 1,
+      "description": "Build Context Injector GUI application",
+      "status": "in_progress",
+      "priority": "high"
+    },
+    {
+      "task_id": 2,
+      "description": "Create sample context files for testing",
+      "status": "completed",
+      "priority": "medium"
+    },
+    {
+      "task_id": 3,
+      "description": "Document usage and deployment",
+      "status": "pending",
+      "priority": "medium"
+    }
+  ],
+  "knowledge_base": {
+    "key_concepts": [
+      "Context injection enables pre-loading agent memory",
+      "RAG (Retrieval Augmented Generation) patterns for local use",
+      "Subprocess stdin/stdout for agent communication",
+      "Modular architecture for extensibility"
+    ],
+    "best_practices": [
+      "Always validate JSON before injection",
+      "Log all injection events for debugging",
+      "Support multiple context file formats",
+      "Maintain clean separation of concerns"
+    ]
+  },
+  "metadata": {
+    "created_by": "Claude Code 4.5",
+    "for_user": "Raphaël",
+    "demo_purpose": "Show structured JSON context injection",
+    "next_steps": [
+      "Test with real AI agents",
+      "Extend to support multiple file injection",
+      "Add auto-detection of agent types",
+      "Build CLI version"
+    ]
+  }
+}

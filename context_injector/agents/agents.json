@@ -1,0 +1,34 @@
+{
+  "agents": [
+    {
+      "name": "Claude CLI",
+      "exec": "claude --chat",
+      "working_dir": "C:/Users/rapha/IA/agents/claude",
+      "description": "Anthropic's Claude AI assistant CLI"
+    },
+    {
+      "name": "Gemini CLI",
+      "exec": "gemini run",
+      "working_dir": "C:/Users/rapha/IA/agents/gemini",
+      "description": "Google's Gemini AI CLI interface"
+    },
+    {
+      "name": "Codex CLI",
+      "exec": "codex start",
+      "working_dir": "C:/Users/rapha/IA/agents/codex",
+      "description": "OpenAI Codex CLI for code generation"
+    },
+    {
+      "name": "GPT-4 CLI",
+      "exec": "gpt4 --interactive",
+      "working_dir": "C:/Users/rapha/IA/agents/gpt4",
+      "description": "OpenAI GPT-4 command-line interface"
+    },
+    {
+      "name": "Custom Agent",
+      "exec": "python agent.py",
+      "working_dir": "C:/Users/rapha/IA/agents/custom",
+      "description": "Your custom AI agent implementation"
+    }
+  ]
+}
