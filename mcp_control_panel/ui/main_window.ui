@@ -1,0 +1,354 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1200</width>
+    <height>800</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>MCP Control Panel - Skynet Multi-Agent Manager</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <layout class="QHBoxLayout" name="horizontalLayout">
+    <item>
+     <widget class="QSplitter" name="splitter">
+      <property name="orientation">
+       <enum>Qt::Horizontal</enum>
+      </property>
+      <widget class="QWidget" name="sidebarWidget">
+       <layout class="QVBoxLayout" name="verticalLayout_sidebar">
+        <item>
+         <widget class="QLabel" name="lblTitle">
+          <property name="text">
+           <string>SKYNET</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignCenter</set>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="lblSubtitle">
+          <property name="text">
+           <string>Agent Control Panel</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignCenter</set>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="Line" name="line">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QListWidget" name="agentListWidget">
+          <property name="minimumSize">
+           <size>
+            <width>220</width>
+            <height>0</height>
+           </size>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="mainContentWidget">
+       <layout class="QVBoxLayout" name="verticalLayout_main">
+        <item>
+         <widget class="QGroupBox" name="controlGroupBox">
+          <property name="title">
+           <string>Agent Controls</string>
+          </property>
+          <layout class="QHBoxLayout" name="horizontalLayout_controls">
+           <item>
+            <widget class="QPushButton" name="btnLaunch">
+             <property name="text">
+              <string>Launch Agent</string>
+             </property>
+             <property name="minimumSize">
+              <size>
+               <width>0</width>
+               <height>40</height>
+              </size>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="btnStop">
+             <property name="text">
+              <string>Stop Agent</string>
+             </property>
+             <property name="minimumSize">
+              <size>
+               <width>0</width>
+               <height>40</height>
+              </size>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="btnRefresh">
+             <property name="text">
+              <string>Refresh Status</string>
+             </property>
+             <property name="minimumSize">
+              <size>
+               <width>0</width>
+               <height>40</height>
+              </size>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <spacer name="horizontalSpacer">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>40</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item>
+            <widget class="QLabel" name="lblStatus">
+             <property name="text">
+              <string>STATUS: READY</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
+        <item>
+         <widget class="QTabWidget" name="tabWidget">
+          <property name="currentIndex">
+           <number>0</number>
+          </property>
+          <widget class="QWidget" name="tabLogs">
+           <attribute name="title">
+            <string>Live Output</string>
+           </attribute>
+           <layout class="QVBoxLayout" name="verticalLayout_logs">
+            <item>
+             <widget class="QPlainTextEdit" name="logsTextEdit">
+              <property name="readOnly">
+               <bool>true</bool>
+              </property>
+              <property name="placeholderText">
+               <string>Agent output will appear here...</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <layout class="QHBoxLayout" name="horizontalLayout_logs_controls">
+              <item>
+               <widget class="QPushButton" name="btnClearLogs">
+                <property name="text">
+                 <string>Clear Output</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QPushButton" name="btnExportLogs">
+                <property name="text">
+                 <string>Export Logs</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <spacer name="horizontalSpacer_logs">
+                <property name="orientation">
+                 <enum>Qt::Horizontal</enum>
+                </property>
+                <property name="sizeHint" stdset="0">
+                 <size>
+                  <width>40</width>
+                  <height>20</height>
+                 </size>
+                </property>
+               </spacer>
+              </item>
+             </layout>
+            </item>
+           </layout>
+          </widget>
+          <widget class="QWidget" name="tabContext">
+           <attribute name="title">
+            <string>Agent Context</string>
+           </attribute>
+           <layout class="QVBoxLayout" name="verticalLayout_context">
+            <item>
+             <widget class="QTextEdit" name="contextTextEdit">
+              <property name="readOnly">
+               <bool>true</bool>
+              </property>
+              <property name="placeholderText">
+               <string>Select an agent to view its configuration...</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </widget>
+          <widget class="QWidget" name="tabHistory">
+           <attribute name="title">
+            <string>System History</string>
+           </attribute>
+           <layout class="QVBoxLayout" name="verticalLayout_history">
+            <item>
+             <widget class="QPlainTextEdit" name="historyTextEdit">
+              <property name="readOnly">
+               <bool>true</bool>
+              </property>
+              <property name="placeholderText">
+               <string>System event history...</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <layout class="QHBoxLayout" name="horizontalLayout_history_controls">
+              <item>
+               <widget class="QComboBox" name="comboHistoryFilter">
+                <item>
+                 <property name="text">
+                  <string>All Events</string>
+                 </property>
+                </item>
+                <item>
+                 <property name="text">
+                  <string>Agent Events</string>
+                 </property>
+                </item>
+                <item>
+                 <property name="text">
+                  <string>System Events</string>
+                 </property>
+                </item>
+                <item>
+                 <property name="text">
+                  <string>Errors Only</string>
+                 </property>
+                </item>
+               </widget>
+              </item>
+              <item>
+               <widget class="QPushButton" name="btnRefreshHistory">
+                <property name="text">
+                 <string>Refresh</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <spacer name="horizontalSpacer_history">
+                <property name="orientation">
+                 <enum>Qt::Horizontal</enum>
+                </property>
+                <property name="sizeHint" stdset="0">
+                 <size>
+                  <width>40</width>
+                  <height>20</height>
+                 </size>
+                </property>
+               </spacer>
+              </item>
+             </layout>
+            </item>
+           </layout>
+          </widget>
+          <widget class="QWidget" name="tabCommands">
+           <attribute name="title">
+            <string>Quick Commands</string>
+           </attribute>
+           <layout class="QVBoxLayout" name="verticalLayout_commands">
+            <item>
+             <widget class="QGroupBox" name="groupBox_ide">
+              <property name="title">
+               <string>IDE Commands</string>
+              </property>
+              <layout class="QVBoxLayout" name="verticalLayout_ide">
+               <item>
+                <widget class="QPushButton" name="btnOpenVSCode">
+                 <property name="text">
+                  <string>Open VS Code</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QPushButton" name="btnOpenClaudeCode">
+                 <property name="text">
+                  <string>Open Claude Code</string>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </widget>
+            </item>
+            <item>
+             <widget class="QGroupBox" name="groupBox_system">
+              <property name="title">
+               <string>System Commands</string>
+              </property>
+              <layout class="QVBoxLayout" name="verticalLayout_system">
+               <item>
+                <widget class="QPushButton" name="btnCleanLogs">
+                 <property name="text">
+                  <string>Clean Log Directory</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QPushButton" name="btnReloadConfigs">
+                 <property name="text">
+                  <string>Reload Agent Configs</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QPushButton" name="btnStopAll">
+                 <property name="text">
+                  <string>Stop All Agents</string>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </widget>
+            </item>
+            <item>
+             <spacer name="verticalSpacer_commands">
+              <property name="orientation">
+               <enum>Qt::Vertical</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>20</width>
+                <height>40</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+           </layout>
+          </widget>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

@@ -1,0 +1,10 @@
+# MCP Control Panel - Python Dependencies
+# Skynet Multi-Agent Management System
+
+# GUI Framework
+PyQt5>=5.15.0
+
+# Optional: For future enhancements
+# psutil>=5.9.0  # For CPU/RAM monitoring
+# websockets>=10.0  # For remote monitoring
+# requests>=2.28.0  # For API integrations

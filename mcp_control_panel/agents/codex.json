@@ -1,0 +1,22 @@
+{
+  "id": "codex",
+  "name": "Codex CLI",
+  "description": "OpenAI's Codex - specialized code completion and generation",
+  "exec": "codex-cli",
+  "working_dir": "",
+  "env": {},
+  "context": {
+    "memory_dir": "",
+    "task_file": "tasks.json",
+    "profile": "Skynet Coding Specialist",
+    "capabilities": [
+      "Code completion",
+      "API integration",
+      "Algorithm optimization",
+      "Quick prototyping",
+      "Language translation"
+    ]
+  },
+  "color": "#10A37F",
+  "icon": "codex_icon.png"
+}

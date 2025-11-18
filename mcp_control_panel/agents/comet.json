@@ -1,0 +1,22 @@
+{
+  "id": "comet",
+  "name": "Comet CLI",
+  "description": "Custom Comet agent - specialized task executor",
+  "exec": "comet-cli",
+  "working_dir": "",
+  "env": {},
+  "context": {
+    "memory_dir": "",
+    "task_file": "tasks.json",
+    "profile": "Skynet Task Agent",
+    "capabilities": [
+      "Custom task execution",
+      "Workflow automation",
+      "Data processing",
+      "Batch operations",
+      "System monitoring"
+    ]
+  },
+  "color": "#FF6B35",
+  "icon": "comet_icon.png"
+}
