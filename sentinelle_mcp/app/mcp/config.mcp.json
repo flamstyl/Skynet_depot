@@ -1,0 +1,66 @@
+{
+  "server": {
+    "name": "Sentinelle MCP Server",
+    "version": "1.0.0",
+    "port": 3000,
+    "host": "localhost"
+  },
+
+  "channel": "skynet_sentinelle",
+
+  "notifications": {
+    "notify_raphael": true,
+    "methods": {
+      "webhook": {
+        "enabled": false,
+        "url": "",
+        "headers": {}
+      },
+      "email": {
+        "enabled": false,
+        "smtp_host": "",
+        "smtp_port": 587,
+        "from": "",
+        "to": []
+      },
+      "telegram": {
+        "enabled": false,
+        "bot_token": "",
+        "chat_id": ""
+      }
+    }
+  },
+
+  "ai": {
+    "backend": "claude_cli",
+    "models": {
+      "claude_cli": {
+        "enabled": true,
+        "command": "claude",
+        "timeout_ms": 30000
+      },
+      "gemini_cli": {
+        "enabled": false,
+        "command": "gemini",
+        "timeout_ms": 30000
+      }
+    }
+  },
+
+  "security": {
+    "require_auth": false,
+    "api_key": "",
+    "allowed_origins": ["*"]
+  },
+
+  "logging": {
+    "level": "info",
+    "file": "../../data/mcp_server.log",
+    "console": true
+  },
+
+  "rate_limiting": {
+    "enabled": false,
+    "max_requests_per_minute": 60
+  }
+}

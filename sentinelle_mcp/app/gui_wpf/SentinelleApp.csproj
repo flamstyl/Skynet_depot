@@ -1,0 +1,43 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net6.0-windows</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <ApplicationIcon>sentinelle.ico</ApplicationIcon>
+    <AssemblyName>SentinelleMCP</AssemblyName>
+    <RootNamespace>SentinelleMCP</RootNamespace>
+    <Version>1.0.0</Version>
+    <Authors>Skynet Engineering Team</Authors>
+    <Company>Skynet</Company>
+    <Product>Sentinelle MCP - Skynet Context Watcher</Product>
+    <Description>Advanced AI monitoring and alerting system for Skynet</Description>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- WPF Dependencies -->
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="7.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration" Version="7.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="7.0.0" />
+
+    <!-- MVVM Toolkit -->
+    <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.0" />
+
+    <!-- HTTP Client -->
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+
+    <!-- Material Design (optional, for modern UI) -->
+    <PackageReference Include="MaterialDesignThemes" Version="4.9.0" />
+    <PackageReference Include="MaterialDesignColors" Version="2.1.4" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Views\" />
+    <Folder Include="ViewModels\" />
+    <Folder Include="Services\" />
+    <Folder Include="Models\" />
+    <Folder Include="Converters\" />
+    <Folder Include="Resources\" />
+  </ItemGroup>
+
+</Project>

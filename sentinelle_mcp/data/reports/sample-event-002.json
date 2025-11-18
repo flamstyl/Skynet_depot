@@ -1,0 +1,59 @@
+{
+  "report_id": "d9b8c7a6-5e4f-3d2c-1b0a-9f8e7d6c5b4a",
+  "generated_at": "2025-11-18T15:45:22.987654",
+  "sentinelle_version": "1.0.0",
+  "event": {
+    "event_id": "d9b8c7a6-5e4f-3d2c-1b0a-9f8e7d6c5b4a",
+    "timestamp": "2025-11-18T15:45:22.000000",
+    "type": "modified",
+    "path": "C:/Skynet_depot/sentinelle_mcp/app/backend_python/config.yaml",
+    "file_name": "config.yaml",
+    "file_extension": ".yaml",
+    "directory": "C:/Skynet_depot/sentinelle_mcp/app/backend_python"
+  },
+  "classification": {
+    "category": "config",
+    "priority": "critical"
+  },
+  "metadata": {
+    "size_bytes": 2048,
+    "size_kb": 2.0,
+    "created_at": "2025-11-18T10:15:30.000000",
+    "modified_at": "2025-11-18T15:45:22.000000",
+    "hash": "def789abc456123",
+    "readable": true,
+    "writable": true
+  },
+  "context": {
+    "in_git_repo": true,
+    "in_node_project": false,
+    "in_python_project": true,
+    "project_name": "sentinelle_mcp",
+    "in_prompts_dir": false,
+    "in_config_dir": true,
+    "in_src_dir": false,
+    "in_tests_dir": false,
+    "in_docs_dir": false
+  },
+  "ai_analysis": {
+    "model": "claude_cli",
+    "analyzed_at": "2025-11-18T15:45:24.200000",
+    "summary": "The configuration file config.yaml for Sentinelle MCP has been modified. This is a critical priority event as configuration changes can significantly impact the behavior of the watcher service. The file contains settings for watchers, AI integration, logging, reports, and MCP server connectivity. Any modifications to this file should be carefully reviewed as they may affect: watched paths, AI analysis behavior, notification settings, or logging verbosity. The change occurred in the backend_python directory, suggesting operational configuration adjustments.",
+    "recommendations": [
+      "Validate the YAML syntax to ensure the configuration file is properly formatted",
+      "Review the specific changes made to identify which settings were modified",
+      "Test the configuration in a development environment before applying to production",
+      "Consider restarting the Sentinelle watcher service to apply the new configuration",
+      "Backup the previous configuration version for quick rollback if needed",
+      "Document the configuration changes in the project changelog"
+    ],
+    "confidence": "high",
+    "duration_seconds": 2.18
+  },
+  "actions_taken": [
+    "ai_analyzed",
+    "logged",
+    "reported",
+    "notified_raphael"
+  ]
+}
