@@ -1,0 +1,46 @@
+{
+  "agents": [
+    {
+      "name": "PromptSyncer",
+      "script": "prompt_syncer.py",
+      "description": "Synchronizes prompts across all agents",
+      "status": "offline",
+      "pid": null,
+      "last_update": "2025-11-18T00:00:00"
+    },
+    {
+      "name": "SynapsePlanner",
+      "script": "synapse_planner.py",
+      "description": "Plans and coordinates agent activities",
+      "status": "offline",
+      "pid": null,
+      "last_update": "2025-11-18T00:00:00"
+    },
+    {
+      "name": "AgentOrchestrator",
+      "script": "agent_orchestrator.py",
+      "description": "Orchestrates multi-agent workflows",
+      "status": "offline",
+      "pid": null,
+      "last_update": "2025-11-18T00:00:00"
+    },
+    {
+      "name": "MemoryIndexer",
+      "script": "memory_indexer.py",
+      "description": "Indexes and manages central memory",
+      "status": "offline",
+      "pid": null,
+      "last_update": "2025-11-18T00:00:00"
+    },
+    {
+      "name": "RAGProcessor",
+      "script": "rag_processor.py",
+      "description": "Processes RAG operations",
+      "status": "offline",
+      "pid": null,
+      "last_update": "2025-11-18T00:00:00"
+    }
+  ],
+  "last_updated": "2025-11-18T00:00:00",
+  "total_agents": 5
+}

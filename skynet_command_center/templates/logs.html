@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Skynet Command Center - Logs</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1>🛸 SKYNET COMMAND CENTER</h1>
+            <p class="subtitle">System Logs</p>
+            <nav class="nav">
+                <a href="/dashboard" class="nav-link">Dashboard</a>
+                <a href="/agents" class="nav-link">Agents</a>
+                <a href="/memory" class="nav-link">Memory</a>
+                <a href="/logs" class="nav-link active">Logs</a>
+                <a href="/terminal" class="nav-link">Terminal</a>
+            </nav>
+        </header>
+
+        <div class="content-wrapper">
+            <div class="page-header">
+                <h2>📋 System Logs</h2>
+                <div class="header-actions">
+                    <select class="filter-select" id="level-filter">
+                        <option value="">All Levels</option>
+                        <option value="INFO">INFO</option>
+                        <option value="WARNING">WARNING</option>
+                        <option value="ERROR">ERROR</option>
+                    </select>
+                    <button class="btn btn-secondary" id="refresh-logs">Refresh</button>
+                    <button class="btn btn-danger" id="clear-logs">Clear Logs</button>
+                </div>
+            </div>
+
+            <div class="logs-container-full" id="logs-container-full">
+                <p class="loading">Loading logs...</p>
+            </div>
+        </div>
+
+        <footer class="footer">
+            <p>Skynet Command Center v1.0 | System Logs</p>
+        </footer>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/logs_loader.js') }}"></script>
+</body>
+</html>

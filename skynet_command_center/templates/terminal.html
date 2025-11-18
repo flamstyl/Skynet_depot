@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Skynet Command Center - Terminal</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1>🛸 SKYNET COMMAND CENTER</h1>
+            <p class="subtitle">Internal Terminal</p>
+            <nav class="nav">
+                <a href="/dashboard" class="nav-link">Dashboard</a>
+                <a href="/agents" class="nav-link">Agents</a>
+                <a href="/memory" class="nav-link">Memory</a>
+                <a href="/logs" class="nav-link">Logs</a>
+                <a href="/terminal" class="nav-link active">Terminal</a>
+            </nav>
+        </header>
+
+        <div class="content-wrapper">
+            <div class="page-header">
+                <h2>💻 Skynet Terminal</h2>
+                <div class="terminal-info">
+                    <span class="terminal-badge">Safe Mode</span>
+                    <span class="terminal-badge">Whitelisted Commands Only</span>
+                </div>
+            </div>
+
+            <div class="terminal-fullscreen">
+                <div class="terminal-output-full" id="terminal-output-full">
+                    <div class="terminal-line">
+                        <span class="terminal-text">╔═══════════════════════════════════════════════════════════╗</span>
+                    </div>
+                    <div class="terminal-line">
+                        <span class="terminal-text">║         SKYNET COMMAND CENTER - TERMINAL v1.0            ║</span>
+                    </div>
+                    <div class="terminal-line">
+                        <span class="terminal-text">║         Safe Internal Terminal - Type 'help'              ║</span>
+                    </div>
+                    <div class="terminal-line">
+                        <span class="terminal-text">╚═══════════════════════════════════════════════════════════╝</span>
+                    </div>
+                    <div class="terminal-line">
+                        <span class="terminal-prompt">skynet@command-center:~$</span>
+                        <span class="terminal-text">Ready for commands...</span>
+                    </div>
+                </div>
+                <div class="terminal-input-container-full">
+                    <span class="terminal-prompt">skynet@command-center:~$</span>
+                    <input type="text" class="terminal-input-full" id="terminal-input-full" placeholder="Enter command..." autofocus>
+                </div>
+            </div>
+        </div>
+
+        <footer class="footer">
+            <p>Skynet Command Center v1.0 | Internal Terminal</p>
+        </footer>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/terminal.js') }}"></script>
+</body>
+</html>
