@@ -1,0 +1,95 @@
+{
+  "logs": [
+    {
+      "time": "07:15",
+      "agent": "Gemini",
+      "level": "INFO",
+      "message": "Démarrage de l'analyse IA quotidienne."
+    },
+    {
+      "time": "07:22",
+      "agent": "Gemini",
+      "level": "SUCCESS",
+      "message": "Analyse IA terminée - 12 nouveaux articles indexés."
+    },
+    {
+      "time": "08:00",
+      "agent": "Drive Sync",
+      "level": "INFO",
+      "message": "Début de la synchronisation Drive."
+    },
+    {
+      "time": "08:12",
+      "agent": "Drive Sync",
+      "level": "SUCCESS",
+      "message": "Synchronisation réussie - 45 fichiers mis à jour."
+    },
+    {
+      "time": "08:30",
+      "agent": "Memory Manager",
+      "level": "INFO",
+      "message": "Consolidation de la mémoire RAG en cours."
+    },
+    {
+      "time": "08:41",
+      "agent": "Reflector",
+      "level": "SUCCESS",
+      "message": "Synthèse nocturne produite et sauvegardée."
+    },
+    {
+      "time": "09:00",
+      "agent": "SAF",
+      "level": "INFO",
+      "message": "Surveillance des agents - Tous opérationnels."
+    },
+    {
+      "time": "09:12",
+      "agent": "Gemini",
+      "level": "SUCCESS",
+      "message": "Nettoyage du dossier IA terminé - 23 doublons supprimés."
+    },
+    {
+      "time": "09:30",
+      "agent": "Echo",
+      "level": "WARNING",
+      "message": "Délai de réponse API légèrement élevé (2.3s)."
+    },
+    {
+      "time": "09:45",
+      "agent": "Memory Manager",
+      "level": "INFO",
+      "message": "Indexation de 156 nouvelles entrées dans la base RAG."
+    },
+    {
+      "time": "09:55",
+      "agent": "Drive Sync",
+      "level": "SUCCESS",
+      "message": "Vérification d'intégrité complète - Aucune corruption détectée."
+    }
+  ],
+  "errors": [
+    {
+      "time": "08:45",
+      "agent": "Echo",
+      "level": "ERROR",
+      "message": "Timeout API externe - Réessai automatique réussi.",
+      "resolved": true
+    }
+  ],
+  "alerts": [
+    {
+      "time": "09:30",
+      "agent": "SAF",
+      "level": "WARNING",
+      "message": "Utilisation CPU élevée détectée (78%) - Monitoring actif.",
+      "priority": "medium"
+    }
+  ],
+  "statistics": {
+    "total_tasks": 11,
+    "successful": 10,
+    "warnings": 2,
+    "errors": 1,
+    "agents_active": 6
+  }
+}

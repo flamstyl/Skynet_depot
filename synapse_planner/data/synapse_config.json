@@ -1,0 +1,63 @@
+{
+  "generation_time": "10:00",
+  "description": "Configuration du Synapse Planner - Routine quotidienne Skynet",
+  "version": "1.0.0",
+  "tasks": {
+    "prioritaire": [
+      "Analyse IA - Vérifier les nouveaux modèles",
+      "Sync Drive - Synchronisation des dossiers critiques",
+      "Lecture des dossiers IA - Nouveaux articles et recherches",
+      "Mise à jour de la base de connaissances",
+      "Vérification des agents actifs"
+    ],
+    "surveillance": [
+      "Agents actifs - Statut et santé système",
+      "Dossiers critiques - Détection de changements",
+      "Ressources système - CPU, RAM, Disque",
+      "Connexions externes - API et services",
+      "Logs d'erreurs - Alertes critiques"
+    ],
+    "verification": [
+      "Logs du dernier cycle - Analyse des événements",
+      "Erreurs système - Résolution et documentation",
+      "Backups - Vérification de l'intégrité",
+      "Sécurité - Scan des vulnérabilités",
+      "Performance - Métriques et optimisation"
+    ],
+    "messages": [
+      "Notifications Telegram - Résumé quotidien",
+      "Mail quotidien - Rapport d'activité",
+      "Alertes prioritaires - Escalade si nécessaire",
+      "Synthèse pour l'équipe - Dashboard updates"
+    ],
+    "syntheses": [
+      "Synthèse mémoire - Consolidation RAG",
+      "Résumé activité agents - Performance globale",
+      "Analyse des tendances - Patterns détectés",
+      "Recommandations - Actions suggérées",
+      "Planning du lendemain - Préparation"
+    ]
+  },
+  "recurrence": {
+    "prioritaire": "daily",
+    "surveillance": "daily",
+    "verification": "daily",
+    "messages": "daily",
+    "syntheses": "daily"
+  },
+  "priorities": {
+    "prioritaire": 1,
+    "surveillance": 2,
+    "verification": 3,
+    "messages": 4,
+    "syntheses": 5
+  },
+  "agents_monitored": [
+    "Gemini",
+    "Echo",
+    "SAF",
+    "Reflector",
+    "Drive Sync",
+    "Memory Manager"
+  ]
+}
