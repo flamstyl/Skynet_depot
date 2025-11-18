@@ -1,0 +1,48 @@
+{
+  "extensions": [
+    {
+      "id": "promptarchitect",
+      "name": "PromptArchitect",
+      "description": "Design and manage AI prompts",
+      "type": "vscode",
+      "vscode_id": "raphael.promptarchitect",
+      "context_file": "context/promptarchitect.json",
+      "agent": "Claude",
+      "icon": "🏗️",
+      "enabled": true
+    },
+    {
+      "id": "synapse",
+      "name": "Synapse Manager",
+      "description": "Neural connection management system",
+      "type": "vscode",
+      "vscode_id": "raphael.synapse",
+      "context_file": "context/synapse.json",
+      "agent": "Gemini",
+      "icon": "🧠",
+      "enabled": true
+    },
+    {
+      "id": "scribe",
+      "name": "Scribe Generator",
+      "description": "Automated documentation generator",
+      "type": "vscode",
+      "vscode_id": "raphael.scribe",
+      "context_file": "context/scribe.json",
+      "agent": "Codex",
+      "icon": "📝",
+      "enabled": true
+    },
+    {
+      "id": "sentinel",
+      "name": "Sentinel Monitor",
+      "description": "Code quality and security watcher",
+      "type": "vscode",
+      "vscode_id": "raphael.sentinel",
+      "context_file": "context/sentinel.json",
+      "agent": "Claude",
+      "icon": "🛡️",
+      "enabled": false
+    }
+  ]
+}

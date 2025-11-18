@@ -1,0 +1,29 @@
+{
+  "profile": "Skynet - Synapse",
+  "memory_dir": "C:/Users/rapha/IA/memoire/synapse",
+  "workspace_path": "C:/Projects/Skynet/extensions/synapse",
+  "agent": "Gemini",
+  "instructions": [
+    "Manage neural connections and data flows",
+    "Optimize information processing pipelines",
+    "Monitor system integration points",
+    "Ensure seamless AI collaboration"
+  ],
+  "env": {
+    "GEMINI_API_KEY": "your_api_key_here",
+    "VERTEX_PROJECT_ID": "skynet-synapse",
+    "MODEL_VERSION": "gemini-2.0-flash-exp",
+    "SYNC_INTERVAL": "300",
+    "MAX_CONNECTIONS": "100"
+  },
+  "files": [
+    "C:/Projects/Skynet/config/synapse_config.yaml",
+    "C:/Projects/Skynet/data/neural_mappings.json"
+  ],
+  "settings": {
+    "real_time_sync": true,
+    "connection_pooling": true,
+    "auto_reconnect": true,
+    "debug_mode": false
+  }
+}

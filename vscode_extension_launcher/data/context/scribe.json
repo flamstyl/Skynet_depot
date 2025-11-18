@@ -1,0 +1,30 @@
+{
+  "profile": "Skynet - Scribe",
+  "memory_dir": "C:/Users/rapha/IA/memoire/scribe",
+  "workspace_path": "C:/Projects/Skynet/extensions/scribe",
+  "agent": "Codex",
+  "instructions": [
+    "Generate comprehensive documentation automatically",
+    "Maintain consistent documentation standards",
+    "Extract insights from code and comments",
+    "Create user-friendly guides and tutorials"
+  ],
+  "env": {
+    "OPENAI_API_KEY": "your_api_key_here",
+    "MODEL": "gpt-4-turbo",
+    "DOC_FORMAT": "markdown",
+    "OUTPUT_DIR": "C:/Projects/Skynet/docs",
+    "INCLUDE_EXAMPLES": "true"
+  },
+  "files": [
+    "C:/Projects/Skynet/templates/doc_template.md",
+    "C:/Projects/Skynet/templates/api_reference.md",
+    "C:/Projects/Skynet/templates/tutorial.md"
+  ],
+  "settings": {
+    "auto_generate": true,
+    "include_code_blocks": true,
+    "add_table_of_contents": true,
+    "generate_diagrams": false
+  }
+}
