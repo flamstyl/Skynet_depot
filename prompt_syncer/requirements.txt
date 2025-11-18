@@ -1,0 +1,12 @@
+# Skynet Prompt Syncer - Dependencies
+# Universal Prompt Distributor v1.0
+
+# GUI Framework
+PySimpleGUI>=4.60.0
+
+# Standard library modules (no installation needed)
+# - pathlib
+# - json
+# - shutil
+# - datetime
+# - logging

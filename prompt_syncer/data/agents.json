@@ -1,0 +1,24 @@
+{
+  "agents": [
+    {
+      "name": "Claude CLI",
+      "context_dir": "C:/Users/rapha/IA/agents/claude/context",
+      "enabled": true
+    },
+    {
+      "name": "Gemini CLI",
+      "context_dir": "C:/Users/rapha/IA/agents/gemini/context",
+      "enabled": true
+    },
+    {
+      "name": "Codex CLI",
+      "context_dir": "C:/Users/rapha/IA/agents/codex/context",
+      "enabled": true
+    },
+    {
+      "name": "GPT-4 CLI",
+      "context_dir": "C:/Users/rapha/IA/agents/gpt4/context",
+      "enabled": true
+    }
+  ]
+}
