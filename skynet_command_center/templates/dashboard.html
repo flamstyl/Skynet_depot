@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Skynet Command Center - Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <h1>🛸 SKYNET COMMAND CENTER</h1>
+            <p class="subtitle">v1.0 - Multi-Agent Operating System</p>
+            <nav class="nav">
+                <a href="/dashboard" class="nav-link active">Dashboard</a>
+                <a href="/agents" class="nav-link">Agents</a>
+                <a href="/memory" class="nav-link">Memory</a>
+                <a href="/logs" class="nav-link">Logs</a>
+                <a href="/terminal" class="nav-link">Terminal</a>
+            </nav>
+        </header>
+
+        <!-- Dashboard Grid -->
+        <div class="dashboard-grid">
+            <!-- Panel 1: Agents (bottom left) -->
+            <div class="panel agents-panel">
+                <div class="panel-header">
+                    <h2>⚙️ Agents</h2>
+                    <span class="refresh-indicator" id="agents-refresh">●</span>
+                </div>
+                <div class="panel-content">
+                    <div class="agents-summary" id="agents-summary">
+                        <div class="stat-card">
+                            <div class="stat-label">Online</div>
+                            <div class="stat-value online" id="agents-online">0</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-label">Offline</div>
+                            <div class="stat-value offline" id="agents-offline">0</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-label">Error</div>
+                            <div class="stat-value error" id="agents-error">0</div>
+                        </div>
+                    </div>
+                    <div class="agents-list" id="agents-list">
+                        <p class="loading">Loading agents...</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Panel 2: Memory -->
+            <div class="panel memory-panel">
+                <div class="panel-header">
+                    <h2>🧠 Memory Central</h2>
+                    <span class="refresh-indicator" id="memory-refresh">●</span>
+                </div>
+                <div class="panel-content">
+                    <div class="memory-stats" id="memory-stats">
+                        <div class="stat-item">
+                            <span class="stat-icon">📁</span>
+                            <span class="stat-text" id="memory-files">0 files</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-icon">💾</span>
+                            <span class="stat-text" id="memory-size">0 B</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-icon">🕒</span>
+                            <span class="stat-text" id="memory-updated">Never</span>
+                        </div>
+                    </div>
+                    <div class="memory-info">
+                        <p class="info-text">Memory synchronized and indexed</p>
+                        <a href="/memory" class="link-button">Explore Memory →</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Panel 3: Recent Logs -->
+            <div class="panel logs-panel">
+                <div class="panel-header">
+                    <h2>📋 Recent Logs</h2>
+                    <span class="refresh-indicator" id="logs-refresh">●</span>
+                </div>
+                <div class="panel-content">
+                    <div class="logs-container" id="logs-container">
+                        <p class="loading">Loading logs...</p>
+                    </div>
+                    <div class="logs-footer">
+                        <a href="/logs" class="link-button">View All Logs →</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Panel 4: Quick Terminal -->
+            <div class="panel terminal-panel">
+                <div class="panel-header">
+                    <h2>💻 Quick Terminal</h2>
+                    <span class="terminal-status" id="terminal-status">Ready</span>
+                </div>
+                <div class="panel-content">
+                    <div class="terminal-output" id="terminal-output">
+                        <div class="terminal-line">
+                            <span class="terminal-prompt">skynet@command-center:~$</span>
+                            <span class="terminal-text">Welcome to Skynet Terminal</span>
+                        </div>
+                        <div class="terminal-line">
+                            <span class="terminal-text">Type 'help' for available commands</span>
+                        </div>
+                    </div>
+                    <div class="terminal-input-container">
+                        <span class="terminal-prompt">skynet@command-center:~$</span>
+                        <input type="text" class="terminal-input" id="terminal-input" placeholder="Enter command...">
+                    </div>
+                    <div class="terminal-footer">
+                        <a href="/terminal" class="link-button">Full Terminal →</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <p>Skynet Command Center v1.0 | Auto-refresh: <span id="refresh-timer">2s</span></p>
+        </footer>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/dashboard_refresh.js') }}"></script>
+</body>
+</html>

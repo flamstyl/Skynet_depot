@@ -1,0 +1,34 @@
+{
+  "files": [
+    {
+      "name": "system_prompt.txt",
+      "path": "prompts/system_prompt.txt",
+      "full_path": "C:/Users/rapha/Skynet_Drive_Core/memory/prompts/system_prompt.txt",
+      "size": 2048,
+      "modified": "2025-11-18T00:00:00",
+      "type": "file",
+      "extension": ".txt"
+    },
+    {
+      "name": "agent_config.json",
+      "path": "config/agent_config.json",
+      "full_path": "C:/Users/rapha/Skynet_Drive_Core/memory/config/agent_config.json",
+      "size": 4096,
+      "modified": "2025-11-18T00:00:00",
+      "type": "file",
+      "extension": ".json"
+    },
+    {
+      "name": "knowledge_base.md",
+      "path": "docs/knowledge_base.md",
+      "full_path": "C:/Users/rapha/Skynet_Drive_Core/memory/docs/knowledge_base.md",
+      "size": 8192,
+      "modified": "2025-11-18T00:00:00",
+      "type": "file",
+      "extension": ".md"
+    }
+  ],
+  "last_updated": "2025-11-18T00:00:00",
+  "total_size": 14336,
+  "file_count": 3
+}
