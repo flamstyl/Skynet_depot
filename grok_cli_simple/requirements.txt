@@ -1,0 +1,9 @@
+# Grok CLI - Dépendances minimales
+
+# HTTP client pour API Grok
+httpx>=0.27.0
+
+# CLI & formatting
+rich>=13.7.0
+
+# C'est tout! Simple et efficace

@@ -1,0 +1,43 @@
+# Configuration Grok CLI
+
+# Modèle par défaut
+model: grok-2-1212
+
+# Paramètres de génération
+generation:
+  temperature: 0.7
+  max_tokens: 4096
+  stream: true
+
+# Sécurité terminal
+security:
+  blocked_commands:
+    - "rm -rf /"
+    - "mkfs"
+    - "dd if="
+  command_timeout: 30  # secondes
+
+# Fichiers
+files:
+  max_size_mb: 1
+  ignored_dirs:
+    - node_modules
+    - .git
+    - __pycache__
+    - .venv
+    - dist
+    - build
+  ignored_extensions:
+    - .pyc
+    - .exe
+    - .bin
+    - .jpg
+    - .png
+    - .mp4
+
+# Serveurs MCP (optionnel)
+mcp_servers: {}
+  # exemple:
+  # filesystem:
+  #   command: node
+  #   args: ["path/to/mcp-server.js"]
