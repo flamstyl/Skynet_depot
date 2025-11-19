@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MCP Forge - Skynet Agent Builder</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <!-- Custom Title Bar -->
+  <div class="titlebar">
+    <div class="titlebar-drag">
+      <span class="titlebar-icon">🔥</span>
+      <span class="titlebar-title">MCP Forge</span>
+    </div>
+    <div class="titlebar-controls">
+      <button class="titlebar-button" id="minimize-btn">−</button>
+      <button class="titlebar-button" id="maximize-btn">□</button>
+      <button class="titlebar-button close" id="close-btn">×</button>
+    </div>
+  </div>
+
+  <!-- Main Container -->
+  <div class="main-container">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="logo">
+        <h1>🔥 MCP Forge</h1>
+        <p class="tagline">Skynet Agent Builder</p>
+      </div>
+
+      <nav class="nav">
+        <button class="nav-item active" data-view="dashboard">
+          <span class="icon">📊</span>
+          <span class="label">Dashboard</span>
+        </button>
+        <button class="nav-item" data-view="agents">
+          <span class="icon">🤖</span>
+          <span class="label">My Agents</span>
+        </button>
+        <button class="nav-item" data-view="templates">
+          <span class="icon">📝</span>
+          <span class="label">Templates</span>
+        </button>
+        <button class="nav-item" data-view="settings">
+          <span class="icon">⚙️</span>
+          <span class="label">Settings</span>
+        </button>
+      </nav>
+
+      <div class="sidebar-footer">
+        <div class="version">v1.0.0</div>
+      </div>
+    </aside>
+
+    <!-- Content Area -->
+    <main class="content">
+      <!-- Dashboard View -->
+      <section id="dashboard-view" class="view active">
+        <header class="view-header">
+          <h2>Dashboard</h2>
+          <button class="btn-primary" id="new-agent-btn">
+            <span class="icon">➕</span>
+            New Agent
+          </button>
+        </header>
+
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-icon">🤖</div>
+            <div class="stat-value" id="total-agents">0</div>
+            <div class="stat-label">Total Agents</div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-icon">✅</div>
+            <div class="stat-value" id="deployed-agents">0</div>
+            <div class="stat-label">Deployed</div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-icon">📝</div>
+            <div class="stat-value" id="draft-agents">0</div>
+            <div class="stat-label">Drafts</div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-icon">🔥</div>
+            <div class="stat-value" id="active-agents">0</div>
+            <div class="stat-label">Active Now</div>
+          </div>
+        </div>
+
+        <div class="recent-section">
+          <h3>Recent Agents</h3>
+          <div id="recent-agents" class="agent-list">
+            <div class="empty-state">
+              <div class="empty-icon">🤖</div>
+              <p>No agents yet. Create your first one!</p>
+              <button class="btn-secondary" onclick="createNewAgent()">
+                Create Agent
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="quick-actions">
+          <h3>Quick Actions</h3>
+          <div class="action-grid">
+            <button class="action-card" onclick="createNewAgent()">
+              <span class="action-icon">➕</span>
+              <span class="action-label">New Agent</span>
+            </button>
+
+            <button class="action-card" onclick="loadAgent()">
+              <span class="action-icon">📂</span>
+              <span class="action-label">Load Project</span>
+            </button>
+
+            <button class="action-card" onclick="openTemplates()">
+              <span class="action-icon">📝</span>
+              <span class="action-label">Templates</span>
+            </button>
+
+            <button class="action-card" onclick="openDocs()">
+              <span class="action-icon">📚</span>
+              <span class="action-label">Documentation</span>
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Agents View -->
+      <section id="agents-view" class="view">
+        <header class="view-header">
+          <h2>My Agents</h2>
+          <div class="view-actions">
+            <input type="text" class="search-input" placeholder="Search agents...">
+            <button class="btn-primary" onclick="createNewAgent()">
+              <span class="icon">➕</span>
+              New Agent
+            </button>
+          </div>
+        </header>
+
+        <div id="agents-grid" class="agent-grid">
+          <!-- TODO: Populate with agent cards -->
+        </div>
+      </section>
+
+      <!-- Templates View -->
+      <section id="templates-view" class="view">
+        <header class="view-header">
+          <h2>Agent Templates</h2>
+        </header>
+
+        <div class="templates-grid">
+          <div class="template-card">
+            <div class="template-icon">📧</div>
+            <h3>Email Assistant</h3>
+            <p>Monitors inbox and generates smart replies</p>
+            <button class="btn-secondary" onclick="useTemplate('email')">Use Template</button>
+          </div>
+
+          <div class="template-card">
+            <div class="template-icon">📁</div>
+            <h3>File Organizer</h3>
+            <p>Watches folders and organizes files intelligently</p>
+            <button class="btn-secondary" onclick="useTemplate('organizer')">Use Template</button>
+          </div>
+
+          <div class="template-card">
+            <div class="template-icon">📊</div>
+            <h3>Data Analyzer</h3>
+            <p>Processes data and generates insights</p>
+            <button class="btn-secondary" onclick="useTemplate('analyzer')">Use Template</button>
+          </div>
+
+          <div class="template-card">
+            <div class="template-icon">🔔</div>
+            <h3>Notification Agent</h3>
+            <p>Monitors events and sends alerts</p>
+            <button class="btn-secondary" onclick="useTemplate('notifier')">Use Template</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Settings View -->
+      <section id="settings-view" class="view">
+        <header class="view-header">
+          <h2>Settings</h2>
+        </header>
+
+        <div class="settings-content">
+          <div class="settings-section">
+            <h3>AI Models</h3>
+            <div class="setting-row">
+              <label>Claude API Key</label>
+              <input type="password" placeholder="sk-ant-...">
+            </div>
+            <div class="setting-row">
+              <label>OpenAI API Key</label>
+              <input type="password" placeholder="sk-...">
+            </div>
+            <div class="setting-row">
+              <label>Gemini API Key</label>
+              <input type="password" placeholder="...">
+            </div>
+          </div>
+
+          <div class="settings-section">
+            <h3>Paths</h3>
+            <div class="setting-row">
+              <label>Skynet Agents Directory</label>
+              <input type="text" value="/agents/" placeholder="/path/to/agents">
+            </div>
+            <div class="setting-row">
+              <label>Export Directory</label>
+              <input type="text" placeholder="./exports">
+            </div>
+          </div>
+
+          <div class="settings-section">
+            <h3>Editor</h3>
+            <div class="setting-row">
+              <label>Auto-save interval (seconds)</label>
+              <input type="number" value="30" min="10" max="300">
+            </div>
+            <div class="setting-row">
+              <label>Dark Mode</label>
+              <input type="checkbox" checked disabled>
+              <span class="hint">Always on (Skynet mode)</span>
+            </div>
+          </div>
+
+          <div class="settings-actions">
+            <button class="btn-primary">Save Settings</button>
+            <button class="btn-secondary">Reset to Defaults</button>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    // Navigation
+    document.querySelectorAll('.nav-item').forEach(item => {
+      item.addEventListener('click', () => {
+        const view = item.dataset.view;
+        switchView(view);
+      });
+    });
+
+    function switchView(viewName) {
+      // Update nav
+      document.querySelectorAll('.nav-item').forEach(item => {
+        item.classList.toggle('active', item.dataset.view === viewName);
+      });
+
+      // Update views
+      document.querySelectorAll('.view').forEach(view => {
+        view.classList.toggle('active', view.id === `${viewName}-view`);
+      });
+    }
+
+    // Window controls
+    document.getElementById('minimize-btn').addEventListener('click', () => {
+      window.mcpForge.windowMinimize();
+    });
+
+    document.getElementById('maximize-btn').addEventListener('click', () => {
+      window.mcpForge.windowMaximize();
+    });
+
+    document.getElementById('close-btn').addEventListener('click', () => {
+      window.mcpForge.windowClose();
+    });
+
+    // Agent actions
+    async function createNewAgent() {
+      const result = await window.mcpForge.openCanvas();
+      if (result.success) {
+        console.log('Canvas opened');
+      }
+    }
+
+    async function loadAgent() {
+      const result = await window.mcpForge.loadAgent();
+      if (result.success && result.data) {
+        await window.mcpForge.openCanvas(result.data);
+      }
+    }
+
+    function useTemplate(templateName) {
+      // TODO: Load template and open canvas
+      console.log('Using template:', templateName);
+      createNewAgent();
+    }
+
+    function openTemplates() {
+      switchView('templates');
+    }
+
+    function openDocs() {
+      // TODO: Open documentation
+      alert('Documentation coming soon!');
+    }
+
+    // New agent button
+    document.getElementById('new-agent-btn')?.addEventListener('click', createNewAgent);
+
+    console.log('🔥 MCP Forge UI Ready');
+  </script>
+</body>
+</html>

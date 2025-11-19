@@ -1,0 +1,46 @@
+{
+  "mcpServers": {
+    "mcp-forge": {
+      "command": "node",
+      "args": ["server.js"],
+      "env": {
+        "CLAUDE_API_KEY": "${CLAUDE_API_KEY}",
+        "OPENAI_API_KEY": "${OPENAI_API_KEY}",
+        "GEMINI_API_KEY": "${GEMINI_API_KEY}",
+        "SKYNET_AGENTS_PATH": "/agents/"
+      }
+    }
+  },
+  "tools": [
+    {
+      "name": "validate_agent",
+      "description": "Validate agent with AI",
+      "parameters": ["agent_config", "model"]
+    },
+    {
+      "name": "improve_agent",
+      "description": "Get AI improvement suggestions",
+      "parameters": ["agent_config", "focus_areas"]
+    },
+    {
+      "name": "generate_metadata",
+      "description": "Auto-generate metadata",
+      "parameters": ["agent_config"]
+    },
+    {
+      "name": "sync_to_skynet",
+      "description": "Deploy to Skynet",
+      "parameters": ["agent_id", "agent_config", "target_path"]
+    },
+    {
+      "name": "test_agent",
+      "description": "Run tests",
+      "parameters": ["agent_config", "test_scenarios"]
+    },
+    {
+      "name": "export_agent",
+      "description": "Export agent",
+      "parameters": ["agent_config", "format"]
+    }
+  ]
+}

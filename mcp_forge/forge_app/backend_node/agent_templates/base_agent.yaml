@@ -1,0 +1,19 @@
+name: base_agent
+version: 1.0.0
+model: claude-sonnet-4
+description: Base agent template with minimal configuration
+
+memory:
+  type: persistent
+  path: ./memory/base_agent.json
+
+triggers:
+  - type: manual
+
+processing:
+  role: "You are a helpful AI assistant."
+  temperature: 0.7
+  max_tokens: 4096
+
+outputs:
+  - type: console

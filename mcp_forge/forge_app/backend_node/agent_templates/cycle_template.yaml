@@ -1,0 +1,40 @@
+name: cyclic_agent
+version: 1.0.0
+model: claude-sonnet-4
+description: Agent template with automated cycles
+
+memory:
+  type: persistent
+  path: ./memory/cyclic_agent.json
+
+triggers:
+  - type: cron
+    schedule: "0 * * * *"
+    timezone: UTC
+
+inputs:
+  - type: folder_watch
+    path: ./inbox
+    patterns:
+      - "*.txt"
+      - "*.md"
+
+processing:
+  role: "You monitor and process incoming files automatically."
+  temperature: 0.7
+  max_tokens: 4096
+
+cycles:
+  - name: hourly_check
+    trigger: cron_hourly
+    steps:
+      - check_inbox
+      - process_files
+      - generate_report
+
+outputs:
+  - type: drive
+    path: ./output
+  - type: log
+    path: ./logs/agent.log
+    level: info
