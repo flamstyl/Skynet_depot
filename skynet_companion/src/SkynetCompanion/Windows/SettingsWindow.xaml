@@ -1,0 +1,31 @@
+<Window
+    x:Class="SkynetCompanion.Windows.SettingsWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Title="Skynet Companion - Settings"
+    Width="600"
+    Height="500">
+
+    <Grid Background="{ThemeResource SkynetBackgroundBrush}" Padding="20">
+        <ScrollViewer>
+            <StackPanel Spacing="20">
+                <TextBlock
+                    Text="⚙️ Settings"
+                    FontSize="24"
+                    FontWeight="Bold"
+                    Foreground="{ThemeResource SkynetTextBrush}"/>
+
+                <!-- TODO: Settings UI -->
+                <TextBlock
+                    Text="Settings UI coming soon..."
+                    Foreground="{ThemeResource SkynetTextBrush}"
+                    Opacity="0.7"/>
+
+                <Button Content="Close" Click="CloseButton_Click"/>
+            </StackPanel>
+        </ScrollViewer>
+    </Grid>
+</Window>

@@ -1,0 +1,47 @@
+# Skynet Companion Backend Configuration
+
+mcp:
+  server_url: "ws://localhost:8080/mcp"
+  timeout: 30
+  reconnect_attempts: 3
+  reconnect_delay: 5
+
+agents:
+  - name: "claude"
+    endpoint: "/agents/claude"
+    enabled: true
+
+  - name: "gpt"
+    endpoint: "/agents/gpt"
+    enabled: true
+
+  - name: "gemini"
+    endpoint: "/agents/gemini"
+    enabled: true
+
+  - name: "comet"
+    endpoint: "/agents/comet"
+    enabled: false
+
+overlay:
+  default_opacity: 0.9
+  default_position: "top-right"
+  width: 400
+  height: 600
+
+features:
+  voice_enabled: true
+  clipboard_monitoring: true
+  memory_enabled: true
+  auto_summarize: false
+
+api:
+  host: "127.0.0.1"
+  port: 8765
+  cors_origins:
+    - "http://localhost"
+    - "http://127.0.0.1"
+
+logging:
+  level: "INFO"
+  file: "data/logs/companion.log"

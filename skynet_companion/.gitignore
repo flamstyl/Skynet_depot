@@ -1,0 +1,35 @@
+# Build outputs
+bin/
+obj/
+*.exe
+*.dll
+*.pdb
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+venv/
+env/
+
+# IDE
+.vs/
+.vscode/
+*.user
+*.suo
+
+# Logs
+*.log
+data/logs/
+
+# Memory data (optional - remove if you want to track it)
+data/memory_short.json
+
+# Windows
+Thumbs.db
+Desktop.ini
+
+# NuGet
+packages/
+*.nupkg
