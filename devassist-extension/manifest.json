@@ -1,0 +1,94 @@
+{
+  "manifest_version": 3,
+  "name": "DevAssist AI - Agentic Coding Assistant",
+  "short_name": "DevAssist",
+  "version": "1.0.0",
+  "description": "AI-powered coding assistant with autonomous agents. Code faster with GitHub integration, multi-AI models (GPT-4, Claude), and smart code review.",
+
+  "permissions": [
+    "activeTab",
+    "storage",
+    "sidePanel",
+    "contextMenus",
+    "scripting",
+    "notifications",
+    "alarms"
+  ],
+
+  "host_permissions": [
+    "https://github.com/*",
+    "https://stackoverflow.com/*",
+    "https://api.github.com/*"
+  ],
+
+  "background": {
+    "service_worker": "dist/background/service-worker.js",
+    "type": "module"
+  },
+
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["dist/content/injector.js"],
+      "css": ["dist/content/styles.css"],
+      "run_at": "document_idle"
+    },
+    {
+      "matches": ["https://github.com/*"],
+      "js": ["dist/content/integrations/github/main.js"],
+      "run_at": "document_idle"
+    },
+    {
+      "matches": ["https://stackoverflow.com/*"],
+      "js": ["dist/content/integrations/stackoverflow/enhancer.js"],
+      "run_at": "document_idle"
+    }
+  ],
+
+  "action": {
+    "default_popup": "dist/popup/popup.html",
+    "default_icon": {
+      "16": "assets/icons/icon16.png",
+      "48": "assets/icons/icon48.png",
+      "128": "assets/icons/icon128.png"
+    }
+  },
+
+  "side_panel": {
+    "default_path": "dist/sidepanel/sidepanel.html"
+  },
+
+  "commands": {
+    "toggle-sidebar": {
+      "suggested_key": {
+        "default": "Ctrl+Shift+K",
+        "mac": "Command+Shift+K"
+      },
+      "description": "Toggle DevAssist sidebar"
+    },
+    "quick-explain": {
+      "suggested_key": {
+        "default": "Ctrl+Shift+E",
+        "mac": "Command+Shift+E"
+      },
+      "description": "Explain selected code"
+    }
+  },
+
+  "icons": {
+    "16": "assets/icons/icon16.png",
+    "48": "assets/icons/icon48.png",
+    "128": "assets/icons/icon128.png"
+  },
+
+  "web_accessible_resources": [
+    {
+      "resources": [
+        "dist/sidepanel/*",
+        "assets/*",
+        "dist/content/*"
+      ],
+      "matches": ["<all_urls>"]
+    }
+  ]
+}
