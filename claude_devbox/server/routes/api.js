@@ -41,6 +41,7 @@ router.post('/run', async (req, res) => {
 /**
  * POST /api/exec
  * Execute arbitrary command in Docker sandbox
+ * Note: Commands are executed in isolated Docker container for security
  */
 router.post('/exec', async (req, res) => {
   try {
@@ -48,6 +49,34 @@ router.post('/exec', async (req, res) => {
 
     if (!command) {
       return res.status(400).json({ error: 'Command is required' });
+    }
+
+    // Basic input validation to prevent command injection
+    if (typeof command !== 'string') {
+      return res.status(400).json({ error: 'Command must be a string' });
+    }
+
+    // Reject commands that attempt to escape the sandbox
+    const dangerousPatterns = [
+      /\$\(/g,           // Command substitution
+      /`/g,              // Backticks
+      /\|\|/g,           // OR operator
+      /&&/g,             // AND operator  
+      /;/g,              // Command separator
+      />/g,              // Redirection
+      /<\(/g,            // Process substitution
+      /\n/g,             // Newlines
+      /\r/g              // Carriage returns
+    ];
+
+    for (const pattern of dangerousPatterns) {
+      if (pattern.test(command)) {
+        logger.warn(`Rejected potentially dangerous command: ${command}`);
+        return res.status(400).json({ 
+          error: 'Command contains potentially dangerous characters or patterns',
+          hint: 'Commands are limited to simple single commands for security'
+        });
+      }
     }
 
     logger.info(`Executing command: ${command}`);
