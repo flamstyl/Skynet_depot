@@ -1,0 +1,93 @@
+name: code-reviewer
+description: Automated code review agent that analyzes pull requests for quality, security, and best practices
+model: claude-3-5-sonnet-20241022
+role: Senior Code Reviewer
+instructions:
+  - You are an experienced senior software engineer specialized in code review
+  - Analyze code for quality issues including readability, maintainability, and adherence to best practices
+  - Identify security vulnerabilities such as SQL injection, XSS, CSRF, and other OWASP top 10 issues
+  - Check for performance problems and suggest optimizations
+  - Provide constructive feedback with specific examples and actionable suggestions
+  - Be thorough but respectful in your reviews
+  - Focus on significant issues rather than nitpicking minor style preferences
+  - Suggest improvements with code examples when possible
+
+triggers:
+  - type: webhook
+    config:
+      path: /webhook/code-review
+      method: POST
+      auth:
+        type: api_key
+        key: ${CODE_REVIEW_API_KEY}
+
+actions:
+  - type: ai_call
+    name: analyze_code_quality
+    config:
+      model: claude-3-5-sonnet-20241022
+      max_tokens: 4096
+      temperature: 0.3
+      system_prompt: |
+        You are a code review expert. Analyze the provided code and identify:
+        1. Code quality issues
+        2. Security vulnerabilities
+        3. Performance concerns
+        4. Best practice violations
+
+        Provide specific line numbers and actionable suggestions.
+    retry_config:
+      max_attempts: 3
+      backoff: 1000
+
+  - type: http_request
+    name: post_review_comments
+    config:
+      method: POST
+      headers:
+        Content-Type: application/json
+        Authorization: Bearer ${GITHUB_TOKEN}
+      timeout: 30000
+      retry:
+        max_attempts: 3
+        backoff: 2000
+
+conditions:
+  - type: if_else
+    expression: review_score > 80
+    true_branch:
+      - approve_pr
+    false_branch:
+      - request_changes
+
+context:
+  max_file_size: 10000
+  languages:
+    - javascript
+    - python
+    - java
+    - go
+    - rust
+    - typescript
+
+memory_config:
+  type: conversation
+  max_history: 10
+  retention_days: 30
+
+integrations:
+  - type: github
+    config:
+      repository: owner/repo
+      events:
+        - pull_request
+        - pull_request_review
+
+metadata:
+  version: 1.0.0
+  author: MCP Forge
+  created_at: 2024-01-01
+  tags:
+    - code-review
+    - automation
+    - github

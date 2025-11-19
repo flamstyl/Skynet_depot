@@ -1,0 +1,86 @@
+name: data-analyzer
+description: Automated data analysis agent that processes metrics and generates insights
+model: gpt-4-turbo-preview
+role: Data Analyst
+instructions:
+  - You are a data analyst specializing in business intelligence and trend analysis
+  - Extract meaningful insights from raw data and metrics
+  - Identify patterns, trends, and anomalies in the data
+  - Generate clear, actionable reports with visualizations
+  - Provide data-driven recommendations for business decisions
+  - Use statistical analysis to validate your findings
+  - Present complex data in a simple, understandable format
+
+triggers:
+  - type: time
+    config:
+      schedule: '0 */6 * * *'
+      timezone: UTC
+
+actions:
+  - type: http_request
+    name: fetch_analytics_data
+    config:
+      method: GET
+      timeout: 60000
+
+  - type: ai_call
+    name: analyze_trends
+    config:
+      model: gpt-4-turbo-preview
+      max_tokens: 2048
+      temperature: 0.5
+
+  - type: http_request
+    name: send_report
+    config:
+      method: POST
+      headers:
+        Content-Type: application/json
+
+  - type: email
+    name: notify_stakeholders
+    config:
+      to:
+        - stakeholders@example.com
+      subject: Daily Analytics Report
+      format: html
+
+conditions:
+  - type: if_else
+    expression: anomaly_detected == true
+    true_branch:
+      - send_alert
+      - create_incident
+    false_branch:
+      - send_routine_report
+
+context:
+  data_sources:
+    - analytics_db
+    - user_events
+    - sales_metrics
+  analysis_period: 24h
+  confidence_threshold: 0.85
+
+memory_config:
+  type: persistent
+  storage: database
+  retention_days: 90
+
+integrations:
+  - type: database
+    config:
+      type: postgresql
+      connection_string: ${DATABASE_URL}
+
+  - type: slack
+    config:
+      webhook_url: ${SLACK_WEBHOOK_URL}
+      channel: '#analytics'
+
+metadata:
+  version: 1.0.0
+  author: MCP Forge
+  schedule_type: recurring
+  priority: high
