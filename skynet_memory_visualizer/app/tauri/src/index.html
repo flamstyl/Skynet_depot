@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Skynet Memory Visualizer</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <h1>🧠 Skynet Memory Visualizer</h1>
+            <p class="subtitle">RAG Control Center</p>
+        </header>
+
+        <!-- Navigation -->
+        <nav class="nav">
+            <a href="index.html" class="nav-link active">Dashboard</a>
+            <a href="tree_view.html" class="nav-link">Documents</a>
+            <a href="editor.html" class="nav-link">Editor</a>
+            <a href="compare.html" class="nav-link">Compare</a>
+        </nav>
+
+        <!-- Main Dashboard -->
+        <main class="dashboard">
+            <!-- Stats Cards -->
+            <section class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon">📚</div>
+                    <div class="stat-info">
+                        <h3 id="total-docs">Loading...</h3>
+                        <p>Total Documents</p>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon">🗂️</div>
+                    <div class="stat-info">
+                        <h3 id="rag-size">Loading...</h3>
+                        <p>RAG Index Size</p>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon">🏷️</div>
+                    <div class="stat-info">
+                        <h3 id="total-tags">Loading...</h3>
+                        <p>Total Tags</p>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon">📝</div>
+                    <div class="stat-info">
+                        <h3 id="recent-edits">Loading...</h3>
+                        <p>Recent Edits (24h)</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Quick Search -->
+            <section class="search-section">
+                <h2>Quick Search</h2>
+                <div class="search-box">
+                    <input type="text" id="quick-search" placeholder="Search documents, tags, or content...">
+                    <button id="search-btn">🔍 Search</button>
+                </div>
+                <div id="search-results" class="search-results"></div>
+            </section>
+
+            <!-- Recent Activity Timeline -->
+            <section class="timeline-section">
+                <h2>Recent Activity</h2>
+                <div id="timeline" class="timeline">
+                    <div class="timeline-loading">Loading timeline...</div>
+                </div>
+            </section>
+
+            <!-- Quick Actions -->
+            <section class="actions-section">
+                <h2>Quick Actions</h2>
+                <div class="action-buttons">
+                    <button class="action-btn" onclick="window.location.href='tree_view.html'">
+                        <span class="btn-icon">📂</span>
+                        Browse Documents
+                    </button>
+                    <button class="action-btn" onclick="refreshIndex()">
+                        <span class="btn-icon">🔄</span>
+                        Refresh RAG Index
+                    </button>
+                    <button class="action-btn" onclick="syncRAG()">
+                        <span class="btn-icon">☁️</span>
+                        Sync with Skynet Core
+                    </button>
+                    <button class="action-btn" onclick="exportMemory()">
+                        <span class="btn-icon">💾</span>
+                        Export Memory
+                    </button>
+                </div>
+            </section>
+        </main>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <p>Skynet Memory Visualizer v1.0 | Backend: <span id="backend-status" class="status-indicator">●</span></p>
+        </footer>
+    </div>
+
+    <script src="js/api_bridge.js"></script>
+    <script>
+        // Initialize dashboard
+        async function initDashboard() {
+            try {
+                // Load stats
+                const stats = await api.getStats();
+                document.getElementById('total-docs').textContent = stats.total_docs || '0';
+                document.getElementById('rag-size').textContent = formatBytes(stats.rag_size || 0);
+                document.getElementById('total-tags').textContent = stats.total_tags || '0';
+                document.getElementById('recent-edits').textContent = stats.recent_edits || '0';
+
+                // Load timeline
+                const timeline = await api.getTimeline();
+                renderTimeline(timeline);
+
+                // Check backend status
+                const health = await api.checkHealth();
+                updateBackendStatus(health);
+            } catch (error) {
+                console.error('Failed to initialize dashboard:', error);
+                showError('Failed to load dashboard data');
+            }
+        }
+
+        function renderTimeline(events) {
+            const container = document.getElementById('timeline');
+            container.innerHTML = '';
+
+            if (!events || events.length === 0) {
+                container.innerHTML = '<p class="no-data">No recent activity</p>';
+                return;
+            }
+
+            events.forEach(event => {
+                const item = document.createElement('div');
+                item.className = 'timeline-item';
+                item.innerHTML = `
+                    <div class="timeline-time">${formatTimeAgo(event.timestamp)}</div>
+                    <div class="timeline-content">
+                        <strong>${event.type}</strong>: ${event.description}
+                        ${event.doc_path ? `<br><small>${event.doc_path}</small>` : ''}
+                    </div>
+                `;
+                container.appendChild(item);
+            });
+        }
+
+        function updateBackendStatus(isHealthy) {
+            const indicator = document.getElementById('backend-status');
+            indicator.className = `status-indicator ${isHealthy ? 'online' : 'offline'}`;
+            indicator.title = isHealthy ? 'Backend online' : 'Backend offline';
+        }
+
+        function formatBytes(bytes) {
+            if (bytes === 0) return '0 B';
+            const k = 1024;
+            const sizes = ['B', 'KB', 'MB', 'GB'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            return Math.round(bytes / Math.pow(k, i) * 100) / 100 + ' ' + sizes[i];
+        }
+
+        function formatTimeAgo(timestamp) {
+            const now = new Date();
+            const past = new Date(timestamp);
+            const diff = Math.floor((now - past) / 1000);
+
+            if (diff < 60) return 'Just now';
+            if (diff < 3600) return `${Math.floor(diff / 60)}m ago`;
+            if (diff < 86400) return `${Math.floor(diff / 3600)}h ago`;
+            return `${Math.floor(diff / 86400)}d ago`;
+        }
+
+        async function refreshIndex() {
+            try {
+                showLoading('Refreshing RAG index...');
+                await api.refreshIndex();
+                showSuccess('RAG index refreshed successfully');
+                initDashboard();
+            } catch (error) {
+                showError('Failed to refresh index: ' + error.message);
+            }
+        }
+
+        async function syncRAG() {
+            try {
+                showLoading('Syncing with Skynet Core...');
+                await api.syncRAG();
+                showSuccess('Sync completed successfully');
+                initDashboard();
+            } catch (error) {
+                showError('Failed to sync: ' + error.message);
+            }
+        }
+
+        async function exportMemory() {
+            try {
+                showLoading('Exporting memory...');
+                const result = await api.exportMemory();
+                showSuccess(`Memory exported to ${result.path}`);
+            } catch (error) {
+                showError('Failed to export: ' + error.message);
+            }
+        }
+
+        function showLoading(message) {
+            // TODO: Implement loading overlay
+            console.log('Loading:', message);
+        }
+
+        function showSuccess(message) {
+            // TODO: Implement toast notification
+            console.log('Success:', message);
+            alert(message);
+        }
+
+        function showError(message) {
+            // TODO: Implement error notification
+            console.error('Error:', message);
+            alert(message);
+        }
+
+        // Search functionality
+        document.getElementById('search-btn')?.addEventListener('click', async () => {
+            const query = document.getElementById('quick-search').value;
+            if (!query) return;
+
+            try {
+                const results = await api.search(query);
+                displaySearchResults(results);
+            } catch (error) {
+                showError('Search failed: ' + error.message);
+            }
+        });
+
+        function displaySearchResults(results) {
+            const container = document.getElementById('search-results');
+            container.innerHTML = '';
+
+            if (results.length === 0) {
+                container.innerHTML = '<p class="no-results">No results found</p>';
+                return;
+            }
+
+            results.forEach(result => {
+                const item = document.createElement('div');
+                item.className = 'search-result-item';
+                item.innerHTML = `
+                    <h4>${result.title}</h4>
+                    <p>${result.snippet}</p>
+                    <small>${result.path}</small>
+                `;
+                item.onclick = () => openDocument(result.doc_id);
+                container.appendChild(item);
+            });
+        }
+
+        function openDocument(docId) {
+            window.location.href = `editor.html?doc=${docId}`;
+        }
+
+        // Initialize on load
+        document.addEventListener('DOMContentLoaded', initDashboard);
+
+        // Refresh every 30 seconds
+        setInterval(initDashboard, 30000);
+    </script>
+</body>
+</html>

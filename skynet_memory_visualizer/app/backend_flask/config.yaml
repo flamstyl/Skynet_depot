@@ -1,0 +1,48 @@
+# Skynet Memory Visualizer - Flask Backend Configuration
+
+app:
+  port: 5432
+  debug: false
+  host: "0.0.0.0"
+
+paths:
+  docs: ../../data/docs
+  rag_index: ../../data/rag_index
+  history: ../../data/history
+  logs: ../../data/logs
+  trash: ../../data/trash
+
+ai:
+  provider: "claude"  # or "gemini"
+  model: "claude-sonnet-4-5"
+  api_key_env: "ANTHROPIC_API_KEY"  # Environment variable name
+  timeout: 30  # seconds
+  max_tokens: 4096
+
+rag:
+  chunk_size: 512
+  overlap: 50
+  embedding_model: "text-embedding-3-small"
+  index_refresh_interval: 3600  # seconds (1 hour)
+
+versioning:
+  auto_save: true
+  max_versions: 50  # Maximum versions to keep per document
+  compress_old: true  # Compress versions older than 30 days
+  retention_days: 365  # Delete versions older than this
+
+tags:
+  max_tags_per_doc: 20
+  min_tag_length: 2
+  max_tag_length: 30
+
+search:
+  max_results: 100
+  highlight_length: 200  # characters for snippet
+
+logging:
+  level: "INFO"  # DEBUG, INFO, WARNING, ERROR
+  format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+  file: "../../data/logs/backend.log"
+  max_size: 10485760  # 10MB
+  backup_count: 5

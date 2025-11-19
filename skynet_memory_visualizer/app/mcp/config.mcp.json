@@ -1,0 +1,46 @@
+{
+  "name": "skynet-memory-visualizer",
+  "version": "1.0.0",
+  "description": "MCP Server for Skynet Memory Visualizer",
+  "port": 3456,
+  "host": "0.0.0.0",
+
+  "endpoints": {
+    "sync": "/sync/rag",
+    "ai_regenerate": "/ai/regenerate",
+    "ai_summarize": "/ai/summarize",
+    "ai_export": "/ai/export",
+    "index_refresh": "/index/refresh",
+    "health": "/health/visualizer"
+  },
+
+  "skynet_core": {
+    "url": "http://localhost:8000",
+    "api_key_env": "SKYNET_API_KEY",
+    "timeout": 30000
+  },
+
+  "sync": {
+    "auto_sync": false,
+    "interval": 3600000,
+    "retry_attempts": 3,
+    "retry_delay": 5000
+  },
+
+  "export": {
+    "default_format": "markdown",
+    "include_metadata": true,
+    "max_file_size": 10485760
+  },
+
+  "index": {
+    "auto_refresh": false,
+    "refresh_interval": 3600000
+  },
+
+  "logging": {
+    "level": "info",
+    "console": true,
+    "file": "../../data/logs/mcp.log"
+  }
+}
