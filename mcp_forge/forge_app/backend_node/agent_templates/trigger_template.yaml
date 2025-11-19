@@ -1,0 +1,36 @@
+name: triggered_agent
+version: 1.0.0
+model: claude-sonnet-4
+description: Agent template with multiple trigger types
+
+memory:
+  type: persistent
+  path: ./memory/triggered_agent.json
+
+triggers:
+  - type: cron
+    schedule: "0 9 * * *"
+    timezone: UTC
+
+  - type: folder_watch
+    path: ./watch
+    patterns: ["*"]
+
+  - type: api
+    method: POST
+    path: /webhook
+    port: 3000
+
+processing:
+  role: "You respond to various triggers and handle incoming events."
+  temperature: 0.7
+  max_tokens: 4096
+
+outputs:
+  - type: drive
+    path: ./output
+  - type: webhook
+    url: https://example.com/callback
+    method: POST
+  - type: log
+    path: ./logs/agent.log

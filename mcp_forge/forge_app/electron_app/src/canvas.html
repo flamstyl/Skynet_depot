@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Agent Canvas - MCP Forge</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="canvas-body">
+  <!-- Title Bar -->
+  <div class="titlebar">
+    <div class="titlebar-drag">
+      <span class="titlebar-icon">🔥</span>
+      <span class="titlebar-title">Agent Canvas</span>
+      <span class="titlebar-subtitle" id="agent-name">Untitled Agent</span>
+    </div>
+    <div class="titlebar-controls">
+      <button class="titlebar-button" id="minimize-btn">−</button>
+      <button class="titlebar-button" id="maximize-btn">□</button>
+      <button class="titlebar-button close" id="close-btn">×</button>
+    </div>
+  </div>
+
+  <!-- Toolbar -->
+  <div class="toolbar">
+    <div class="toolbar-section">
+      <button class="toolbar-btn" id="save-btn" title="Save (Ctrl+S)">
+        <span class="icon">💾</span>
+        <span class="label">Save</span>
+      </button>
+      <button class="toolbar-btn" id="export-yaml-btn" title="Export YAML">
+        <span class="icon">📄</span>
+        <span class="label">YAML</span>
+      </button>
+      <button class="toolbar-btn" id="export-json-btn" title="Export JSON">
+        <span class="icon">📋</span>
+        <span class="label">JSON</span>
+      </button>
+    </div>
+
+    <div class="toolbar-divider"></div>
+
+    <div class="toolbar-section">
+      <button class="toolbar-btn" id="validate-btn" title="Validate with AI">
+        <span class="icon">🤖</span>
+        <span class="label">Validate</span>
+      </button>
+      <button class="toolbar-btn" id="dry-run-btn" title="Dry Run">
+        <span class="icon">▶️</span>
+        <span class="label">Simulate</span>
+      </button>
+    </div>
+
+    <div class="toolbar-divider"></div>
+
+    <div class="toolbar-section">
+      <button class="toolbar-btn" id="undo-btn" title="Undo (Ctrl+Z)" disabled>
+        <span class="icon">↶</span>
+      </button>
+      <button class="toolbar-btn" id="redo-btn" title="Redo (Ctrl+Y)" disabled>
+        <span class="icon">↷</span>
+      </button>
+    </div>
+
+    <div class="toolbar-divider"></div>
+
+    <div class="toolbar-section">
+      <button class="toolbar-btn" id="zoom-out-btn" title="Zoom Out">
+        <span class="icon">🔍−</span>
+      </button>
+      <span class="zoom-level" id="zoom-level">100%</span>
+      <button class="toolbar-btn" id="zoom-in-btn" title="Zoom In">
+        <span class="icon">🔍+</span>
+      </button>
+      <button class="toolbar-btn" id="fit-btn" title="Fit to Screen">
+        <span class="icon">⊡</span>
+      </button>
+    </div>
+
+    <div class="toolbar-spacer"></div>
+
+    <div class="toolbar-section">
+      <button class="toolbar-btn" id="toggle-panel-btn" title="Toggle Properties">
+        <span class="icon">📝</span>
+        <span class="label">Properties</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Main Canvas Layout -->
+  <div class="canvas-layout">
+    <!-- Node Library Sidebar -->
+    <aside class="node-library" id="node-library">
+      <div class="library-header">
+        <h3>Node Library</h3>
+        <input type="text" class="library-search" placeholder="Search nodes...">
+      </div>
+
+      <div class="library-categories">
+        <!-- Agent Nodes -->
+        <div class="category">
+          <div class="category-header">🤖 Agent Models</div>
+          <div class="category-content">
+            <div class="node-item" draggable="true" data-node-type="claude-agent">
+              <span class="node-icon">🟣</span>
+              <span class="node-label">Claude Agent</span>
+            </div>
+            <div class="node-item" draggable="true" data-node-type="gpt-agent">
+              <span class="node-icon">🟢</span>
+              <span class="node-label">GPT Agent</span>
+            </div>
+            <div class="node-item" draggable="true" data-node-type="gemini-agent">
+              <span class="node-icon">🔵</span>
+              <span class="node-label">Gemini Agent</span>
+            </div>
+            <div class="node-item" draggable="true" data-node-type="codestral-agent">
+              <span class="node-icon">🟠</span>
+              <span class="node-label">Codestral Agent</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Triggers -->
+        <div class="category">
+          <div class="category-header">⏰ Triggers</div>
+          <div class="category-content">
+            <div class="node-item" draggable="true" data-node-type="cron-trigger">
+              <span class="node-icon">⏰</span>
+              <span class="node-label">Cron Schedule</span>
+            </div>
+            <div class="node-item" draggable="true" data-node-type="folder-watcher">
+              <span class="node-icon">👁️</span>
+              <span class="node-label">Folder Watcher</span>
+            </div>
+            <div class="node-item" draggable="true" data-node-type="email-trigger">
+              <span class="node-icon">📧</span>
+              <span class="node-label">Email Trigger</span>
+            </div>
+            <div class="node-item" draggable="true" data-node-type="api-trigger">
+              <span class="node-icon">🌐</span>
+              <span class="node-label">API Endpoint</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Processing -->
+        <div class="category">
+          <div class="category-header">⚙️ Processing</div>
+          <div class="category-content">
+            <div class="node-item" draggable="true" data-node-type="memory-block">
+              <span class="node-icon">💾</span>
+              <span class="node-label">Memory</span>
+            </div>
+            <div class="node-item" draggable="true" data-node-type="prompt-template">
+              <span class="node-icon">📝</span>
+              <span class="node-label">Prompt Template</span>
+            </div>
+            <div class="node-item" draggable="true" data-node-type="action-chain">
+              <span class="node-icon">⛓️</span>
+              <span class="node-label">Action Chain</span>
+            </div>
+            <div class="node-item" draggable="true" data-node-type="decision-logic">
+              <span class="node-icon">🔀</span>
+              <span class="node-label">Decision</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Outputs -->
+        <div class="category">
+          <div class="category-header">📤 Outputs</div>
+          <div class="category-content">
+            <div class="node-item" draggable="true" data-node-type="drive-output">
+              <span class="node-icon">💾</span>
+              <span class="node-label">Drive Export</span>
+            </div>
+            <div class="node-item" draggable="true" data-node-type="webhook-output">
+              <span class="node-icon">🔗</span>
+              <span class="node-label">Webhook</span>
+            </div>
+            <div class="node-item" draggable="true" data-node-type="log-output">
+              <span class="node-icon">📋</span>
+              <span class="node-label">Log Writer</span>
+            </div>
+            <div class="node-item" draggable="true" data-node-type="email-output">
+              <span class="node-icon">📧</span>
+              <span class="node-label">Email Send</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Canvas Area -->
+    <div class="canvas-container">
+      <div class="canvas-wrapper" id="canvas-wrapper">
+        <canvas id="agent-canvas"></canvas>
+        <div class="canvas-grid"></div>
+      </div>
+
+      <!-- Canvas Info -->
+      <div class="canvas-info">
+        <span id="node-count">0 nodes</span>
+        <span class="separator">•</span>
+        <span id="connection-count">0 connections</span>
+        <span class="separator">•</span>
+        <span id="canvas-status">Ready</span>
+      </div>
+    </div>
+
+    <!-- Properties Panel -->
+    <aside class="properties-panel" id="properties-panel">
+      <div class="panel-header">
+        <h3>Properties</h3>
+        <button class="panel-close" id="close-panel-btn">×</button>
+      </div>
+
+      <div class="panel-content" id="panel-content">
+        <div class="empty-state">
+          <p>Select a node to edit properties</p>
+        </div>
+      </div>
+    </aside>
+  </div>
+
+  <!-- Scripts -->
+  <script src="js/canvas_engine.js"></script>
+  <script src="js/node_library.js"></script>
+  <script src="js/agent_exporter.js"></script>
+  <script src="js/yaml_builder.js"></script>
+  <script src="js/json_builder.js"></script>
+  <script src="js/dry_run.js"></script>
+  <script src="js/ai_validator.js"></script>
+
+  <script>
+    // Initialize canvas engine
+    const canvasEngine = new CanvasEngine('agent-canvas');
+    const nodeLibrary = new NodeLibrary();
+    const agentExporter = new AgentExporter();
+
+    // Window controls
+    document.getElementById('minimize-btn').addEventListener('click', () => {
+      window.mcpForge.windowMinimize();
+    });
+
+    document.getElementById('maximize-btn').addEventListener('click', () => {
+      window.mcpForge.windowMaximize();
+    });
+
+    document.getElementById('close-btn').addEventListener('click', () => {
+      window.mcpForge.windowClose();
+    });
+
+    // Toolbar actions
+    document.getElementById('save-btn').addEventListener('click', async () => {
+      const agentData = canvasEngine.exportData();
+      const result = await window.mcpForge.saveAgent(agentData);
+      if (result.success) {
+        console.log('Agent saved:', result.path);
+      }
+    });
+
+    document.getElementById('export-yaml-btn').addEventListener('click', async () => {
+      const agentData = canvasEngine.exportData();
+      const result = await window.mcpForge.exportAgent('yaml', agentData);
+      if (result.success) {
+        console.log('Exported to YAML:', result.path);
+      }
+    });
+
+    document.getElementById('export-json-btn').addEventListener('click', async () => {
+      const agentData = canvasEngine.exportData();
+      const result = await window.mcpForge.exportAgent('json', agentData);
+      if (result.success) {
+        console.log('Exported to JSON:', result.path);
+      }
+    });
+
+    document.getElementById('validate-btn').addEventListener('click', async () => {
+      const agentData = canvasEngine.exportData();
+      document.getElementById('canvas-status').textContent = 'Validating...';
+      const result = await window.mcpForge.validateAgentAI(agentData);
+      if (result.success) {
+        console.log('Validation results:', result.validation);
+        document.getElementById('canvas-status').textContent = 'Validation complete';
+        // TODO: Show validation results in UI
+      } else {
+        document.getElementById('canvas-status').textContent = 'Validation failed';
+      }
+    });
+
+    document.getElementById('dry-run-btn').addEventListener('click', async () => {
+      const agentData = canvasEngine.exportData();
+      const testInput = prompt('Enter test input (optional):');
+      document.getElementById('canvas-status').textContent = 'Simulating...';
+      const result = await window.mcpForge.dryRunAgent(agentData, testInput);
+      if (result.success) {
+        console.log('Dry run results:', result.results);
+        document.getElementById('canvas-status').textContent = 'Simulation complete';
+        // TODO: Show simulation results in UI
+      } else {
+        document.getElementById('canvas-status').textContent = 'Simulation failed';
+      }
+    });
+
+    // Zoom controls
+    document.getElementById('zoom-in-btn').addEventListener('click', () => {
+      canvasEngine.zoomIn();
+    });
+
+    document.getElementById('zoom-out-btn').addEventListener('click', () => {
+      canvasEngine.zoomOut();
+    });
+
+    document.getElementById('fit-btn').addEventListener('click', () => {
+      canvasEngine.fitToScreen();
+    });
+
+    // Panel toggle
+    document.getElementById('toggle-panel-btn').addEventListener('click', () => {
+      document.getElementById('properties-panel').classList.toggle('hidden');
+    });
+
+    document.getElementById('close-panel-btn').addEventListener('click', () => {
+      document.getElementById('properties-panel').classList.add('hidden');
+    });
+
+    // Load agent data if provided
+    window.mcpForge.onLoadAgent((data) => {
+      canvasEngine.importData(data);
+      document.getElementById('agent-name').textContent = data.metadata?.name || 'Untitled Agent';
+    });
+
+    // Keyboard shortcuts
+    document.addEventListener('keydown', (e) => {
+      if (e.ctrlKey || e.metaKey) {
+        switch(e.key) {
+          case 's':
+            e.preventDefault();
+            document.getElementById('save-btn').click();
+            break;
+          case 'z':
+            e.preventDefault();
+            canvasEngine.undo();
+            break;
+          case 'y':
+            e.preventDefault();
+            canvasEngine.redo();
+            break;
+        }
+      }
+    });
+
+    console.log('🎨 Canvas Engine Ready');
+  </script>
+</body>
+</html>

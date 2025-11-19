@@ -1,0 +1,25 @@
+{
+  "server": {
+    "port": 3000,
+    "host": "localhost"
+  },
+  "paths": {
+    "agents_preview": "../../data/agents_preview",
+    "exports": "../../data/exports",
+    "templates": "./agent_templates",
+    "skynet_agents": "/agents/"
+  },
+  "ai": {
+    "default_model": "claude",
+    "max_tokens": 4096,
+    "timeout": 30000
+  },
+  "dry_run": {
+    "max_duration": 60000,
+    "log_level": "info"
+  },
+  "export": {
+    "yaml_indent": 2,
+    "json_indent": 2
+  }
+}
