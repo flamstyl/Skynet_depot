@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Skynet Token Switcher — Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <h1>🟣 Skynet Token Switcher</h1>
+            <p class="subtitle">Intelligent API Token Manager</p>
+            <div class="health-badge" id="healthBadge">
+                <span class="status-dot"></span>
+                <span class="status-text">Loading...</span>
+            </div>
+        </header>
+
+        <!-- System Status -->
+        <section class="card">
+            <h2>System Status</h2>
+            <div class="system-stats" id="systemStats">
+                <div class="stat-item">
+                    <span class="stat-label">Total Providers</span>
+                    <span class="stat-value" id="totalProviders">-</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">Available</span>
+                    <span class="stat-value" id="availableProviders">-</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">Overall Usage</span>
+                    <span class="stat-value" id="overallUsage">-</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">Forced Provider</span>
+                    <span class="stat-value" id="forcedProvider">None</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Providers -->
+        <section class="card">
+            <div class="section-header">
+                <h2>API Providers</h2>
+                <button class="btn btn-primary" onclick="showAddKeyModal()">+ Add Key</button>
+            </div>
+            <div id="providersList" class="providers-list">
+                <!-- Providers will be loaded here -->
+            </div>
+        </section>
+
+        <!-- Recommendation -->
+        <section class="card" id="recommendationCard">
+            <h2>Recommendation</h2>
+            <div class="recommendation-box" id="recommendationBox">
+                <!-- Recommendation will be loaded here -->
+            </div>
+        </section>
+
+        <!-- Usage History -->
+        <section class="card">
+            <div class="section-header">
+                <h2>Recent Usage</h2>
+                <button class="btn btn-secondary" onclick="refreshHistory()">Refresh</button>
+            </div>
+            <div class="history-list" id="historyList">
+                <!-- History will be loaded here -->
+            </div>
+        </section>
+    </div>
+
+    <!-- Add Key Modal -->
+    <div id="addKeyModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeAddKeyModal()">&times;</span>
+            <h2>Add API Key</h2>
+            <form id="addKeyForm" onsubmit="addKey(event)">
+                <div class="form-group">
+                    <label for="provider">Provider</label>
+                    <select id="provider" name="provider" required>
+                        <option value="claude">Claude</option>
+                        <option value="gemini">Gemini</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="apiKey">API Key</label>
+                    <input type="text" id="apiKey" name="apiKey" required placeholder="sk-xxx...">
+                </div>
+                <div class="form-group">
+                    <label for="quotaTotal">Total Quota (tokens)</label>
+                    <input type="number" id="quotaTotal" name="quotaTotal" required placeholder="500000">
+                </div>
+                <button type="submit" class="btn btn-primary">Add Key</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Force Provider Modal -->
+    <div id="forceProviderModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeForceProviderModal()">&times;</span>
+            <h2>Force Provider</h2>
+            <div id="forceProviderList">
+                <!-- Provider buttons will be loaded here -->
+            </div>
+            <button class="btn btn-secondary" onclick="clearForcedProvider()">Clear Forced Provider</button>
+        </div>
+    </div>
+
+    <script>
+        // Global state
+        let statusData = null;
+        let refreshInterval = null;
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            refreshStatus();
+            refreshHistory();
+            startAutoRefresh();
+        });
+
+        // Auto-refresh every 5 seconds
+        function startAutoRefresh() {
+            refreshInterval = setInterval(() => {
+                refreshStatus();
+            }, 5000);
+        }
+
+        // Refresh status
+        async function refreshStatus() {
+            try {
+                const response = await fetch('/api/status');
+                const data = await response.json();
+
+                if (data.success) {
+                    statusData = data;
+                    updateUI(data);
+                }
+            } catch (error) {
+                console.error('Error fetching status:', error);
+            }
+        }
+
+        // Update UI with status data
+        function updateUI(data) {
+            updateSystemStats(data.health);
+            updateProvidersList(data.providers);
+            updateRecommendation(data.recommendation);
+            updateHealthBadge(data.health);
+        }
+
+        // Update system stats
+        function updateSystemStats(health) {
+            document.getElementById('totalProviders').textContent = health.providers_total || 0;
+            document.getElementById('availableProviders').textContent = health.providers_available || 0;
+            document.getElementById('overallUsage').textContent =
+                health.overall_used_pct ? `${health.overall_used_pct}%` : '-';
+            document.getElementById('forcedProvider').textContent =
+                health.forced_provider || 'None';
+        }
+
+        // Update health badge
+        function updateHealthBadge(health) {
+            const badge = document.getElementById('healthBadge');
+            const dot = badge.querySelector('.status-dot');
+            const text = badge.querySelector('.status-text');
+
+            badge.className = 'health-badge health-' + health.severity;
+            text.textContent = health.message;
+        }
+
+        // Update providers list
+        function updateProvidersList(providers) {
+            const list = document.getElementById('providersList');
+
+            if (!providers || providers.length === 0) {
+                list.innerHTML = '<div class="empty-state">No providers configured. Add a key to get started.</div>';
+                return;
+            }
+
+            list.innerHTML = providers.map(p => `
+                <div class="provider-card provider-${p.state}">
+                    <div class="provider-header">
+                        <h3>${getProviderEmoji(p.provider)} ${p.provider.toUpperCase()}</h3>
+                        <span class="state-badge state-${p.state}">${p.state.toUpperCase()}</span>
+                    </div>
+                    <div class="provider-stats">
+                        <div class="stat">
+                            <span class="label">Used</span>
+                            <span class="value">${formatNumber(p.quota_used)}</span>
+                        </div>
+                        <div class="stat">
+                            <span class="label">Total</span>
+                            <span class="value">${formatNumber(p.quota_total)}</span>
+                        </div>
+                        <div class="stat">
+                            <span class="label">Remaining</span>
+                            <span class="value">${formatNumber(p.remaining)}</span>
+                        </div>
+                        <div class="stat">
+                            <span class="label">Usage</span>
+                            <span class="value">${p.used_pct}%</span>
+                        </div>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill progress-${p.state}" style="width: ${p.used_pct}%"></div>
+                    </div>
+                    <div class="provider-actions">
+                        <button class="btn btn-small" onclick="forceProvider('${p.provider}')">Force</button>
+                        <button class="btn btn-small btn-secondary" onclick="resetQuota('${p.provider}')">Reset</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Update recommendation
+        function updateRecommendation(rec) {
+            const box = document.getElementById('recommendationBox');
+
+            if (!rec) {
+                box.innerHTML = '<div class="recommendation-item">No recommendation available</div>';
+                return;
+            }
+
+            const severityClass = rec.severity || 'ok';
+            const emoji = {
+                'ok': '✅',
+                'warning': '⚠️',
+                'critical': '🚨'
+            }[severityClass] || '💡';
+
+            box.innerHTML = `
+                <div class="recommendation-item recommendation-${severityClass}">
+                    <span class="rec-emoji">${emoji}</span>
+                    <div class="rec-content">
+                        <div class="rec-message">${rec.message}</div>
+                        ${rec.recommended ? `<div class="rec-provider">Recommended: <strong>${rec.recommended.toUpperCase()}</strong></div>` : ''}
+                    </div>
+                </div>
+            `;
+        }
+
+        // Refresh history
+        async function refreshHistory() {
+            try {
+                const response = await fetch('/api/history?limit=20');
+                const data = await response.json();
+
+                if (data.success) {
+                    updateHistoryList(data.logs);
+                }
+            } catch (error) {
+                console.error('Error fetching history:', error);
+            }
+        }
+
+        // Update history list
+        function updateHistoryList(logs) {
+            const list = document.getElementById('historyList');
+
+            if (!logs || logs.length === 0) {
+                list.innerHTML = '<div class="empty-state">No usage history yet</div>';
+                return;
+            }
+
+            list.innerHTML = logs.map(log => `
+                <div class="history-item history-${log.success ? 'success' : 'error'}">
+                    <span class="history-provider">${log.provider.toUpperCase()}</span>
+                    <span class="history-tokens">${formatNumber(log.tokens_used)} tokens</span>
+                    <span class="history-time">${formatTime(log.timestamp)}</span>
+                    ${log.reason ? `<span class="history-reason">${log.reason}</span>` : ''}
+                </div>
+            `).join('');
+        }
+
+        // Add key
+        async function addKey(event) {
+            event.preventDefault();
+
+            const provider = document.getElementById('provider').value;
+            const apiKey = document.getElementById('apiKey').value;
+            const quotaTotal = parseInt(document.getElementById('quotaTotal').value);
+
+            try {
+                const response = await fetch('/api/add_key', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({provider, api_key: apiKey, quota_total: quotaTotal})
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    alert('Key added successfully!');
+                    closeAddKeyModal();
+                    refreshStatus();
+                } else {
+                    alert('Error: ' + result.error);
+                }
+            } catch (error) {
+                alert('Error adding key: ' + error.message);
+            }
+        }
+
+        // Force provider
+        async function forceProvider(provider) {
+            try {
+                const response = await fetch('/api/force_provider', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({provider})
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    alert(`Provider forced to ${provider}`);
+                    refreshStatus();
+                } else {
+                    alert('Error: ' + result.message);
+                }
+            } catch (error) {
+                alert('Error forcing provider: ' + error.message);
+            }
+        }
+
+        // Clear forced provider
+        async function clearForcedProvider() {
+            try {
+                const response = await fetch('/api/clear_forced', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'}
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    alert('Forced provider cleared');
+                    refreshStatus();
+                }
+            } catch (error) {
+                alert('Error clearing forced provider: ' + error.message);
+            }
+        }
+
+        // Reset quota
+        async function resetQuota(provider) {
+            if (!confirm(`Reset quota for ${provider}?`)) return;
+
+            try {
+                const response = await fetch('/api/reset_quota', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({provider})
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    alert('Quota reset successfully');
+                    refreshStatus();
+                } else {
+                    alert('Error: ' + result.error);
+                }
+            } catch (error) {
+                alert('Error resetting quota: ' + error.message);
+            }
+        }
+
+        // Modal functions
+        function showAddKeyModal() {
+            document.getElementById('addKeyModal').style.display = 'block';
+        }
+
+        function closeAddKeyModal() {
+            document.getElementById('addKeyModal').style.display = 'none';
+            document.getElementById('addKeyForm').reset();
+        }
+
+        function showForceProviderModal() {
+            document.getElementById('forceProviderModal').style.display = 'block';
+        }
+
+        function closeForceProviderModal() {
+            document.getElementById('forceProviderModal').style.display = 'none';
+        }
+
+        // Helper functions
+        function formatNumber(num) {
+            return num ? num.toLocaleString() : '0';
+        }
+
+        function formatTime(timestamp) {
+            const date = new Date(timestamp);
+            return date.toLocaleTimeString();
+        }
+
+        function getProviderEmoji(provider) {
+            const emojis = {
+                'claude': '🟣',
+                'gemini': '💎',
+                'gpt': '🤖'
+            };
+            return emojis[provider.toLowerCase()] || '🔷';
+        }
+
+        // Close modals when clicking outside
+        window.onclick = function(event) {
+            const addModal = document.getElementById('addKeyModal');
+            const forceModal = document.getElementById('forceProviderModal');
+
+            if (event.target == addModal) {
+                closeAddKeyModal();
+            }
+            if (event.target == forceModal) {
+                closeForceProviderModal();
+            }
+        }
+    </script>
+</body>
+</html>
