@@ -80,7 +80,7 @@ async function initialize() {
     logger.info('Starting Claude DevBox Backend...');
 
     // Load configuration
-    const config = await loadConfig();
+    await loadConfig();
     logger.info('Configuration loaded');
 
     // Initialize Docker

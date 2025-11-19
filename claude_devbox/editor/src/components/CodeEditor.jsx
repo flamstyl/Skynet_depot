@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useRef } from 'react';
 import Editor from '@monaco-editor/react';
 
 const CodeEditor = ({ code, language, onChange, selectedFile }) => {

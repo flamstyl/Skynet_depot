@@ -2,7 +2,6 @@ import logger from '../utils/logger.js';
 import { runCode } from './docker_runner.js';
 
 const MAX_FIX_ATTEMPTS = 5;
-const FIX_TIMEOUT = 60000; // 60 seconds
 
 /**
  * Auto-fix code using Claude
@@ -116,7 +115,7 @@ async function requestClaudeFix(options) {
 
   // PLACEHOLDER: In real implementation, this would call Claude API
   // Example:
-  // const response = await mcpBridge.sendToClau de(prompt);
+  // const response = await mcpBridge.sendToClaude(prompt);
   // return extractCode(response);
 
   // For now, return null to indicate not implemented
@@ -152,23 +151,6 @@ Please analyze the error and provide a corrected version of the code that fixes 
 5. Return ONLY the corrected code, no additional explanation outside of comments
 
 **Corrected Code:**`;
-}
-
-/**
- * Extract code from Claude's response
- * Handles markdown code blocks and plain text
- */
-function extractCode(response) {
-  // Try to extract from markdown code block
-  const codeBlockRegex = /```(?:\w+)?\n([\s\S]*?)\n```/;
-  const match = response.match(codeBlockRegex);
-
-  if (match && match[1]) {
-    return match[1].trim();
-  }
-
-  // If no code block, return the whole response trimmed
-  return response.trim();
 }
 
 /**

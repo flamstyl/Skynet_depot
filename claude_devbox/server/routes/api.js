@@ -50,6 +50,26 @@ router.post('/exec', async (req, res) => {
       return res.status(400).json({ error: 'Command is required' });
     }
 
+    // Validate command - only allow safe commands or use whitelist
+    // Block dangerous commands that could escape sandbox or cause harm
+    const dangerousPatterns = [
+      /rm\s+-rf\s+\/(?!workspace)/i,  // Block root deletion except workspace
+      /mkfs/i,                          // Block filesystem formatting
+      /dd\s+if=/i,                      // Block disk operations
+      /:\(\)\{\s*:\|:&\s*\};:/i,       // Block fork bombs
+      /curl.*\|\s*(?:bash|sh)/i,       // Block piped script execution
+      /wget.*\|\s*(?:bash|sh)/i,       // Block piped script execution
+    ];
+
+    for (const pattern of dangerousPatterns) {
+      if (pattern.test(command)) {
+        logger.warn(`Blocked dangerous command: ${command}`);
+        return res.status(403).json({ 
+          error: 'Command contains potentially dangerous operations and has been blocked for security reasons' 
+        });
+      }
+    }
+
     logger.info(`Executing command: ${command}`);
 
     const result = await runCode({

@@ -79,6 +79,8 @@ New-NetFirewallRule -DisplayName "PowerShell Remoting" -Direction Inbound -Proto
 
 # Create test user
 Write-Host "Creating test user..." -ForegroundColor Green
+Write-Host "WARNING: Using default credentials for initial setup only." -ForegroundColor Red
+Write-Host "CHANGE THESE CREDENTIALS after setup for production use!" -ForegroundColor Red
 $Username = "devbox"
 $Password = ConvertTo-SecureString "devbox" -AsPlainText -Force
 
