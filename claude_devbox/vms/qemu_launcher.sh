@@ -50,6 +50,8 @@ if [ ! -f "${VM_IMAGE}" ]; then
 
     echo -e "${YELLOW}First-time setup: Please install Ubuntu manually${NC}"
     echo -e "${YELLOW}User: devbox | Password: devbox${NC}"
+    echo -e "${RED}WARNING: Default credentials are for initial setup only.${NC}"
+    echo -e "${RED}CHANGE THESE CREDENTIALS after installation for production use!${NC}"
     echo -e "${YELLOW}Enable SSH server during installation${NC}"
 
     # First boot with ISO for installation
