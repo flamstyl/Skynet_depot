@@ -1,0 +1,39 @@
+{
+  "name": "echoterm-mcp",
+  "version": "1.0.0",
+  "description": "Skynet Augmented Terminal - Terminal Windows augmenté par l'IA",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "dev": "electron . --dev",
+    "build": "electron-builder"
+  },
+  "keywords": [
+    "terminal",
+    "ia",
+    "skynet",
+    "mcp",
+    "claude",
+    "augmented"
+  ],
+  "author": "Skynet Team",
+  "license": "MIT",
+  "devDependencies": {
+    "electron": "^27.0.0",
+    "electron-builder": "^24.0.0"
+  },
+  "dependencies": {
+    "axios": "^1.6.0"
+  },
+  "build": {
+    "appId": "com.skynet.echoterm",
+    "productName": "EchoTerm MCP",
+    "directories": {
+      "output": "dist"
+    },
+    "win": {
+      "target": ["nsis"],
+      "icon": "assets/icon.ico"
+    }
+  }
+}

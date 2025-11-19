@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EchoTerm MCP - Skynet Augmented Terminal</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <!-- HEADER -->
+  <header class="app-header">
+    <div class="header-left">
+      <h1 class="app-title">🧠 EchoTerm MCP</h1>
+      <span class="app-subtitle">Skynet Augmented Terminal</span>
+    </div>
+    <div class="header-right">
+      <button id="btn-toggle-suggestions" class="btn-header" title="Toggle suggestions panel">
+        💡 Suggestions
+      </button>
+      <button id="btn-toggle-sidebar" class="btn-header" title="Toggle sidebar">
+        📊 Panels
+      </button>
+      <button id="btn-session-summary" class="btn-header" title="Get session summary">
+        📝 Summary
+      </button>
+    </div>
+  </header>
+
+  <!-- MAIN LAYOUT -->
+  <div class="app-container">
+
+    <!-- LEFT: TERMINAL -->
+    <main class="terminal-container">
+      <div class="terminal-header">
+        <span class="terminal-title">Terminal</span>
+        <div class="terminal-controls">
+          <button id="btn-clear" class="btn-control" title="Clear terminal (Ctrl+L)">🗑️ Clear</button>
+        </div>
+      </div>
+
+      <div id="terminal-output" class="terminal-output">
+        <div class="welcome-message">
+          <pre>
+╔═══════════════════════════════════════════════════════════════╗
+║                                                               ║
+║   🧠 EchoTerm MCP - Skynet Augmented Terminal                ║
+║   Version 1.0 - Powered by Claude AI                         ║
+║                                                               ║
+║   Type a command or use natural language                     ║
+║   Press Ctrl+Space for AI suggestions                        ║
+║   Press ↑/↓ to navigate history                             ║
+║                                                               ║
+╚═══════════════════════════════════════════════════════════════╝
+          </pre>
+        </div>
+      </div>
+
+      <div class="terminal-input-container">
+        <span class="terminal-prompt">λ</span>
+        <input
+          type="text"
+          id="terminal-input"
+          class="terminal-input"
+          placeholder="Type a command or natural language..."
+          autocomplete="off"
+          spellcheck="false"
+        />
+        <button id="btn-execute" class="btn-execute">▶ Run</button>
+      </div>
+    </main>
+
+    <!-- CENTER: AI SUGGESTIONS PANEL -->
+    <aside id="suggestions-panel" class="suggestions-panel">
+      <div class="panel-header">
+        <h3>💡 AI Suggestions</h3>
+        <button id="btn-close-suggestions" class="btn-close">✕</button>
+      </div>
+      <div id="suggestions-content" class="suggestions-content">
+        <p class="suggestions-placeholder">Type a command to get AI suggestions...</p>
+      </div>
+    </aside>
+
+    <!-- RIGHT: SIDEBAR (History, Alias, Memory) -->
+    <aside id="sidebar" class="sidebar">
+      <div class="sidebar-tabs">
+        <button class="tab-btn active" data-tab="history">📜 History</button>
+        <button class="tab-btn" data-tab="alias">🔖 Alias</button>
+        <button class="tab-btn" data-tab="memory">🧠 Memory</button>
+      </div>
+
+      <!-- HISTORY TAB -->
+      <div id="tab-history" class="tab-content active">
+        <div class="tab-header">
+          <h4>Command History</h4>
+          <input type="text" id="history-search" placeholder="Search..." class="search-input">
+        </div>
+        <div id="history-list" class="history-list">
+          <p class="placeholder">No commands yet...</p>
+        </div>
+      </div>
+
+      <!-- ALIAS TAB -->
+      <div id="tab-alias" class="tab-content">
+        <div class="tab-header">
+          <h4>Natural Aliases</h4>
+          <button id="btn-new-alias" class="btn-small">+ New</button>
+        </div>
+        <div id="alias-list" class="alias-list">
+          <p class="placeholder">No aliases defined...</p>
+        </div>
+      </div>
+
+      <!-- MEMORY TAB -->
+      <div id="tab-memory" class="tab-content">
+        <div class="tab-header">
+          <h4>Session Memory</h4>
+        </div>
+        <div id="memory-content" class="memory-content">
+          <div class="memory-section">
+            <h5>📌 Current Session</h5>
+            <div id="memory-session" class="memory-session">
+              <p class="placeholder">Loading session memory...</p>
+            </div>
+          </div>
+          <div class="memory-section">
+            <h5>🧠 Long-term Memory</h5>
+            <div id="memory-longterm" class="memory-longterm">
+              <p class="placeholder">Loading long-term memory...</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+  </div>
+
+  <!-- SCRIPTS -->
+  <script src="js/terminal_ui.js"></script>
+  <script src="js/suggestions_ui.js"></script>
+  <script src="js/history_panel.js"></script>
+  <script src="js/alias_panel.js"></script>
+  <script src="js/memory_panel.js"></script>
+</body>
+</html>
