@@ -118,7 +118,6 @@ async function testInWindowsVM(code, language) {
 
     // Use VirtualBox shared folder or copy file
     const vmName = 'DevBox-Windows';
-    const sharedFolder = 'workspace';
 
     logger.info('Copying code to Windows VM...');
 
