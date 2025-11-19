@@ -1,0 +1,92 @@
+<Window x:Class="SentinelleMCP.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        mc:Ignorable="d"
+        Title="Sentinelle MCP - Skynet Context Watcher"
+        Height="700" Width="1200"
+        WindowStartupLocation="CenterScreen"
+        Background="{StaticResource BackgroundDark}">
+
+    <Window.Resources>
+        <Style x:Key="NavButton" TargetType="Button" BasedOn="{StaticResource MaterialDesignFlatButton}">
+            <Setter Property="Height" Value="50"/>
+            <Setter Property="HorizontalContentAlignment" Value="Left"/>
+            <Setter Property="Padding" Value="20,0"/>
+            <Setter Property="Foreground" Value="White"/>
+        </Style>
+    </Window.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="60"/>
+            <!-- Header -->
+            <RowDefinition Height="*"/>
+            <!-- Content -->
+            <RowDefinition Height="30"/>
+            <!-- Status Bar -->
+        </Grid.RowDefinitions>
+
+        <!-- Header -->
+        <Border Grid.Row="0" Background="{StaticResource SkynetPurple}" Padding="20,10">
+            <Grid>
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                    <TextBlock Text="🟣" FontSize="24" Margin="0,0,10,0"/>
+                    <TextBlock Text="Sentinelle MCP" FontSize="24" FontWeight="Bold" Foreground="White" VerticalAlignment="Center"/>
+                    <TextBlock Text="Skynet Context Watcher" FontSize="14" Foreground="#E0E0E0" VerticalAlignment="Center" Margin="15,0,0,0"/>
+                </StackPanel>
+
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
+                    <TextBlock x:Name="StatusIndicator" Text="⚫" FontSize="20" Margin="0,0,5,0" Foreground="#4CAF50"/>
+                    <TextBlock x:Name="StatusText" Text="Running" Foreground="White" VerticalAlignment="Center" FontSize="14"/>
+                </StackPanel>
+            </Grid>
+        </Border>
+
+        <!-- Main Content -->
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="200"/>
+                <!-- Navigation -->
+                <ColumnDefinition Width="*"/>
+                <!-- Content -->
+            </Grid.ColumnDefinitions>
+
+            <!-- Navigation Panel -->
+            <Border Grid.Column="0" Background="{StaticResource SurfaceDark}" BorderBrush="#3F3F46" BorderThickness="0,0,1,0">
+                <StackPanel Margin="0,10">
+                    <Button x:Name="BtnDashboard" Content="📊 Dashboard" Style="{StaticResource NavButton}" Click="BtnDashboard_Click"/>
+                    <Button x:Name="BtnWatcherConfig" Content="👁  Watcher Config" Style="{StaticResource NavButton}" Click="BtnWatcherConfig_Click"/>
+                    <Button x:Name="BtnLogs" Content="📋 Logs" Style="{StaticResource NavButton}" Click="BtnLogs_Click"/>
+                    <Button x:Name="BtnIASettings" Content="🤖 AI Settings" Style="{StaticResource NavButton}" Click="BtnIASettings_Click"/>
+                    <Separator Margin="10,20" Background="#3F3F46"/>
+                    <Button x:Name="BtnSettings" Content="⚙️  Settings" Style="{StaticResource NavButton}" Click="BtnSettings_Click"/>
+                    <Button x:Name="BtnAbout" Content="ℹ️  About" Style="{StaticResource NavButton}" Click="BtnAbout_Click"/>
+                </StackPanel>
+            </Border>
+
+            <!-- Content Frame -->
+            <Frame x:Name="ContentFrame" Grid.Column="1" NavigationUIVisibility="Hidden" Background="Transparent" Margin="20"/>
+        </Grid>
+
+        <!-- Status Bar -->
+        <Border Grid.Row="2" Background="{StaticResource SurfaceDark}" BorderBrush="#3F3F46" BorderThickness="0,1,0,0" Padding="10,5">
+            <Grid>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock x:Name="StatusBarText" Text="Ready" Foreground="#B0B0B0" FontSize="11"/>
+                </StackPanel>
+
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                    <TextBlock Text="Events: " Foreground="#B0B0B0" FontSize="11"/>
+                    <TextBlock x:Name="EventCount" Text="0" Foreground="White" FontSize="11" FontWeight="Bold" Margin="0,0,15,0"/>
+                    <TextBlock Text="AI Calls: " Foreground="#B0B0B0" FontSize="11"/>
+                    <TextBlock x:Name="AICallCount" Text="0" Foreground="White" FontSize="11" FontWeight="Bold" Margin="0,0,15,0"/>
+                    <TextBlock Text="Uptime: " Foreground="#B0B0B0" FontSize="11"/>
+                    <TextBlock x:Name="Uptime" Text="00:00:00" Foreground="White" FontSize="11" FontWeight="Bold"/>
+                </StackPanel>
+            </Grid>
+        </Border>
+    </Grid>
+</Window>

@@ -1,0 +1,188 @@
+# Sentinelle MCP Configuration File
+# Version: 1.0.0
+
+sentinelle:
+  version: "1.0.0"
+  name: "Sentinelle MCP - Skynet Context Watcher"
+  description: "Advanced AI monitoring and alerting system"
+
+watchers:
+  enabled: true
+  paths:
+    # Add your AI project paths here
+    - path: "C:/AI_Projects"
+      recursive: true
+      enabled: true
+      description: "Main AI projects folder"
+
+    - path: "C:/Skynet_depot"
+      recursive: true
+      enabled: true
+      description: "Skynet development repository"
+
+    # Example: Google Drive sync folder
+    # - path: "C:/Users/YourName/Google Drive/AI"
+    #   recursive: true
+    #   enabled: true
+    #   description: "Google Drive AI folder"
+
+  ignore_patterns:
+    # Files and folders to ignore
+    - "*.tmp"
+    - "*.temp"
+    - "*.log"
+    - ".git/*"
+    - "node_modules/*"
+    - "__pycache__/*"
+    - "*.pyc"
+    - ".venv/*"
+    - "venv/*"
+    - ".DS_Store"
+    - "Thumbs.db"
+
+  file_types:
+    # Prioritize these file types
+    high_priority:
+      - ".py"
+      - ".js"
+      - ".ts"
+      - ".md"
+      - ".yaml"
+      - ".json"
+
+    medium_priority:
+      - ".txt"
+      - ".csv"
+      - ".xml"
+
+    low_priority:
+      - ".jpg"
+      - ".png"
+      - ".pdf"
+
+  debounce_seconds: 2  # Wait 2 seconds before processing repeated events
+
+ai:
+  enabled: true
+  default_model: "claude_cli"  # claude_cli | gemini_cli | mcp
+
+  models:
+    claude_cli:
+      enabled: true
+      command: "claude"
+      timeout_seconds: 30
+
+    gemini_cli:
+      enabled: false
+      command: "gemini"
+      timeout_seconds: 30
+
+    mcp:
+      enabled: true
+      endpoint: "http://localhost:3000/ai/analyze"
+
+  auto_analyze: false  # Automatically analyze all events with AI
+
+  analyze_on:
+    # Conditions to trigger AI analysis
+    - priority: "high"
+    - priority: "critical"
+    - file_type: ".py"
+    - event_type: "created"
+
+  prompt_templates: "../ai_prompts/"
+
+  safety:
+    max_file_size_kb: 500  # Don't send files larger than this to AI
+    anonymize_paths: false  # Replace real paths with placeholders
+    exclude_patterns:
+      - "*secret*"
+      - "*credential*"
+      - "*.env"
+      - "*password*"
+      - "*api_key*"
+
+logging:
+  level: "INFO"  # DEBUG | INFO | WARNING | ERROR | CRITICAL
+  console: true
+  file: true
+
+  file_config:
+    path: "../../data/log_skynet.json"
+    max_size_mb: 100
+    rotation: true
+    backup_count: 5
+
+  format: "json"  # json | text
+
+  components:
+    watcher: "INFO"
+    processor: "INFO"
+    ai_bridge: "INFO"
+    report_gen: "INFO"
+
+reports:
+  enabled: true
+  output_dir: "../../data/reports/"
+
+  formats:
+    - "json"
+    - "markdown"
+
+  retention_days: 30  # Auto-delete reports older than this
+
+  include:
+    - "event_details"
+    - "file_metadata"
+    - "ai_analysis"
+    - "recommendations"
+
+mcp:
+  enabled: true
+  endpoint: "http://localhost:3000"
+  timeout_seconds: 10
+
+  notify_raphael: true
+  notify_on:
+    - priority: "high"
+    - priority: "critical"
+
+  retry:
+    enabled: true
+    max_attempts: 3
+    backoff_seconds: 2
+
+notifications:
+  email:
+    enabled: false
+    smtp_server: ""
+    smtp_port: 587
+    sender: ""
+    recipients: []
+
+  webhook:
+    enabled: false
+    url: ""
+    method: "POST"
+
+  telegram:
+    enabled: false
+    bot_token: ""
+    chat_id: ""
+
+performance:
+  max_events_per_second: 10  # Rate limiting
+  max_concurrent_ai_calls: 3
+  cache_ttl_seconds: 300  # Cache AI results for 5 minutes
+
+  queue:
+    max_size: 1000
+    worker_threads: 4
+
+security:
+  require_auth: false  # Future: API authentication
+  api_key: ""
+
+  encryption:
+    enabled: false  # Future: encrypt sensitive reports
+    algorithm: "AES-256"
