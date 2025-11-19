@@ -1,0 +1,27 @@
+{
+  "channel": "skynet_quicklauncher",
+  "version": "1.0.0",
+  "index_sync": true,
+  "ai_backend": "claude_cli",
+  "features": {
+    "multi_device_sync": true,
+    "plugin_distribution": true,
+    "ai_routing": true,
+    "cloud_backup": false
+  },
+  "sync_settings": {
+    "auto_sync": true,
+    "sync_interval": 300,
+    "conflict_resolution": "most_recent"
+  },
+  "ai_settings": {
+    "default_model": "claude-3-sonnet",
+    "fallback_enabled": true,
+    "timeout": 30000
+  },
+  "plugin_settings": {
+    "auto_update": false,
+    "registry_url": "https://skynet-plugins.example.com",
+    "trusted_sources": []
+  }
+}

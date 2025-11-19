@@ -1,0 +1,61 @@
+{
+  "version": "1.0.0",
+  "plugins": [
+    {
+      "id": "open_app",
+      "name": "Open Application",
+      "description": "Quickly open applications by name",
+      "version": "1.0.0",
+      "enabled": true,
+      "type": "default",
+      "path": "open_app.plugin.js",
+      "settings": {
+        "favoriteApps": []
+      }
+    },
+    {
+      "id": "search_web",
+      "name": "Search Web",
+      "description": "Search the web using different search engines",
+      "version": "1.0.0",
+      "enabled": true,
+      "type": "default",
+      "path": "search_web.plugin.js",
+      "settings": {
+        "defaultEngine": "google",
+        "enabledEngines": [
+          "google",
+          "duckduckgo",
+          "bing",
+          "youtube",
+          "wikipedia",
+          "github"
+        ]
+      }
+    },
+    {
+      "id": "system_actions",
+      "name": "System Actions",
+      "description": "Execute system commands like shutdown, restart, etc.",
+      "version": "1.0.0",
+      "enabled": true,
+      "type": "default",
+      "path": "system_actions.plugin.js",
+      "settings": {
+        "requireConfirmation": true,
+        "enabledActions": [
+          "shutdown",
+          "restart",
+          "sleep",
+          "lock",
+          "logout"
+        ]
+      }
+    }
+  ],
+  "custom_plugins": [],
+  "plugin_registry": {
+    "url": "https://skynet-plugins.example.com",
+    "enabled": false
+  }
+}
