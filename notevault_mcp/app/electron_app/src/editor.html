@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>NoteVault - Editor</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div id="editor-app">
+    <header>
+      <button id="back-btn">← Back</button>
+      <input type="text" id="note-title" placeholder="Note Title" />
+      <div class="editor-actions">
+        <button id="ai-summarize-btn">✨ Summarize</button>
+        <button id="ai-classify-btn">🏷️ Classify</button>
+        <button id="save-btn">💾 Save</button>
+        <button id="delete-btn" class="danger">🗑️ Delete</button>
+      </div>
+    </header>
+
+    <div class="editor-layout">
+      <div class="editor-sidebar">
+        <label>Tags:</label>
+        <input type="text" id="note-tags" placeholder="tag1, tag2..." />
+
+        <label>AI Summary:</label>
+        <textarea id="ai-summary" readonly></textarea>
+      </div>
+
+      <div class="editor-main">
+        <textarea id="note-content" placeholder="# Start writing..."></textarea>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const backBtn = document.getElementById('back-btn');
+    const saveBtn = document.getElementById('save-btn');
+    const deleteBtn = document.getElementById('delete-btn');
+    const aiSummarizeBtn = document.getElementById('ai-summarize-btn');
+    const aiClassifyBtn = document.getElementById('ai-classify-btn');
+    const noteTitle = document.getElementById('note-title');
+    const noteTags = document.getElementById('note-tags');
+    const noteContent = document.getElementById('note-content');
+    const aiSummary = document.getElementById('ai-summary');
+
+    // Get note ID from URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const noteId = urlParams.get('id');
+
+    let currentNote = null;
+
+    // Load note (if editing)
+    if (noteId) {
+      window.electronAPI.getNote(noteId).then(({ note }) => {
+        currentNote = note;
+        noteTitle.value = note.title;
+        noteContent.value = note.content;
+        noteTags.value = note.tags.join(', ');
+        aiSummary.value = note.metadata?.ai_summary || '';
+      });
+    }
+
+    // Save note
+    saveBtn.addEventListener('click', async () => {
+      const noteData = {
+        title: noteTitle.value,
+        content: noteContent.value,
+        tags: noteTags.value.split(',').map(t => t.trim()).filter(t => t)
+      };
+
+      try {
+        if (currentNote) {
+          await window.electronAPI.updateNote(currentNote.id, noteData);
+        } else {
+          await window.electronAPI.createNote(noteData);
+        }
+        window.location.href = 'index.html';
+      } catch (error) {
+        alert('Failed to save note: ' + error.message);
+      }
+    });
+
+    // Delete note
+    deleteBtn.addEventListener('click', async () => {
+      if (!currentNote) return;
+      if (confirm('Delete this note?')) {
+        await window.electronAPI.deleteNote(currentNote.id);
+        window.location.href = 'index.html';
+      }
+    });
+
+    // AI Summarize
+    aiSummarizeBtn.addEventListener('click', async () => {
+      if (!currentNote) {
+        alert('Save note first');
+        return;
+      }
+      try {
+        const result = await window.electronAPI.aiSummarize(currentNote.id, 'medium');
+        aiSummary.value = result.summary;
+      } catch (error) {
+        alert('AI summarize failed: ' + error.message);
+      }
+    });
+
+    // AI Classify
+    aiClassifyBtn.addEventListener('click', async () => {
+      if (!currentNote) {
+        alert('Save note first');
+        return;
+      }
+      try {
+        const result = await window.electronAPI.aiClassify(currentNote.id);
+        noteTags.value = result.suggested_tags.join(', ');
+      } catch (error) {
+        alert('AI classify failed: ' + error.message);
+      }
+    });
+
+    // Back
+    backBtn.addEventListener('click', () => {
+      window.location.href = 'index.html';
+    });
+
+    // Auto-save (every 30s)
+    setInterval(() => {
+      if (currentNote && noteContent.value) {
+        saveBtn.click();
+      }
+    }, 30000);
+  </script>
+</body>
+</html>

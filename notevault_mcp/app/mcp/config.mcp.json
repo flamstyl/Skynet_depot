@@ -1,0 +1,24 @@
+{
+  "name": "notevault-mcp",
+  "version": "1.0.0",
+  "sync_channel": "skynet_notevault",
+  "encrypted_only": true,
+  "ia_backend": "claude_api",
+  "storage": {
+    "type": "local",
+    "path": "../../data/sync/"
+  },
+  "claude_api": {
+    "model": "claude-sonnet-4-5-20250929",
+    "max_tokens": 2000
+  },
+  "features": {
+    "sync": true,
+    "ai_summarize": true,
+    "ai_classify": true,
+    "ai_extract_memory": true,
+    "rag_summary": true,
+    "converter": true,
+    "rag_backup": true
+  }
+}

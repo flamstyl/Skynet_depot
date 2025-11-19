@@ -1,0 +1,48 @@
+# NoteVault MCP — Backend Configuration
+
+server:
+  host: "0.0.0.0"
+  port: 5050
+  debug: false
+
+vault:
+  path: "./vault/vault_local.nvault"
+  index_path: "./vault/vault_index.json"
+  attachments_dir: "./vault/attachments"
+  auto_save: true
+  auto_save_interval: 30  # seconds
+
+crypto:
+  algorithm: "AES-256-GCM"
+  kdf: "PBKDF2-SHA256"
+  iterations: 100000
+  key_length: 32  # bytes
+  salt_length: 32
+  nonce_length: 12
+
+rag:
+  index_dir: "./data/rag_index"
+  embedding_model: "mock"  # mock | sentence-transformers | openai
+  embedding_dimension: 100  # for mock
+  max_keywords: 20
+
+ai:
+  backend: "mcp"  # mcp | claude_api | local
+  mcp_url: "http://localhost:3000"
+  claude_api_key: null  # Set in environment or here
+  max_tokens: 2000
+
+notion:
+  max_file_size: 10485760  # 10MB
+  supported_formats: ["json", "md"]
+
+security:
+  session_timeout: 3600  # seconds
+  max_login_attempts: 5
+  lockout_duration: 300  # seconds
+
+logging:
+  level: "INFO"
+  file: "./logs/vault_server.log"
+  max_size: 10485760  # 10MB
+  backup_count: 5

@@ -1,0 +1,57 @@
+# NoteVault MCP — Gitignore
+
+# Vault files (NEVER commit encrypted vaults!)
+vault/*.nvault
+vault/vault_index.json
+vault/attachments/*
+
+# Sync data
+data/sync/*
+data/rag_index/*
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+venv/
+env/
+.venv/
+
+# Node.js
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# Electron
+dist/
+out/
+*.log
+
+# Environment
+.env
+.env.local
+config.local.yaml
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+logs/
+*.log
+
+# Temp
+tmp/
+temp/
+*.tmp

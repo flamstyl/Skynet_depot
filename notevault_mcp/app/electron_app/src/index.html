@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NoteVault - Encrypted Notes</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div id="app">
+    <!-- Unlock Screen -->
+    <div id="unlock-screen" class="screen active">
+      <div class="unlock-box">
+        <h1>🔒 NoteVault</h1>
+        <p>Enter password to unlock your vault</p>
+        <input type="password" id="password-input" placeholder="Password" />
+        <button id="unlock-btn">Unlock</button>
+        <div id="unlock-error" class="error"></div>
+      </div>
+    </div>
+
+    <!-- Vault Dashboard -->
+    <div id="vault-screen" class="screen">
+      <header>
+        <h1>📚 NoteVault</h1>
+        <div class="header-actions">
+          <button id="new-note-btn">➕ New Note</button>
+          <button id="import-notion-btn">📥 Import Notion</button>
+          <button id="sync-btn">🔄 Sync</button>
+          <button id="lock-btn">🔒 Lock</button>
+        </div>
+      </header>
+
+      <div class="main-content">
+        <aside class="sidebar">
+          <input type="search" id="search-input" placeholder="🔍 Search notes..." />
+          <div id="tags-filter"></div>
+        </aside>
+
+        <main>
+          <div id="notes-list"></div>
+        </main>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/vault_api.js"></script>
+  <script>
+    const unlockScreen = document.getElementById('unlock-screen');
+    const vaultScreen = document.getElementById('vault-screen');
+    const passwordInput = document.getElementById('password-input');
+    const unlockBtn = document.getElementById('unlock-btn');
+    const unlockError = document.getElementById('unlock-error');
+    const lockBtn = document.getElementById('lock-btn');
+    const newNoteBtn = document.getElementById('new-note-btn');
+    const notesList = document.getElementById('notes-list');
+    const searchInput = document.getElementById('search-input');
+
+    // Unlock vault
+    unlockBtn.addEventListener('click', async () => {
+      try {
+        unlockError.textContent = '';
+        const password = passwordInput.value;
+        const result = await window.electronAPI.unlockVault(password);
+
+        unlockScreen.classList.remove('active');
+        vaultScreen.classList.add('active');
+
+        loadNotes();
+      } catch (error) {
+        unlockError.textContent = error.message;
+      }
+    });
+
+    // Lock vault
+    lockBtn.addEventListener('click', async () => {
+      await window.electronAPI.lockVault();
+      vaultScreen.classList.remove('active');
+      unlockScreen.classList.add('active');
+      passwordInput.value = '';
+    });
+
+    // New note
+    newNoteBtn.addEventListener('click', () => {
+      window.location.href = 'editor.html';
+    });
+
+    // Load notes
+    async function loadNotes() {
+      try {
+        const { notes } = await window.electronAPI.getAllNotes();
+        renderNotes(notes);
+      } catch (error) {
+        console.error('Failed to load notes:', error);
+      }
+    }
+
+    // Render notes
+    function renderNotes(notes) {
+      notesList.innerHTML = notes.map(note => `
+        <div class="note-card" data-id="${note.id}">
+          <h3>${note.title}</h3>
+          <p>${note.content.substring(0, 150)}...</p>
+          <div class="note-meta">
+            <span class="tags">${note.tags.map(tag => `#${tag}`).join(' ')}</span>
+            <span class="date">${new Date(note.updated_at).toLocaleDateString()}</span>
+          </div>
+        </div>
+      `).join('');
+
+      // Click handlers
+      document.querySelectorAll('.note-card').forEach(card => {
+        card.addEventListener('click', () => {
+          const noteId = card.dataset.id;
+          window.location.href = `editor.html?id=${noteId}`;
+        });
+      });
+    }
+
+    // Search
+    searchInput.addEventListener('input', async (e) => {
+      const query = e.target.value;
+      const { results } = await window.electronAPI.searchNotes({ query });
+      renderNotes(results);
+    });
+
+    // Enter key to unlock
+    passwordInput.addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') unlockBtn.click();
+    });
+  </script>
+</body>
+</html>
