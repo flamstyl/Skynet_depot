@@ -1,0 +1,196 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://skynet-linker.dev/mcp-message-v1.schema.json",
+  "title": "MCP Message Schema",
+  "description": "Multi-agent Communication Protocol message schema v1.0",
+  "type": "object",
+  "required": [
+    "id",
+    "from_agent",
+    "type",
+    "channel",
+    "payload",
+    "timestamp",
+    "trace_id"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "format": "uuid",
+      "description": "Unique message identifier (UUID v4)"
+    },
+    "from_agent": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128,
+      "pattern": "^[a-zA-Z0-9_-]+$",
+      "description": "Agent ID of the sender"
+    },
+    "to_agent": {
+      "type": ["string", "null"],
+      "minLength": 1,
+      "maxLength": 128,
+      "pattern": "^[a-zA-Z0-9_-]+$",
+      "description": "Agent ID of the recipient (null for broadcast)"
+    },
+    "type": {
+      "type": "string",
+      "enum": [
+        "task",
+        "reply",
+        "context_update",
+        "broadcast",
+        "heartbeat",
+        "ack",
+        "error"
+      ],
+      "description": "Message type"
+    },
+    "channel": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128,
+      "default": "default",
+      "description": "Communication channel name"
+    },
+    "payload": {
+      "type": "object",
+      "required": ["content", "context", "meta"],
+      "properties": {
+        "content": {
+          "description": "Main message content (can be any type)"
+        },
+        "context": {
+          "type": "object",
+          "description": "Contextual information",
+          "properties": {
+            "session_id": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "parent_message_id": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "priority": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 10,
+              "default": 5
+            },
+            "tags": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          "additionalProperties": true
+        },
+        "meta": {
+          "type": "object",
+          "description": "Metadata about the message",
+          "properties": {
+            "timestamp": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "ttl": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 86400,
+              "default": 3600,
+              "description": "Time to live in seconds"
+            },
+            "requires_ack": {
+              "type": "boolean",
+              "default": false,
+              "description": "Whether this message requires acknowledgment"
+            },
+            "retry_count": {
+              "type": "integer",
+              "minimum": 0,
+              "default": 0
+            }
+          },
+          "additionalProperties": true
+        }
+      }
+    },
+    "timestamp": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO 8601 timestamp when message was created"
+    },
+    "trace_id": {
+      "type": "string",
+      "format": "uuid",
+      "description": "Trace ID for message chain correlation"
+    },
+    "parent_id": {
+      "type": ["string", "null"],
+      "format": "uuid",
+      "description": "ID of parent message (for replies and chains)"
+    },
+    "encrypted": {
+      "type": "boolean",
+      "default": false,
+      "description": "Whether the payload is encrypted"
+    },
+    "signature": {
+      "type": ["string", "null"],
+      "description": "Cryptographic signature of the message (NaCl)"
+    }
+  },
+  "additionalProperties": false,
+  "examples": [
+    {
+      "id": "550e8400-e29b-41d4-a716-446655440000",
+      "from_agent": "claude_cli",
+      "to_agent": "gemini",
+      "type": "task",
+      "channel": "skynet_core",
+      "payload": {
+        "content": "Recherche les derniers papiers sur RAG",
+        "context": {
+          "session_id": "650e8400-e29b-41d4-a716-446655440001",
+          "priority": 8
+        },
+        "meta": {
+          "timestamp": "2025-11-19T12:34:56Z",
+          "ttl": 3600,
+          "requires_ack": true
+        }
+      },
+      "timestamp": "2025-11-19T12:34:56Z",
+      "trace_id": "750e8400-e29b-41d4-a716-446655440002",
+      "parent_id": null,
+      "encrypted": false,
+      "signature": null
+    },
+    {
+      "id": "660e8400-e29b-41d4-a716-446655440010",
+      "from_agent": "gemini",
+      "to_agent": "claude_cli",
+      "type": "reply",
+      "channel": "skynet_core",
+      "payload": {
+        "content": "Voici 10 papiers récents sur RAG...",
+        "context": {
+          "session_id": "650e8400-e29b-41d4-a716-446655440001",
+          "priority": 8
+        },
+        "meta": {
+          "timestamp": "2025-11-19T12:35:42Z",
+          "ttl": 3600,
+          "requires_ack": false
+        }
+      },
+      "timestamp": "2025-11-19T12:35:42Z",
+      "trace_id": "750e8400-e29b-41d4-a716-446655440002",
+      "parent_id": "550e8400-e29b-41d4-a716-446655440000",
+      "encrypted": false,
+      "signature": null
+    }
+  ]
+}

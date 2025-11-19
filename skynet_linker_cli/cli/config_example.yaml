@@ -1,0 +1,51 @@
+# Skynet Linker CLI Configuration
+
+# MCP Server connection
+server:
+  # WebSocket URL for real-time connections
+  ws_url: "ws://localhost:8000/ws"
+
+  # REST API URL for requests
+  http_url: "http://localhost:8000"
+
+# Default agent settings
+agent:
+  # Default agent type if not specified
+  default_type: "generic"
+
+  # Default priority
+  default_priority: 5
+
+  # Default channels to subscribe
+  default_channels:
+    - "default"
+
+# Default channel for broadcasts
+default_channel: "default"
+
+# Encryption settings
+encryption:
+  enabled: false  # Set to true to enable encryption
+  key_file: ".skynet_linker.key"
+
+# Authentication
+auth:
+  enabled: false  # Set to true to require tokens
+  token_file: ".skynet_tokens.json"
+
+# Display settings
+display:
+  # Use rich formatting
+  rich_output: true
+
+  # Show timestamps
+  show_timestamps: true
+
+  # Truncate long messages
+  truncate_content: 100
+
+# Logging
+logging:
+  level: "INFO"  # DEBUG, INFO, WARNING, ERROR
+  file: "logs/cli.log"
+  console: true
