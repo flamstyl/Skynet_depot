@@ -9,23 +9,228 @@
     Width="600"
     Height="500">
 
-    <Grid Background="{ThemeResource SkynetBackgroundBrush}" Padding="20">
-        <ScrollViewer>
-            <StackPanel Spacing="20">
-                <TextBlock
-                    Text="⚙️ Settings"
-                    FontSize="24"
-                    FontWeight="Bold"
-                    Foreground="{ThemeResource SkynetTextBrush}"/>
+    <Grid Background="{ThemeResource SkynetBackgroundBrush}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
 
-                <!-- TODO: Settings UI -->
-                <TextBlock
-                    Text="Settings UI coming soon..."
-                    Foreground="{ThemeResource SkynetTextBrush}"
-                    Opacity="0.7"/>
+        <!-- Header -->
+        <Grid Grid.Row="0" Background="#252525" Padding="20,16">
+            <TextBlock
+                Text="⚙️ Settings"
+                FontSize="24"
+                FontWeight="Bold"
+                Foreground="{ThemeResource SkynetTextBrush}"/>
+        </Grid>
 
-                <Button Content="Close" Click="CloseButton_Click"/>
+        <!-- Content -->
+        <ScrollViewer Grid.Row="1" Padding="20">
+            <StackPanel Spacing="24">
+
+                <!-- General Settings -->
+                <StackPanel Spacing="16">
+                    <TextBlock
+                        Text="General"
+                        FontSize="18"
+                        FontWeight="SemiBold"
+                        Foreground="{ThemeResource SkynetTextBrush}"/>
+
+                    <ToggleSwitch
+                        x:Name="AutoStartToggle"
+                        Header="Start with Windows"
+                        OnContent="Enabled"
+                        OffContent="Disabled"
+                        Toggled="AutoStartToggle_Toggled"/>
+
+                    <ComboBox
+                        x:Name="DefaultAgentComboBox"
+                        Header="Default AI Agent"
+                        Width="300"
+                        HorizontalAlignment="Left"
+                        SelectionChanged="DefaultAgentComboBox_SelectionChanged">
+                        <ComboBoxItem Content="🤖 Claude" IsSelected="True" Tag="claude"/>
+                        <ComboBoxItem Content="💬 ChatGPT" Tag="gpt"/>
+                        <ComboBoxItem Content="✨ Gemini" Tag="gemini"/>
+                        <ComboBoxItem Content="🔍 Comet" Tag="comet"/>
+                    </ComboBox>
+                </StackPanel>
+
+                <!-- Voice Settings -->
+                <StackPanel Spacing="16">
+                    <TextBlock
+                        Text="Voice"
+                        FontSize="18"
+                        FontWeight="SemiBold"
+                        Foreground="{ThemeResource SkynetTextBrush}"/>
+
+                    <ToggleSwitch
+                        x:Name="VoiceEnabledToggle"
+                        Header="Enable Voice Commands"
+                        OnContent="Enabled"
+                        OffContent="Disabled"
+                        IsOn="True"/>
+
+                    <TextBlock
+                        Text="Hotkey: Ctrl+Space"
+                        FontSize="12"
+                        Foreground="#9CA3AF"
+                        Margin="0,-8,0,0"/>
+                </StackPanel>
+
+                <!-- Clipboard Settings -->
+                <StackPanel Spacing="16">
+                    <TextBlock
+                        Text="Clipboard"
+                        FontSize="18"
+                        FontWeight="SemiBold"
+                        Foreground="{ThemeResource SkynetTextBrush}"/>
+
+                    <ToggleSwitch
+                        x:Name="ClipboardMonitoringToggle"
+                        Header="Monitor Clipboard"
+                        OnContent="Enabled"
+                        OffContent="Disabled"
+                        IsOn="True"/>
+
+                    <ToggleSwitch
+                        x:Name="AutoAnalyzeToggle"
+                        Header="Auto-Analyze Clipboard"
+                        OnContent="Enabled"
+                        OffContent="Disabled"
+                        IsOn="False"/>
+                </StackPanel>
+
+                <!-- Overlay Settings -->
+                <StackPanel Spacing="16">
+                    <TextBlock
+                        Text="Overlay"
+                        FontSize="18"
+                        FontWeight="SemiBold"
+                        Foreground="{ThemeResource SkynetTextBrush}"/>
+
+                    <Slider
+                        x:Name="OpacitySlider"
+                        Header="Opacity"
+                        Minimum="0.5"
+                        Maximum="1.0"
+                        Value="0.95"
+                        StepFrequency="0.05"
+                        Width="300"
+                        HorizontalAlignment="Left"
+                        ValueChanged="OpacitySlider_ValueChanged"/>
+
+                    <ComboBox
+                        x:Name="PositionComboBox"
+                        Header="Default Position"
+                        Width="300"
+                        HorizontalAlignment="Left"
+                        SelectedIndex="1"
+                        SelectionChanged="PositionComboBox_SelectionChanged">
+                        <ComboBoxItem Content="Top Left" Tag="top-left"/>
+                        <ComboBoxItem Content="Top Right" Tag="top-right"/>
+                        <ComboBoxItem Content="Bottom Left" Tag="bottom-left"/>
+                        <ComboBoxItem Content="Bottom Right" Tag="bottom-right"/>
+                        <ComboBoxItem Content="Center" Tag="center"/>
+                    </ComboBox>
+                </StackPanel>
+
+                <!-- Backend Settings -->
+                <StackPanel Spacing="16">
+                    <TextBlock
+                        Text="Backend"
+                        FontSize="18"
+                        FontWeight="SemiBold"
+                        Foreground="{ThemeResource SkynetTextBrush}"/>
+
+                    <TextBox
+                        x:Name="BackendUrlTextBox"
+                        Header="Backend API URL"
+                        PlaceholderText="http://localhost:8765"
+                        Text="http://localhost:8765"
+                        Width="300"
+                        HorizontalAlignment="Left"/>
+
+                    <Button
+                        Content="Test Connection"
+                        Click="TestConnectionButton_Click"
+                        Style="{StaticResource SecondaryButtonStyle}"/>
+
+                    <TextBlock
+                        x:Name="ConnectionStatusText"
+                        Text=""
+                        FontSize="12"
+                        Foreground="#10B981"
+                        Margin="0,-8,0,0"/>
+                </StackPanel>
+
+                <!-- Memory Settings -->
+                <StackPanel Spacing="16">
+                    <TextBlock
+                        Text="Memory"
+                        FontSize="18"
+                        FontWeight="SemiBold"
+                        Foreground="{ThemeResource SkynetTextBrush}"/>
+
+                    <ToggleSwitch
+                        x:Name="MemoryEnabledToggle"
+                        Header="Enable Memory"
+                        OnContent="Enabled"
+                        OffContent="Disabled"
+                        IsOn="True"/>
+
+                    <Button
+                        Content="Clear All Memory"
+                        Click="ClearMemoryButton_Click"
+                        Background="#EF4444"
+                        Foreground="White"/>
+
+                    <Button
+                        Content="Export Memory"
+                        Click="ExportMemoryButton_Click"
+                        Style="{StaticResource SecondaryButtonStyle}"/>
+                </StackPanel>
+
+                <!-- About -->
+                <StackPanel Spacing="12">
+                    <TextBlock
+                        Text="About"
+                        FontSize="18"
+                        FontWeight="SemiBold"
+                        Foreground="{ThemeResource SkynetTextBrush}"/>
+
+                    <TextBlock
+                        Text="Skynet Companion v1.0.0"
+                        FontSize="13"
+                        Foreground="#9CA3AF"/>
+
+                    <TextBlock
+                        Text="Your AI companion, always by your side."
+                        FontSize="12"
+                        Foreground="#6B7280"/>
+
+                    <HyperlinkButton
+                        Content="Documentation"
+                        NavigateUri="https://github.com/your-org/skynet_companion"
+                        Foreground="{ThemeResource SkynetAccentBrush}"/>
+                </StackPanel>
+
             </StackPanel>
         </ScrollViewer>
+
+        <!-- Footer -->
+        <Grid Grid.Row="2" Background="#252525" Padding="20,16">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Spacing="12">
+                <Button
+                    Content="Save"
+                    Click="SaveButton_Click"
+                    Style="{StaticResource PrimaryButtonStyle}"/>
+                <Button
+                    Content="Cancel"
+                    Click="CloseButton_Click"
+                    Style="{StaticResource SecondaryButtonStyle}"/>
+            </StackPanel>
+        </Grid>
     </Grid>
 </Window>

@@ -3,6 +3,7 @@ using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Input;
 using SkynetCompanion.Services;
 using SkynetCompanion.Models;
+using SkynetCompanion.Helpers;
 using System;
 
 namespace SkynetCompanion.Windows
@@ -21,6 +22,10 @@ namespace SkynetCompanion.Windows
         private bool _isMinimized = false;
         private double _windowWidth = 400;
         private double _windowHeight = 600;
+
+        // Dragging state
+        private bool _isDragging = false;
+        private Windows.Graphics.PointInt32 _dragStartPoint;
 
         public OverlayWindow(
             MCPClient mcpClient,
@@ -59,12 +64,17 @@ namespace SkynetCompanion.Windows
 
         private void SetupWindow()
         {
-            // TODO: Set window always-on-top using Win32 interop
-            // TODO: Set initial position (top-right corner)
-            // TODO: Make window semi-transparent
-            // TODO: Disable window chrome (custom titlebar)
+            // Setup overlay behavior (always-on-top, opacity)
+            WindowHelper.SetupOverlayWindow(this, opacity: 0.95);
 
-            System.Diagnostics.Debug.WriteLine("🪟 Overlay window setup complete");
+            // Position window at top-right
+            WindowHelper.PositionWindow(this, WindowPosition.TopRight, (int)_windowWidth, (int)_windowHeight);
+
+            // Register hotkey with window handle
+            var hwnd = WindowHelper.GetWindowHandle(this);
+            _hotkeyService.RegisterHotkey(hwnd);
+
+            System.Diagnostics.Debug.WriteLine("✅ Overlay window setup complete (always-on-top, positioned)");
         }
 
         // === Event Handlers ===
@@ -73,8 +83,14 @@ namespace SkynetCompanion.Windows
         {
             System.Diagnostics.Debug.WriteLine($"📋 Clipboard: {content.Text.Substring(0, Math.Min(50, content.Text.Length))}");
 
-            // TODO: Show notification or quick-actions panel
-            // TODO: Optionally auto-analyze based on settings
+            // Update quick actions panel with clipboard content
+            QuickActionsPanel.UpdateClipboardPreview(content.Text);
+
+            // Switch to actions panel to show suggestions
+            if (!_isMinimized)
+            {
+                ShowPanel(QuickActionsPanel);
+            }
         }
 
         private async void OnHotkeyPressed(object? sender, EventArgs e)
@@ -129,15 +145,21 @@ namespace SkynetCompanion.Windows
 
         private void HeaderGrid_ManipulationStarted(object sender, ManipulationStartedRoutedEventArgs e)
         {
-            // TODO: Start dragging window
-            System.Diagnostics.Debug.WriteLine("Drag started");
+            _isDragging = true;
+            var bounds = WindowHelper.GetWindowBounds(this);
+            _dragStartPoint = new Windows.Graphics.PointInt32(bounds.x, bounds.y);
+            System.Diagnostics.Debug.WriteLine("🖱️ Drag started");
         }
 
         private void HeaderGrid_ManipulationDelta(object sender, ManipulationDeltaRoutedEventArgs e)
         {
-            // TODO: Move window based on delta
-            // var translation = e.Delta.Translation;
-            // Move window by (translation.X, translation.Y)
+            if (!_isDragging) return;
+
+            var bounds = WindowHelper.GetWindowBounds(this);
+            int newX = bounds.x + (int)e.Delta.Translation.X;
+            int newY = bounds.y + (int)e.Delta.Translation.Y;
+
+            WindowHelper.MoveWindow(this, newX, newY);
         }
 
         private void MinimizeButton_Click(object sender, RoutedEventArgs e)
@@ -185,29 +207,21 @@ namespace SkynetCompanion.Windows
 
             panel.Visibility = Visibility.Visible;
         }
+        /// <summary>
+        /// Update window position to a preset
+        /// </summary>
+        public void SetPosition(WindowPosition position)
+        {
+            WindowHelper.PositionWindow(this, position, (int)_windowWidth, (int)_windowHeight);
+        }
+
+        /// <summary>
+        /// Toggle always-on-top
+        /// </summary>
+        public void ToggleAlwaysOnTop(bool enabled)
+        {
+            var hwnd = WindowHelper.GetWindowHandle(this);
+            Win32Helper.SetAlwaysOnTop(hwnd, enabled);
+        }
     }
 }
-
-/*
- * TODO: Window positioning and behavior
- *
- * 1. Always-on-top using Win32:
- *    [DllImport("user32.dll")]
- *    static extern bool SetWindowPos(IntPtr hWnd, IntPtr hWndInsertAfter, ...);
- *
- *    IntPtr HWND_TOPMOST = new IntPtr(-1);
- *    SetWindowPos(hwnd, HWND_TOPMOST, x, y, width, height, flags);
- *
- * 2. Dragging without titlebar:
- *    - Use ReleasePointerCapture/CapturePointer on header
- *    - Track pointer position changes
- *    - Use AppWindow.Move() or Win32 SetWindowPos
- *
- * 3. Semi-transparency:
- *    - Already done via Grid Background Opacity
- *    - Can also use Window.SystemBackdrop for acrylic/mica
- *
- * 4. Click-through regions (advanced):
- *    - Set WS_EX_TRANSPARENT on specific regions
- *    - Allow clicks to pass through when minimized
- */
