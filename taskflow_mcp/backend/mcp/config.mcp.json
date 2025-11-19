@@ -1,0 +1,63 @@
+{
+  "server": {
+    "port": 3000,
+    "name": "TaskFlow MCP Server",
+    "version": "1.0.0"
+  },
+  "sources": {
+    "gmail": {
+      "enabled": true,
+      "type": "email",
+      "credentials": {
+        "clientId": "TODO_PHASE_2",
+        "clientSecret": "TODO_PHASE_2",
+        "refreshToken": "TODO_PHASE_2"
+      }
+    },
+    "github": {
+      "enabled": true,
+      "type": "issues",
+      "credentials": {
+        "personalAccessToken": "TODO_PHASE_2",
+        "repositories": [
+          "skynet/taskflow",
+          "skynet/skynet-core"
+        ]
+      }
+    },
+    "trello": {
+      "enabled": true,
+      "type": "boards",
+      "credentials": {
+        "apiKey": "TODO_PHASE_2",
+        "token": "TODO_PHASE_2",
+        "boards": [
+          "board_id_1",
+          "board_id_2"
+        ]
+      }
+    },
+    "notion": {
+      "enabled": false,
+      "type": "database",
+      "credentials": {
+        "integrationToken": "TODO_PHASE_2",
+        "databaseIds": [
+          "database_id_1"
+        ]
+      }
+    },
+    "slack": {
+      "enabled": false,
+      "type": "messages",
+      "credentials": {
+        "botToken": "TODO_PHASE_2",
+        "workspaceId": "TODO_PHASE_2"
+      }
+    }
+  },
+  "sync": {
+    "intervalMinutes": 15,
+    "autoSync": false
+  }
+}
