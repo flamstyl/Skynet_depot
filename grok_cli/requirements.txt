@@ -1,0 +1,55 @@
+# Core Dependencies
+pydantic>=2.0.0
+pyyaml>=6.0
+python-dotenv>=1.0.0
+rich>=13.0.0
+typer>=0.9.0
+asyncio>=3.4.3
+
+# File & Project Analysis
+pathlib>=1.0.1
+gitpython>=3.1.40
+tree-sitter>=0.20.0
+ast-parser>=1.0.0
+
+# Code Generation & AI
+openai>=1.0.0
+anthropic>=0.25.0
+langchain>=0.1.0
+langchain-community>=0.0.13
+
+# RAG & Vector Store
+chromadb>=0.4.0
+sentence-transformers>=2.2.2
+faiss-cpu>=1.7.4
+tiktoken>=0.5.0
+
+# Docker Integration
+docker>=7.0.0
+python-on-whales>=0.68.0
+
+# API Server (FastAPI)
+fastapi>=0.109.0
+uvicorn[standard]>=0.27.0
+pydantic-settings>=2.0.0
+python-multipart>=0.0.6
+
+# Dashboard (Streamlit)
+streamlit>=1.31.0
+plotly>=5.18.0
+pandas>=2.0.0
+
+# Testing & Diagnostics
+pytest>=7.4.0
+pytest-asyncio>=0.21.0
+pytest-cov>=4.1.0
+
+# MCP Dependencies
+nodejs>=18.0.0  # Note: installed via system, not pip
+websockets>=12.0
+
+# Utilities
+httpx>=0.26.0
+tenacity>=8.2.3
+psutil>=5.9.0
+watchdog>=3.0.0
