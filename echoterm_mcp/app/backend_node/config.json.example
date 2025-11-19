@@ -1,0 +1,20 @@
+{
+  "provider": "claude",
+  "apiKey": "YOUR_API_KEY_HERE",
+  "model": "claude-sonnet-4-5",
+  "maxTokens": 1024,
+  "shell": {
+    "default": "powershell.exe",
+    "timeout": 30000,
+    "encoding": "utf8"
+  },
+  "memory": {
+    "sessionCommandsLimit": 50,
+    "sessionErrorsLimit": 20,
+    "longtermCommandsLimit": 10
+  },
+  "mcp": {
+    "enabled": false,
+    "serverUrl": "http://localhost:3738"
+  }
+}

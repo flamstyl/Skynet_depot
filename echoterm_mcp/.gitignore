@@ -1,0 +1,51 @@
+# Node modules
+node_modules/
+*/node_modules/
+
+# Build outputs
+dist/
+build/
+out/
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# Configuration with secrets
+app/backend_node/config.json
+app/mcp/config.mcp.json
+
+# Data files (sensitive)
+data/
+!data/.gitkeep
+
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Electron
+app/electron/dist/
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+
+# Package lock (optionnel)
+# package-lock.json
+# yarn.lock
