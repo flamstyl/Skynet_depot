@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Claude DevBox - Skynet Development Environment</title>
+
+    <!-- Monaco Editor -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/monaco-editor@0.45.0/min/vs/editor/editor.main.css">
+
+    <!-- xterm.js -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/xterm@5.3.0/css/xterm.css">
+
+    <!-- Custom Styles -->
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Main Container -->
+    <div id="app">
+        <!-- Header -->
+        <header class="header">
+            <div class="logo">
+                <span class="logo-icon">🧠</span>
+                <span class="logo-text">Claude DevBox</span>
+                <span class="logo-subtitle">Skynet Autonomous Development</span>
+            </div>
+
+            <div class="controls">
+                <select id="languageSelect" class="language-select">
+                    <option value="python">Python</option>
+                    <option value="javascript">JavaScript</option>
+                    <option value="typescript">TypeScript</option>
+                    <option value="java">Java</option>
+                    <option value="rust">Rust</option>
+                    <option value="go">Go</option>
+                    <option value="cpp">C++</option>
+                    <option value="csharp">C#</option>
+                </select>
+
+                <button id="runBtn" class="btn btn-primary">
+                    <span class="btn-icon">▶</span>
+                    Run
+                </button>
+
+                <button id="autofixBtn" class="btn btn-secondary">
+                    <span class="btn-icon">🔧</span>
+                    Auto-Fix
+                </button>
+
+                <button id="buildBtn" class="btn btn-tertiary">
+                    <span class="btn-icon">🔨</span>
+                    Build
+                </button>
+
+                <button id="testLinuxBtn" class="btn btn-tertiary">
+                    <span class="btn-icon">🐧</span>
+                    Test Linux
+                </button>
+
+                <button id="testWindowsBtn" class="btn btn-tertiary">
+                    <span class="btn-icon">🪟</span>
+                    Test Windows
+                </button>
+
+                <button id="clearBtn" class="btn btn-danger">
+                    <span class="btn-icon">🗑</span>
+                    Clear
+                </button>
+
+                <div class="status-indicator" id="statusIndicator">
+                    <span class="status-dot"></span>
+                    <span class="status-text">Ready</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Layout -->
+        <div class="main-layout">
+            <!-- Sidebar - File Tree -->
+            <aside class="sidebar" id="sidebar">
+                <div class="sidebar-header">
+                    <h3>Workspace</h3>
+                    <button id="refreshFilesBtn" class="icon-btn" title="Refresh">↻</button>
+                    <button id="newFileBtn" class="icon-btn" title="New File">+</button>
+                </div>
+                <div id="fileTree" class="file-tree"></div>
+            </aside>
+
+            <!-- Content Area -->
+            <main class="content">
+                <!-- Top Section - Code Editor -->
+                <section class="panel-group" id="topSection">
+                    <div class="panel code-panel">
+                        <div class="panel-header">
+                            <h3>Code Editor</h3>
+                            <div class="panel-actions">
+                                <span id="cursorPosition" class="info-text">Ln 1, Col 1</span>
+                                <button id="formatBtn" class="icon-btn" title="Format">⚡</button>
+                                <button id="saveBtn" class="icon-btn" title="Save">💾</button>
+                            </div>
+                        </div>
+                        <div id="editor" class="editor-container"></div>
+                    </div>
+                </section>
+
+                <!-- Resize Handle -->
+                <div class="resize-handle" id="horizontalResizeHandle"></div>
+
+                <!-- Bottom Section - Multi-Panel Output -->
+                <section class="panel-group" id="bottomSection">
+                    <div class="tabs">
+                        <button class="tab active" data-panel="output">
+                            <span class="tab-icon">📤</span>
+                            Output
+                        </button>
+                        <button class="tab" data-panel="errors">
+                            <span class="tab-icon">❌</span>
+                            Errors
+                            <span class="badge" id="errorBadge" style="display: none;">0</span>
+                        </button>
+                        <button class="tab" data-panel="terminal">
+                            <span class="tab-icon">💻</span>
+                            Terminal
+                        </button>
+                        <button class="tab" data-panel="docker">
+                            <span class="tab-icon">🐳</span>
+                            Docker Logs
+                        </button>
+                        <button class="tab" data-panel="autofix">
+                            <span class="tab-icon">🔄</span>
+                            Auto-Fix Log
+                        </button>
+                        <button class="tab" data-panel="build">
+                            <span class="tab-icon">📦</span>
+                            Build Output
+                        </button>
+                    </div>
+
+                    <div class="panel-content">
+                        <!-- Output Panel -->
+                        <div id="outputPanel" class="output-panel active">
+                            <div class="panel-toolbar">
+                                <button id="clearOutputBtn" class="icon-btn">Clear</button>
+                                <button id="copyOutputBtn" class="icon-btn">Copy</button>
+                            </div>
+                            <pre id="outputContent" class="output-content"></pre>
+                        </div>
+
+                        <!-- Errors Panel -->
+                        <div id="errorsPanel" class="output-panel">
+                            <div class="panel-toolbar">
+                                <button id="clearErrorsBtn" class="icon-btn">Clear</button>
+                                <button id="copyErrorsBtn" class="icon-btn">Copy</button>
+                            </div>
+                            <pre id="errorsContent" class="output-content error-content"></pre>
+                        </div>
+
+                        <!-- Terminal Panel -->
+                        <div id="terminalPanel" class="output-panel">
+                            <div class="panel-toolbar">
+                                <button id="clearTerminalBtn" class="icon-btn">Clear</button>
+                                <button id="restartTerminalBtn" class="icon-btn">Restart</button>
+                            </div>
+                            <div id="terminal" class="terminal-container"></div>
+                        </div>
+
+                        <!-- Docker Logs Panel -->
+                        <div id="dockerPanel" class="output-panel">
+                            <div class="panel-toolbar">
+                                <button id="clearDockerBtn" class="icon-btn">Clear</button>
+                                <button id="copyDockerBtn" class="icon-btn">Copy</button>
+                            </div>
+                            <pre id="dockerContent" class="output-content docker-content"></pre>
+                        </div>
+
+                        <!-- Auto-Fix Log Panel -->
+                        <div id="autofixPanel" class="output-panel">
+                            <div class="panel-toolbar">
+                                <button id="clearAutofixBtn" class="icon-btn">Clear</button>
+                            </div>
+                            <div id="autofixContent" class="autofix-content"></div>
+                        </div>
+
+                        <!-- Build Output Panel -->
+                        <div id="buildPanel" class="output-panel">
+                            <div class="panel-toolbar">
+                                <button id="clearBuildBtn" class="icon-btn">Clear</button>
+                                <button id="copyBuildBtn" class="icon-btn">Copy</button>
+                            </div>
+                            <pre id="buildContent" class="output-content build-content"></pre>
+                        </div>
+                    </div>
+                </section>
+            </main>
+        </div>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <div class="footer-left">
+                <span id="connectionStatus">🟢 Connected</span>
+                <span id="dockerStatus">🐳 Docker Ready</span>
+                <span id="vmStatus">🖥 VMs: Linux ✓ | Windows ✓</span>
+            </div>
+            <div class="footer-center">
+                <span id="runInfo"></span>
+            </div>
+            <div class="footer-right">
+                <span>Built with 🔥 for Skynet by Claude Code</span>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Modal for Auto-Fix Progress -->
+    <div id="autofixModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>🔧 Auto-Fix in Progress</h3>
+            </div>
+            <div class="modal-body">
+                <div class="progress-container">
+                    <div id="autofixProgress" class="progress-bar"></div>
+                </div>
+                <p id="autofixStatus">Analyzing errors...</p>
+                <div id="autofixAttempts" class="attempts-list"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/monaco-editor@0.45.0/min/vs/loader.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/xterm@5.3.0/lib/xterm.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/xterm-addon-fit@0.8.0/lib/xterm-addon-fit.js"></script>
+
+    <!-- Application Components -->
+    <script type="module" src="components/FileTree.js"></script>
+    <script type="module" src="components/CodeEditor.js"></script>
+    <script type="module" src="components/TerminalView.js"></script>
+    <script type="module" src="components/LogsPanel.js"></script>
+    <script type="module" src="components/SplitView.js"></script>
+    <script type="module" src="components/APIClient.js"></script>
+    <script type="module" src="components/WebSocketClient.js"></script>
+
+    <!-- Main Application -->
+    <script type="module" src="app.js"></script>
+</body>
+</html>
