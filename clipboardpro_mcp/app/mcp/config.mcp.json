@@ -1,0 +1,184 @@
+{
+  "name": "clipboardpro-mcp",
+  "version": "1.0.0",
+  "description": "Skynet Clipboard Intelligence MCP Server",
+  "server": {
+    "port": 3002,
+    "host": "localhost",
+    "protocol": "http"
+  },
+  "tools": [
+    {
+      "name": "sync_push",
+      "description": "Push clipboard entry to sync server",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "device_id": {
+            "type": "string",
+            "description": "Unique device identifier"
+          },
+          "entry": {
+            "type": "object",
+            "description": "Clipboard entry to sync",
+            "properties": {
+              "type": {
+                "type": "string",
+                "enum": ["text", "image", "file"]
+              },
+              "content": {
+                "type": "string"
+              },
+              "metadata": {
+                "type": "object"
+              }
+            }
+          }
+        },
+        "required": ["device_id", "entry"]
+      }
+    },
+    {
+      "name": "sync_pull",
+      "description": "Pull clipboard entries from sync server",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "device_id": {
+            "type": "string",
+            "description": "Unique device identifier"
+          },
+          "since": {
+            "type": "string",
+            "description": "Timestamp to fetch entries since"
+          }
+        },
+        "required": ["device_id"]
+      }
+    },
+    {
+      "name": "ocr_extract",
+      "description": "Extract text from image using OCR",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "image": {
+            "type": "string",
+            "description": "Base64 encoded image data"
+          },
+          "language": {
+            "type": "string",
+            "description": "OCR language (default: eng)",
+            "default": "eng"
+          }
+        },
+        "required": ["image"]
+      }
+    },
+    {
+      "name": "ai_rewrite",
+      "description": "Rewrite text using AI",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "text": {
+            "type": "string",
+            "description": "Text to rewrite"
+          },
+          "style": {
+            "type": "string",
+            "description": "Rewrite style (professional, casual, formal)",
+            "default": "professional"
+          }
+        },
+        "required": ["text"]
+      }
+    },
+    {
+      "name": "ai_translate",
+      "description": "Translate text using AI",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "text": {
+            "type": "string",
+            "description": "Text to translate"
+          },
+          "target_language": {
+            "type": "string",
+            "description": "Target language code (en, fr, es, etc.)"
+          },
+          "source_language": {
+            "type": "string",
+            "description": "Source language (auto-detect if not specified)"
+          }
+        },
+        "required": ["text", "target_language"]
+      }
+    },
+    {
+      "name": "ai_summarize",
+      "description": "Summarize text using AI",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "text": {
+            "type": "string",
+            "description": "Text to summarize"
+          },
+          "length": {
+            "type": "string",
+            "description": "Summary length (short, medium, long)",
+            "default": "medium"
+          }
+        },
+        "required": ["text"]
+      }
+    },
+    {
+      "name": "ai_clean",
+      "description": "Clean and format text using AI",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "text": {
+            "type": "string",
+            "description": "Text to clean"
+          },
+          "options": {
+            "type": "object",
+            "description": "Cleaning options",
+            "properties": {
+              "remove_formatting": {
+                "type": "boolean",
+                "default": true
+              },
+              "fix_grammar": {
+                "type": "boolean",
+                "default": true
+              },
+              "normalize_whitespace": {
+                "type": "boolean",
+                "default": true
+              }
+            }
+          }
+        },
+        "required": ["text"]
+      }
+    }
+  ],
+  "authentication": {
+    "type": "api_key",
+    "header": "X-API-Key"
+  },
+  "storage": {
+    "type": "memory",
+    "ttl": 86400
+  },
+  "ai": {
+    "provider": "claude",
+    "fallback": "gemini",
+    "prompts_path": "../../ai_prompts"
+  }
+}

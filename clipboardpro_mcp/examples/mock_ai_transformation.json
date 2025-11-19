@@ -1,0 +1,91 @@
+{
+  "rewrite_example": {
+    "action": "rewrite",
+    "input": "hey can u send me that report asap? need it for the meeting tomorrow thx",
+    "output": "Could you please send me that report at your earliest convenience? I will need it for tomorrow's meeting. Thank you.",
+    "style": "professional",
+    "provider": "claude",
+    "model": "claude-sonnet-4.5",
+    "usage": {
+      "input_tokens": 18,
+      "output_tokens": 22,
+      "processing_time_ms": 1234
+    }
+  },
+  "translate_example": {
+    "action": "translate",
+    "input": "Hello, how are you today? I hope you're having a great day!",
+    "output": "Bonjour, comment allez-vous aujourd'hui ? J'espère que vous passez une excellente journée !",
+    "source_language": "en",
+    "target_language": "fr",
+    "provider": "gemini",
+    "model": "gemini-2.0-flash",
+    "usage": {
+      "input_tokens": 15,
+      "output_tokens": 18,
+      "processing_time_ms": 892
+    }
+  },
+  "summarize_example": {
+    "action": "summarize",
+    "input": "Artificial intelligence has made remarkable progress in recent years, particularly in the field of natural language processing. Large language models like GPT-4 and Claude have demonstrated unprecedented capabilities in understanding and generating human-like text. These models are trained on vast amounts of data and can perform a wide variety of tasks, from translation to creative writing. However, they also raise important questions about ethics, bias, and the future of work. As AI continues to evolve, it's crucial that we develop responsible frameworks for its deployment and use.",
+    "output": "Recent advances in AI, especially in natural language processing through models like GPT-4 and Claude, have shown remarkable text understanding and generation capabilities. While these systems demonstrate impressive versatility, they raise important concerns about ethics, bias, and employment that require responsible governance frameworks.",
+    "length": "medium",
+    "provider": "claude",
+    "model": "claude-sonnet-4.5",
+    "usage": {
+      "input_tokens": 105,
+      "output_tokens": 48,
+      "processing_time_ms": 1567
+    }
+  },
+  "clean_example": {
+    "action": "clean",
+    "input": "this    is   some  text   with    lots of    extra     spaces  and\n\n\n\nmultiple\n\n\nline breaks   also  some typos  liek  and  mispellings",
+    "output": "This is some text with lots of extra spaces and multiple line breaks, also some typos like and misspellings.",
+    "options": {
+      "remove_formatting": true,
+      "fix_grammar": true,
+      "normalize_whitespace": true
+    },
+    "provider": "claude",
+    "model": "claude-sonnet-4.5",
+    "usage": {
+      "input_tokens": 32,
+      "output_tokens": 24,
+      "processing_time_ms": 734
+    }
+  },
+  "complete_workflow_example": {
+    "description": "Example of a complete clipboard → OCR → AI workflow",
+    "steps": [
+      {
+        "step": 1,
+        "action": "clipboard_capture",
+        "description": "User copies an image of a handwritten note",
+        "type": "image",
+        "timestamp": "2025-11-18T10:30:00Z"
+      },
+      {
+        "step": 2,
+        "action": "ocr_extraction",
+        "description": "Extract text from the image",
+        "extracted_text": "Meeting notes: Discuss Q4 results, plan 2026 strategy, review budget allocations",
+        "confidence": 0.92
+      },
+      {
+        "step": 3,
+        "action": "ai_rewrite",
+        "description": "Rewrite the extracted text professionally",
+        "output": "Meeting Agenda: Q4 Results Discussion, 2026 Strategic Planning, Budget Allocation Review",
+        "style": "professional"
+      },
+      {
+        "step": 4,
+        "action": "clipboard_copy",
+        "description": "Copy the final result back to clipboard",
+        "final_result": "Meeting Agenda: Q4 Results Discussion, 2026 Strategic Planning, Budget Allocation Review"
+      }
+    ]
+  }
+}
