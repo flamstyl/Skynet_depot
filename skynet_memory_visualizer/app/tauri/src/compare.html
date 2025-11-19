@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Version Compare - Skynet Memory Visualizer</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <h1>⚏ Version Compare</h1>
+        </header>
+
+        <!-- Navigation -->
+        <nav class="nav">
+            <a href="index.html" class="nav-link">Dashboard</a>
+            <a href="tree_view.html" class="nav-link">Documents</a>
+            <a href="editor.html" class="nav-link">Editor</a>
+            <a href="compare.html" class="nav-link active">Compare</a>
+        </nav>
+
+        <!-- Compare Controls -->
+        <div class="compare-controls">
+            <div class="control-group">
+                <label>Document:</label>
+                <input type="text" id="doc-path" placeholder="Document path...">
+                <button onclick="loadVersions()">Load Versions</button>
+            </div>
+            <div class="control-group">
+                <label>Version A:</label>
+                <select id="version-a">
+                    <option value="">Select version...</option>
+                </select>
+            </div>
+            <div class="control-group">
+                <label>Version B:</label>
+                <select id="version-b">
+                    <option value="">Select version...</option>
+                </select>
+            </div>
+            <div class="control-group">
+                <button class="btn-primary" onclick="compareVersions()">Compare</button>
+                <button class="btn-secondary" onclick="switchView()">Switch View</button>
+            </div>
+        </div>
+
+        <!-- Stats Bar -->
+        <div class="stats-bar" id="stats-bar" style="display: none;">
+            <div class="stat">
+                <span class="stat-label">Lines Added:</span>
+                <span class="stat-value stat-add" id="lines-added">0</span>
+            </div>
+            <div class="stat">
+                <span class="stat-label">Lines Removed:</span>
+                <span class="stat-value stat-remove" id="lines-removed">0</span>
+            </div>
+            <div class="stat">
+                <span class="stat-label">Lines Changed:</span>
+                <span class="stat-value stat-changed" id="lines-changed">0</span>
+            </div>
+            <div class="stat">
+                <span class="stat-label">Characters Changed:</span>
+                <span class="stat-value" id="chars-changed">0</span>
+            </div>
+        </div>
+
+        <!-- Compare View -->
+        <main class="compare-main">
+            <!-- Side-by-side view -->
+            <div id="side-by-side-view" class="side-by-side-view">
+                <div class="compare-pane">
+                    <div class="pane-header">
+                        <h3 id="version-a-label">Version A</h3>
+                        <span id="version-a-time"></span>
+                    </div>
+                    <div id="version-a-content" class="diff-content">
+                        <p class="placeholder">Select versions to compare</p>
+                    </div>
+                </div>
+                <div class="compare-pane">
+                    <div class="pane-header">
+                        <h3 id="version-b-label">Version B</h3>
+                        <span id="version-b-time"></span>
+                    </div>
+                    <div id="version-b-content" class="diff-content">
+                        <p class="placeholder">Select versions to compare</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Unified diff view -->
+            <div id="unified-view" class="unified-view" style="display: none;">
+                <div class="pane-header">
+                    <h3>Unified Diff</h3>
+                </div>
+                <div id="unified-content" class="diff-content">
+                    <p class="placeholder">Select versions to compare</p>
+                </div>
+            </div>
+        </main>
+
+        <!-- Actions -->
+        <div class="compare-actions" id="compare-actions" style="display: none;">
+            <button class="btn-primary" onclick="restoreVersion()">
+                ⬅ Restore Version A
+            </button>
+            <button class="btn-secondary" onclick="openInEditor()">
+                ✏️ Open in Editor
+            </button>
+            <button class="btn-secondary" onclick="exportDiff()">
+                💾 Export Diff
+            </button>
+        </div>
+    </div>
+
+    <script src="js/api_bridge.js"></script>
+    <script src="js/compare.js"></script>
+
+    <script>
+        let currentDocPath = null;
+        let versions = [];
+        let currentDiff = null;
+        let viewMode = 'side-by-side'; // or 'unified'
+
+        // Initialize
+        async function init() {
+            // Get doc path from URL if provided
+            const params = new URLSearchParams(window.location.search);
+            const docPath = params.get('path');
+            const versionA = params.get('a');
+            const versionB = params.get('b');
+
+            if (docPath) {
+                document.getElementById('doc-path').value = docPath;
+                await loadVersions();
+
+                if (versionA && versionB) {
+                    document.getElementById('version-a').value = versionA;
+                    document.getElementById('version-b').value = versionB;
+                    await compareVersions();
+                }
+            }
+        }
+
+        async function loadVersions() {
+            const path = document.getElementById('doc-path').value;
+            if (!path) {
+                alert('Please enter a document path');
+                return;
+            }
+
+            try {
+                currentDocPath = path;
+                versions = await api.getHistory(path);
+
+                if (!versions || versions.length === 0) {
+                    alert('No versions found for this document');
+                    return;
+                }
+
+                // Populate version selects
+                populateVersionSelect('version-a', versions);
+                populateVersionSelect('version-b', versions);
+
+                // Select most recent two versions by default
+                if (versions.length >= 2) {
+                    document.getElementById('version-a').value = versions[1].version_id;
+                    document.getElementById('version-b').value = versions[0].version_id;
+                }
+            } catch (error) {
+                alert('Failed to load versions: ' + error.message);
+            }
+        }
+
+        function populateVersionSelect(selectId, versions) {
+            const select = document.getElementById(selectId);
+            select.innerHTML = '<option value="">Select version...</option>';
+
+            versions.forEach((version, index) => {
+                const option = document.createElement('option');
+                option.value = version.version_id;
+                option.textContent = `v${versions.length - index} - ${formatDate(version.timestamp)} - ${version.summary || 'No description'}`;
+                select.appendChild(option);
+            });
+        }
+
+        async function compareVersions() {
+            const versionAId = document.getElementById('version-a').value;
+            const versionBId = document.getElementById('version-b').value;
+
+            if (!versionAId || !versionBId) {
+                alert('Please select both versions');
+                return;
+            }
+
+            if (versionAId === versionBId) {
+                alert('Please select different versions');
+                return;
+            }
+
+            try {
+                // Get version contents
+                const versionA = await api.getVersion(currentDocPath, versionAId);
+                const versionB = await api.getVersion(currentDocPath, versionBId);
+
+                // Generate diff
+                currentDiff = await api.generateDiff(versionA.content, versionB.content);
+
+                // Display diff
+                displayDiff(versionA, versionB, currentDiff);
+
+                // Show stats
+                displayStats(currentDiff.stats);
+
+                // Show actions
+                document.getElementById('compare-actions').style.display = 'flex';
+            } catch (error) {
+                alert('Failed to compare versions: ' + error.message);
+            }
+        }
+
+        function displayDiff(versionA, versionB, diff) {
+            // Update headers
+            document.getElementById('version-a-label').textContent = `Version A (${versionA.version_id})`;
+            document.getElementById('version-b-label').textContent = `Version B (${versionB.version_id})`;
+            document.getElementById('version-a-time').textContent = formatDate(versionA.timestamp);
+            document.getElementById('version-b-time').textContent = formatDate(versionB.timestamp);
+
+            if (viewMode === 'side-by-side') {
+                displaySideBySide(versionA.content, versionB.content, diff);
+            } else {
+                displayUnified(diff);
+            }
+        }
+
+        function displaySideBySide(contentA, contentB, diff) {
+            const linesA = contentA.split('\n');
+            const linesB = contentB.split('\n');
+
+            const containerA = document.getElementById('version-a-content');
+            const containerB = document.getElementById('version-b-content');
+
+            containerA.innerHTML = '';
+            containerB.innerHTML = '';
+
+            // Build side-by-side view
+            const maxLines = Math.max(linesA.length, linesB.length);
+
+            for (let i = 0; i < maxLines; i++) {
+                const lineA = linesA[i] !== undefined ? linesA[i] : '';
+                const lineB = linesB[i] !== undefined ? linesB[i] : '';
+
+                // Determine line status
+                let statusA = 'unchanged';
+                let statusB = 'unchanged';
+
+                if (lineA !== lineB) {
+                    if (lineA === '') {
+                        statusA = 'empty';
+                        statusB = 'added';
+                    } else if (lineB === '') {
+                        statusA = 'removed';
+                        statusB = 'empty';
+                    } else {
+                        statusA = 'modified';
+                        statusB = 'modified';
+                    }
+                }
+
+                // Create line elements
+                const divA = createDiffLine(i + 1, lineA, statusA);
+                const divB = createDiffLine(i + 1, lineB, statusB);
+
+                containerA.appendChild(divA);
+                containerB.appendChild(divB);
+            }
+        }
+
+        function createDiffLine(lineNum, content, status) {
+            const div = document.createElement('div');
+            div.className = `diff-line diff-line-${status}`;
+
+            const lineNumber = document.createElement('span');
+            lineNumber.className = 'line-number';
+            lineNumber.textContent = lineNum;
+
+            const lineContent = document.createElement('span');
+            lineContent.className = 'line-content';
+            lineContent.textContent = content;
+
+            div.appendChild(lineNumber);
+            div.appendChild(lineContent);
+
+            return div;
+        }
+
+        function displayUnified(diff) {
+            const container = document.getElementById('unified-content');
+            container.innerHTML = '';
+
+            // TODO: Implement unified diff view
+            // For now, show a simple representation
+            const pre = document.createElement('pre');
+            pre.className = 'unified-diff';
+            pre.textContent = diff.unified || 'Unified diff not available';
+            container.appendChild(pre);
+        }
+
+        function displayStats(stats) {
+            document.getElementById('stats-bar').style.display = 'flex';
+            document.getElementById('lines-added').textContent = stats.lines_added || 0;
+            document.getElementById('lines-removed').textContent = stats.lines_removed || 0;
+            document.getElementById('lines-changed').textContent = stats.lines_changed || 0;
+            document.getElementById('chars-changed').textContent = stats.chars_changed || 0;
+        }
+
+        function switchView() {
+            viewMode = viewMode === 'side-by-side' ? 'unified' : 'side-by-side';
+
+            if (viewMode === 'side-by-side') {
+                document.getElementById('side-by-side-view').style.display = 'flex';
+                document.getElementById('unified-view').style.display = 'none';
+            } else {
+                document.getElementById('side-by-side-view').style.display = 'none';
+                document.getElementById('unified-view').style.display = 'block';
+            }
+
+            if (currentDiff) {
+                const versionAId = document.getElementById('version-a').value;
+                const versionBId = document.getElementById('version-b').value;
+                compareVersions();
+            }
+        }
+
+        async function restoreVersion() {
+            const versionId = document.getElementById('version-a').value;
+
+            if (!confirm(`Restore to version ${versionId}? This will create a new version.`)) {
+                return;
+            }
+
+            try {
+                await api.restoreVersion(currentDocPath, versionId);
+                alert('Version restored successfully');
+                window.location.href = `editor.html?path=${encodeURIComponent(currentDocPath)}`;
+            } catch (error) {
+                alert('Failed to restore version: ' + error.message);
+            }
+        }
+
+        function openInEditor() {
+            window.location.href = `editor.html?path=${encodeURIComponent(currentDocPath)}`;
+        }
+
+        async function exportDiff() {
+            try {
+                const result = await api.exportDiff(currentDocPath, currentDiff);
+                alert(`Diff exported to ${result.path}`);
+            } catch (error) {
+                alert('Failed to export diff: ' + error.message);
+            }
+        }
+
+        function formatDate(timestamp) {
+            return new Date(timestamp).toLocaleString();
+        }
+
+        // Initialize on load
+        document.addEventListener('DOMContentLoaded', init);
+
+        // Sync scrolling between panes
+        document.getElementById('version-a-content')?.addEventListener('scroll', function(e) {
+            const scrollPercent = this.scrollTop / (this.scrollHeight - this.clientHeight);
+            const containerB = document.getElementById('version-b-content');
+            containerB.scrollTop = scrollPercent * (containerB.scrollHeight - containerB.clientHeight);
+        });
+    </script>
+</body>
+</html>
