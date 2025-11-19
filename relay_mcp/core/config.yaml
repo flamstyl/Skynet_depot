@@ -1,0 +1,90 @@
+# RelayMCP Configuration
+
+server:
+  host: "127.0.0.1"
+  port: 8000
+  workers: 4
+  debug: false
+
+dashboard:
+  enabled: true
+  host: "127.0.0.1"
+  port: 5000
+  auto_refresh_seconds: 5
+
+buffer:
+  max_size: 10000
+  ttl_seconds: 86400  # 24 hours
+  drop_policy: "oldest_first"  # oldest_first | lowest_priority
+  persist_interval_seconds: 300  # 5 minutes
+
+persistence:
+  db_path: "data/buffer.db"
+  jsonl_path: "data/logs/mcp_traffic.jsonl"
+  enable_snapshots: true
+  snapshot_interval_seconds: 3600
+
+logging:
+  level: "INFO"  # DEBUG | INFO | WARNING | ERROR
+  file: "data/logs/relay.log"
+  max_bytes: 10485760  # 10MB
+  backup_count: 5
+  format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+
+connectors:
+  claude:
+    enabled: true
+    type: "cli"
+    command: "claude"
+    timeout_seconds: 60
+    max_tokens: 4096
+
+  gpt:
+    enabled: true
+    type: "api"
+    api_key: "${OPENAI_API_KEY}"
+    model: "gpt-4"
+    timeout_seconds: 60
+    max_tokens: 4096
+
+  gemini:
+    enabled: true
+    type: "cli"
+    command: "gemini"
+    timeout_seconds: 60
+    max_tokens: 4096
+
+  perplexity:
+    enabled: false
+    type: "file_watcher"
+    inbox_path: "data/perplexity/inbox"
+    outbox_path: "data/perplexity/outbox"
+    poll_interval_seconds: 5
+
+message:
+  max_payload_size_bytes: 1048576  # 1MB
+  default_ttl_seconds: 3600
+  default_priority: "normal"
+  allowed_types:
+    - "request"
+    - "response"
+    - "broadcast"
+    - "notification"
+
+security:
+  enable_allowlist: true
+  allowed_ai_keys:
+    - "claude"
+    - "gpt"
+    - "gemini"
+    - "perplexity"
+    - "orchestrator"
+  enable_rate_limiting: true
+  rate_limit_per_minute: 100
+  sanitize_payloads: true
+
+monitoring:
+  enable_metrics: true
+  metrics_retention_seconds: 604800  # 7 days
+  track_latency: true
+  track_token_usage: true

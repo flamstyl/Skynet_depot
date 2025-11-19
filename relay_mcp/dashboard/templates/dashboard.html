@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RelayMCP Dashboard - Skynet Neural Bus</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <h1>📡 RelayMCP Dashboard</h1>
+            <p class="subtitle">Skynet AI Interlink Bus - Real-time Monitoring</p>
+            <div class="status-indicator" id="status-indicator">
+                <span class="status-dot"></span>
+                <span id="status-text">Connecting...</span>
+            </div>
+        </header>
+
+        <!-- Main Grid -->
+        <div class="dashboard-grid">
+            <!-- Active Connections Panel -->
+            <div class="panel connections-panel">
+                <h2>🔗 Active Connections</h2>
+                <div id="connections-list" class="connections-list">
+                    <p class="loading">Loading...</p>
+                </div>
+            </div>
+
+            <!-- Traffic Statistics Panel -->
+            <div class="panel stats-panel">
+                <h2>📊 Traffic Statistics</h2>
+                <div class="stats-grid" id="stats-grid">
+                    <div class="stat-item">
+                        <span class="stat-label">Total Processed</span>
+                        <span class="stat-value" id="stat-total">0</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Avg Latency</span>
+                        <span class="stat-value" id="stat-latency">0ms</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Error Rate</span>
+                        <span class="stat-value" id="stat-errors">0%</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Buffer Usage</span>
+                        <span class="stat-value" id="stat-buffer">0%</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Connection Graph Panel -->
+            <div class="panel graph-panel">
+                <h2>🌐 Connection Map</h2>
+                <div id="connection-graph" class="connection-graph">
+                    <canvas id="graph-canvas"></canvas>
+                    <div id="graph-legend" class="graph-legend"></div>
+                </div>
+            </div>
+
+            <!-- Message Activity Panel -->
+            <div class="panel activity-panel">
+                <h2>💬 Message Activity (by AI)</h2>
+                <div id="activity-chart" class="activity-chart">
+                    <!-- Will be populated by JS -->
+                </div>
+            </div>
+
+            <!-- Recent Messages Panel -->
+            <div class="panel messages-panel">
+                <h2>📨 Recent Messages</h2>
+                <div class="messages-controls">
+                    <button id="refresh-messages" class="btn-refresh">Refresh</button>
+                    <span class="last-update" id="last-update">Never</span>
+                </div>
+                <div id="recent-messages" class="messages-list">
+                    <p class="loading">Loading messages...</p>
+                </div>
+            </div>
+
+            <!-- Buffer Status Panel -->
+            <div class="panel buffer-panel">
+                <h2>💾 Buffer Status</h2>
+                <div id="buffer-info" class="buffer-info">
+                    <div class="buffer-bar-container">
+                        <div class="buffer-bar" id="buffer-bar"></div>
+                    </div>
+                    <div class="buffer-stats" id="buffer-stats">
+                        <p>Messages: <span id="buffer-count">0</span> / <span id="buffer-max">10000</span></p>
+                        <p>Utilization: <span id="buffer-util">0%</span></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <p>RelayMCP v1.0.0 | Skynet Depot | Auto-refresh: <span id="refresh-countdown">5</span>s</p>
+        </footer>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
+</body>
+</html>
