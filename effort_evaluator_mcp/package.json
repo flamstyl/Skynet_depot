@@ -1,0 +1,17 @@
+{
+  "name": "@skynet/effort-evaluator-mcp",
+  "version": "1.0.0",
+  "description": "MCP pour évaluer l'effort en tokens de différentes approches avant exécution",
+  "main": "src/server.js",
+  "type": "module",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "node --watch src/server.js"
+  },
+  "keywords": ["mcp", "effort", "tokens", "evaluation", "claude", "copilot"],
+  "author": "Skynet Coalition",
+  "license": "MIT",
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^0.5.0"
+  }
+}
