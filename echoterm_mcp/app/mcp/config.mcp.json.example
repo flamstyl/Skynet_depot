@@ -1,0 +1,30 @@
+{
+  "enabled": false,
+  "echoAgentUrl": "http://localhost:4000",
+  "skynetHubUrl": "http://localhost:5000",
+  "googleDriveEnabled": false,
+  "ragEnabled": false,
+  "syncInterval": 300000,
+  "tools": {
+    "get_terminal_session": {
+      "enabled": true,
+      "description": "Get current terminal session summary"
+    },
+    "get_command_history": {
+      "enabled": true,
+      "description": "Get recent command history"
+    },
+    "sync_memory": {
+      "enabled": false,
+      "description": "Sync memory with other Skynet agents"
+    },
+    "push_to_echo": {
+      "enabled": false,
+      "description": "Push session summary to Echo agent"
+    },
+    "get_insights_from_echo": {
+      "enabled": false,
+      "description": "Get insights from Echo agent"
+    }
+  }
+}
