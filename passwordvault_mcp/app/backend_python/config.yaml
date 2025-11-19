@@ -1,0 +1,72 @@
+# PasswordVault MCP — Backend Configuration
+# Skynet Secure Vault v1.0
+
+vault:
+  # Chemin vers le fichier vault local
+  path: "../../data/vault_local.vault"
+
+  # Auto-lock après inactivité (minutes)
+  auto_lock_timeout: 15
+
+  # Nombre maximum de tentatives de déverrouillage
+  max_unlock_attempts: 5
+
+crypto:
+  # Nombre d'itérations PBKDF2 (600k = OWASP 2023)
+  pbkdf2_iterations: 600000
+
+  # Taille du salt (bytes)
+  salt_size: 32
+
+  # Taille de clé AES (bytes)
+  key_size: 32
+
+  # Taille IV pour GCM (bytes)
+  iv_size: 12
+
+server:
+  # Adresse d'écoute (local only pour sécurité)
+  host: "127.0.0.1"
+
+  # Port du serveur Flask
+  port: 5555
+
+  # Mode debug (désactiver en production)
+  debug: true
+
+  # CORS origins autorisés
+  cors_origins:
+    - "http://localhost:*"
+
+hibp:
+  # URL de l'API HaveIBeenPwned
+  api_url: "https://api.pwnedpasswords.com/range/"
+
+  # Timeout des requêtes (secondes)
+  timeout: 10
+
+  # Cache des résultats (heures)
+  cache_duration: 24
+
+  # User-Agent pour les requêtes
+  user_agent: "PasswordVault-MCP-Skynet/1.0"
+
+mcp:
+  # URL du serveur MCP
+  server_url: "http://localhost:3000"
+
+  # Activer la synchronisation
+  sync_enabled: false
+
+  # ID de device pour sync
+  device_id: "skynet-desktop-1"
+
+logging:
+  # Niveau de log (DEBUG, INFO, WARNING, ERROR)
+  level: "INFO"
+
+  # Fichier de log
+  file: "../../data/vault.log"
+
+  # ATTENTION: Ne JAMAIS logger les mots de passe !
+  log_passwords: false

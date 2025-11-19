@@ -1,0 +1,8 @@
+# Data directory for PasswordVault MCP
+
+This directory will contain:
+- vault_local.vault (encrypted vault file)
+- sync_cache/ (MCP sync data)
+- vault.log (application logs)
+
+All files in this directory are gitignored for security.
