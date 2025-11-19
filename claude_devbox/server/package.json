@@ -1,0 +1,32 @@
+{
+  "name": "claude-devbox-server",
+  "version": "1.0.0",
+  "description": "Claude DevBox Backend - MCP Server & Execution Engine",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js",
+    "test": "jest"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "ws": "^8.16.0",
+    "dockerode": "^4.0.2",
+    "cors": "^2.8.5",
+    "body-parser": "^1.20.2",
+    "dotenv": "^16.4.1",
+    "winston": "^3.11.0",
+    "yaml": "^2.3.4",
+    "uuid": "^9.0.1",
+    "archiver": "^6.0.1",
+    "tar": "^6.2.0",
+    "fs-extra": "^11.2.0",
+    "chokidar": "^3.5.3",
+    "node-fetch": "^3.3.2"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.3",
+    "jest": "^29.7.0"
+  }
+}

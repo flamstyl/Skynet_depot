@@ -1,0 +1,55 @@
+{
+  "name": "claude-devbox-editor",
+  "version": "1.0.0",
+  "description": "Claude DevBox - Autonomous Development Environment UI",
+  "main": "main.js",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "electron": "electron .",
+    "electron:dev": "concurrently \"npm run dev\" \"wait-on http://localhost:5173 && electron .\"",
+    "package": "electron-builder"
+  },
+  "dependencies": {
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "@monaco-editor/react": "^4.6.0",
+    "xterm": "^5.3.0",
+    "xterm-addon-fit": "^0.8.0",
+    "xterm-addon-web-links": "^0.9.0",
+    "axios": "^1.6.0",
+    "ws": "^8.16.0",
+    "lucide-react": "^0.344.0",
+    "tailwindcss": "^3.4.1"
+  },
+  "devDependencies": {
+    "vite": "^5.1.0",
+    "@vitejs/plugin-react": "^4.2.1",
+    "electron": "^28.2.0",
+    "electron-builder": "^24.9.1",
+    "concurrently": "^8.2.2",
+    "wait-on": "^7.2.0",
+    "autoprefixer": "^10.4.17",
+    "postcss": "^8.4.35"
+  },
+  "build": {
+    "appId": "com.skynet.claude-devbox",
+    "productName": "Claude DevBox",
+    "directories": {
+      "output": "dist"
+    },
+    "files": [
+      "dist/**/*",
+      "main.js"
+    ],
+    "win": {
+      "target": "nsis",
+      "icon": "assets/icon.ico"
+    },
+    "linux": {
+      "target": "AppImage",
+      "icon": "assets/icon.png"
+    }
+  }
+}

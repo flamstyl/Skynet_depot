@@ -1,0 +1,83 @@
+version: '3.8'
+
+services:
+  # Backend API & MCP Server
+  backend:
+    build:
+      context: ./server
+      dockerfile: ../docker/Dockerfile.backend
+    container_name: devbox-backend
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./workspace:/workspace
+      - ./runs:/runs
+      - ./logs:/logs
+      - /var/run/docker.sock:/var/run/docker.sock  # For Docker-in-Docker
+    environment:
+      - NODE_ENV=production
+      - PORT=3000
+      - LOG_LEVEL=info
+      - DOCKER_HOST=unix:///var/run/docker.sock
+    networks:
+      - devbox-network
+    depends_on:
+      - sandbox
+
+  # Frontend Web Editor
+  frontend:
+    build:
+      context: ./editor
+      dockerfile: ../docker/Dockerfile.frontend
+    container_name: devbox-frontend
+    restart: unless-stopped
+    ports:
+      - "5173:5173"
+    environment:
+      - VITE_API_URL=http://backend:3000
+      - VITE_WS_URL=ws://backend:3000
+    networks:
+      - devbox-network
+    depends_on:
+      - backend
+
+  # Docker Sandbox (pre-built)
+  sandbox:
+    image: devbox-sandbox:latest
+    container_name: devbox-sandbox
+    restart: "no"
+    profiles:
+      - sandbox  # Only start when explicitly needed
+    volumes:
+      - ./workspace:/workspace
+    networks:
+      - devbox-network
+
+  # Nginx Reverse Proxy (optional)
+  nginx:
+    image: nginx:alpine
+    container_name: devbox-nginx
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./nginx/ssl:/etc/nginx/ssl:ro
+    networks:
+      - devbox-network
+    depends_on:
+      - backend
+      - frontend
+    profiles:
+      - production
+
+networks:
+  devbox-network:
+    driver: bridge
+
+volumes:
+  workspace:
+  runs:
+  logs:
