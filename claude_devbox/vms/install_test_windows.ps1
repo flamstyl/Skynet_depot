@@ -1,5 +1,9 @@
 # Windows VM - Test Environment Setup
 # Installs necessary tools for testing code in Windows VM
+# 
+# SECURITY WARNING: This script contains hardcoded credentials for development/testing only
+# DO NOT use these credentials in production environments
+# Change passwords and use secure credential management in production
 
 Write-Host "=== Setting up Windows VM for DevBox Testing ===" -ForegroundColor Blue
 
@@ -79,6 +83,8 @@ New-NetFirewallRule -DisplayName "PowerShell Remoting" -Direction Inbound -Proto
 
 # Create test user
 Write-Host "Creating test user..." -ForegroundColor Green
+Write-Host "WARNING: Using hardcoded credentials for development only!" -ForegroundColor Red
+Write-Host "SECURITY: Change password in production environments" -ForegroundColor Red
 $Username = "devbox"
 $Password = ConvertTo-SecureString "devbox" -AsPlainText -Force
 

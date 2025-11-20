@@ -3,9 +3,8 @@ import FileTree from './components/FileTree';
 import CodeEditor from './components/CodeEditor';
 import TerminalView from './components/TerminalView';
 import LogsPanel from './components/LogsPanel';
-import ControlBar from './components/ControlBar';
 import StatusBar from './components/StatusBar';
-import { Play, RotateCcw, Bug, Save, FolderOpen, Settings } from 'lucide-react';
+import { Play, Bug, Save, FolderOpen } from 'lucide-react';
 import axios from 'axios';
 
 const API_URL = 'http://localhost:3000';
@@ -120,7 +119,7 @@ function App() {
     addLog('info', `Running ${selectedFile || 'code'}...`);
 
     try {
-      const response = await axios.post(`${API_URL}/api/run`, {
+      await axios.post(`${API_URL}/api/run`, {
         code,
         language,
         filename: selectedFile,
