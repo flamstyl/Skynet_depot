@@ -1,0 +1,153 @@
+{
+  "version": "1.0.0",
+  "description": "Configuration des règles pour le watcher et dispatcher MCP",
+  "updated": "2025-11-21",
+
+  "agents": [
+    "Claude",
+    "Gemini",
+    "GPT"
+  ],
+
+  "watch_extensions": [
+    ".md"
+  ],
+
+  "auto_actions": {
+    "tasks_modified": "dispatch_task_check",
+    "directives_modified": "reload_agent_config",
+    "context_modified": "update_agent_context",
+    "memory_created": "index_in_rag",
+    "output_created": "sync_to_n8n"
+  },
+
+  "logging": {
+    "level": "INFO",
+    "format": "json",
+    "destination": "memory/log_raw/",
+    "rotation": {
+      "enabled": true,
+      "max_size_mb": 10,
+      "max_files": 5
+    }
+  },
+
+  "dispatcher": {
+    "mode": "watch",
+    "check_interval_seconds": 2,
+    "max_queue_size": 100,
+    "retry": {
+      "enabled": true,
+      "max_attempts": 3,
+      "delay_seconds": 5
+    }
+  },
+
+  "rag": {
+    "enabled": true,
+    "chunk_size": 500,
+    "overlap": 50,
+    "auto_index": true,
+    "index_on_files": [
+      "directives.md",
+      "context.md",
+      "tasks.md"
+    ]
+  },
+
+  "n8n": {
+    "enabled": false,
+    "webhook_url": "http://localhost:5678/webhook/mcp-webhook",
+    "timeout_seconds": 10,
+    "send_on_events": [
+      "modified",
+      "created"
+    ],
+    "ignore_files": [
+      "journal_*.md",
+      "log_raw/*"
+    ]
+  },
+
+  "filters": {
+    "ignore_directories": [
+      "log_raw",
+      ".git",
+      "__pycache__",
+      "node_modules"
+    ],
+    "ignore_files": [
+      ".DS_Store",
+      "*.tmp",
+      "*.swp",
+      "*~"
+    ]
+  },
+
+  "notifications": {
+    "enabled": false,
+    "channels": {
+      "slack": {
+        "enabled": false,
+        "webhook_url": "",
+        "events": ["error", "critical"]
+      },
+      "email": {
+        "enabled": false,
+        "smtp_server": "",
+        "from": "",
+        "to": [],
+        "events": ["error", "critical"]
+      },
+      "telegram": {
+        "enabled": false,
+        "bot_token": "",
+        "chat_id": "",
+        "events": ["error", "warning", "info"]
+      }
+    }
+  },
+
+  "performance": {
+    "debounce_ms": 500,
+    "batch_events": false,
+    "max_concurrent_handlers": 3
+  },
+
+  "security": {
+    "validate_file_content": true,
+    "max_file_size_mb": 10,
+    "allowed_agents_only": true,
+    "sanitize_paths": true
+  },
+
+  "experimental": {
+    "embeddings": {
+      "enabled": false,
+      "model": "sentence-transformers/all-MiniLM-L6-v2",
+      "dimension": 384
+    },
+    "ai_auto_completion": {
+      "enabled": false,
+      "model": "claude-3-sonnet",
+      "auto_complete_tasks": false
+    },
+    "multi_agent_collaboration": {
+      "enabled": false,
+      "allow_cross_agent_rag": false
+    }
+  },
+
+  "maintenance": {
+    "auto_cleanup": {
+      "enabled": true,
+      "old_events_days": 7,
+      "old_logs_days": 30
+    },
+    "backup": {
+      "enabled": false,
+      "frequency": "daily",
+      "destination": "/backup/mcp/"
+    }
+  }
+}

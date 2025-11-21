@@ -1,0 +1,174 @@
+{
+  "name": "MCP Obsidian Core - Sync Flow",
+  "nodes": [
+    {
+      "parameters": {
+        "path": "mcp-webhook",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "webhook-trigger",
+      "name": "Webhook MCP",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [250, 300],
+      "webhookId": "mcp-events"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "string": [
+            {
+              "value1": "={{$json.event}}",
+              "operation": "equals",
+              "value2": "modified"
+            }
+          ]
+        }
+      },
+      "id": "filter-modified",
+      "name": "Filter Modified Events",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [450, 300]
+    },
+    {
+      "parameters": {
+        "authentication": "oAuth2",
+        "resource": "file",
+        "operation": "upload",
+        "folderId": {
+          "__rl": true,
+          "value": "root",
+          "mode": "list",
+          "cachedResultName": "/ (Root)"
+        },
+        "options": {
+          "name": "={{$json.agent}}/{{$json.file}}"
+        }
+      },
+      "id": "upload-to-drive",
+      "name": "Upload to Google Drive",
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [650, 200],
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "1",
+          "name": "Google Drive Account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "channel": "#mcp-notifications",
+        "text": "=📝 MCP Event: {{$json.agent}}/{{$json.file}} - {{$json.event}}",
+        "otherOptions": {}
+      },
+      "id": "notify-slack",
+      "name": "Notify Slack",
+      "type": "n8n-nodes-base.slack",
+      "typeVersion": 1,
+      "position": [650, 400],
+      "credentials": {
+        "slackApi": {
+          "id": "2",
+          "name": "Slack Account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={\"status\": \"success\", \"message\": \"Event processed\", \"agent\": \"{{$json.agent}}\", \"file\": \"{{$json.file}}\"}"
+      },
+      "id": "webhook-response",
+      "name": "Webhook Response",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [850, 300]
+    },
+    {
+      "parameters": {
+        "functionCode": "// Log l'événement\nconst event = items[0].json;\n\nconsole.log('MCP Event received:', {\n  agent: event.agent,\n  file: event.file,\n  event: event.event,\n  timestamp: event.timestamp\n});\n\nreturn items;"
+      },
+      "id": "log-event",
+      "name": "Log Event",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 1,
+      "position": [450, 500]
+    }
+  ],
+  "connections": {
+    "Webhook MCP": {
+      "main": [
+        [
+          {
+            "node": "Filter Modified Events",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Log Event",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filter Modified Events": {
+      "main": [
+        [
+          {
+            "node": "Upload to Google Drive",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Notify Slack",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Upload to Google Drive": {
+      "main": [
+        [
+          {
+            "node": "Webhook Response",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Notify Slack": {
+      "main": [
+        [
+          {
+            "node": "Webhook Response",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {},
+  "versionId": "1.0.0",
+  "meta": {
+    "instanceId": "mcp-obsidian-core"
+  },
+  "tags": [
+    {
+      "name": "MCP",
+      "id": "1"
+    },
+    {
+      "name": "Sync",
+      "id": "2"
+    }
+  ]
+}

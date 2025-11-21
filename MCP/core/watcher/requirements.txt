@@ -1,0 +1,37 @@
+# MCP Obsidian Core - Python Dependencies
+# Installation: pip install -r requirements.txt
+
+# Core dependencies
+watchdog>=3.0.0          # File system monitoring
+requests>=2.31.0         # HTTP requests for n8n webhook
+
+# Optional dependencies
+# Uncomment if needed
+
+# For advanced RAG with embeddings
+# sentence-transformers>=2.2.0
+# torch>=2.0.0
+# numpy>=1.24.0
+
+# For async operations
+# aiohttp>=3.9.0
+# asyncio>=3.4.3
+
+# For database storage (alternative to JSON)
+# sqlalchemy>=2.0.0
+# psycopg2-binary>=2.9.0  # PostgreSQL
+# pymongo>=4.5.0          # MongoDB
+
+# For notifications
+# python-telegram-bot>=20.0  # Telegram
+# slack-sdk>=3.23.0           # Slack
+
+# For testing
+# pytest>=7.4.0
+# pytest-cov>=4.1.0
+# pytest-asyncio>=0.21.0
+
+# For code quality
+# black>=23.0.0
+# flake8>=6.1.0
+# mypy>=1.5.0
