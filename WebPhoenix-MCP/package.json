@@ -1,0 +1,40 @@
+{
+  "name": "@skynet/webphoenix-mcp",
+  "version": "1.0.0",
+  "description": "🔥 WebPhoenix MCP - Advanced Browser Automation Server for AI Autonomy",
+  "type": "module",
+  "main": "dist/index.js",
+  "bin": {
+    "webphoenix-mcp": "dist/index.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "start": "node dist/index.js",
+    "prepare": "npm run build"
+  },
+  "keywords": [
+    "mcp",
+    "browser",
+    "automation",
+    "playwright",
+    "web",
+    "scraping",
+    "ai",
+    "claude"
+  ],
+  "author": "Skynet Depot",
+  "license": "MIT",
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.0.4",
+    "playwright": "^1.48.2",
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.1",
+    "typescript": "^5.7.2"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
