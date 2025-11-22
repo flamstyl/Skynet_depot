@@ -1,0 +1,16 @@
+{
+  "mcpServers": {
+    "devops-workspace": {
+      "command": "node",
+      "args": [
+        "/home/user/Skynet_depot/mcp-servers/mcp-devops-workspace/dist/index.js"
+      ],
+      "env": {
+        "LOG_LEVEL": "info",
+        "PROJECTS_DIR": "/home/user/projects",
+        "ALLOWED_PATHS": "/home:/tmp:/var/log",
+        "ENABLE_GRAPHICS_TOOLS": "true"
+      }
+    }
+  }
+}
