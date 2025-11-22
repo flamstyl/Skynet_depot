@@ -1,0 +1,112 @@
+# ================================================================
+# 🤖 Fedora Server MCP - Docker Compose Configuration
+# ================================================================
+# Purpose: Orchestrate AI Virtual Machine with persistent storage
+# Usage: docker-compose up -d
+# ================================================================
+
+version: '3.8'
+
+services:
+  # ============================================================
+  # 🚀 FEDORA SERVER MCP - AI VIRTUAL MACHINE
+  # ============================================================
+  fedora-mcp:
+    container_name: fedora_server_mcp_ai
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: fedora_server_mcp:latest
+
+    # ========== NETWORKING ==========
+    hostname: ai-vm
+    networks:
+      - skynet
+    ports:
+      - "2222:22"        # SSH (optional, disabled by default)
+      - "8080:8080"      # Health check / API (optional)
+
+    # ========== VOLUMES - PERSISTENT DATA ==========
+    volumes:
+      # Persistent data directory (host <-> container)
+      - ./data:/data
+
+      # MCP memory persistence
+      - ./mcp/memory:/mcp/memory
+
+      # Logs persistence
+      - ./logs:/var/log/mcp
+
+      # Optional: AI home directory persistence
+      - ./ai_home:/home/ia/workspace
+
+      # Optional: Docker socket for Docker-in-Docker
+      # - /var/run/docker.sock:/var/run/docker.sock
+
+    # ========== ENVIRONMENT VARIABLES ==========
+    environment:
+      # AI Configuration
+      - AI_NAME=Claude
+      - AI_MODE=autonomous
+      - MCP_ENABLED=true
+
+      # Timezone
+      - TZ=Europe/Paris
+
+      # Optional: API Keys (use .env file in production)
+      - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY:-}
+      - OPENAI_API_KEY=${OPENAI_API_KEY:-}
+      - GOOGLE_API_KEY=${GOOGLE_API_KEY:-}
+
+      # Debug mode
+      - DEBUG=false
+
+    # ========== RUNTIME CONFIGURATION ==========
+    stdin_open: true      # Keep STDIN open (docker run -i)
+    tty: true             # Allocate pseudo-TTY (docker run -t)
+
+    restart: unless-stopped
+
+    # ========== CAPABILITIES ==========
+    cap_add:
+      - NET_ADMIN         # Network administration
+      - SYS_ADMIN         # System administration
+      - SYS_PTRACE        # Process tracing
+
+    # ========== SECURITY (optional, can be relaxed for AI use) ==========
+    # privileged: true    # Uncomment for full system access
+
+    # ========== RESOURCE LIMITS (optional) ==========
+    deploy:
+      resources:
+        limits:
+          cpus: '4.0'
+          memory: 8G
+        reservations:
+          cpus: '2.0'
+          memory: 4G
+
+    # ========== LABELS ==========
+    labels:
+      - "com.skynet.project=fedora-server-mcp"
+      - "com.skynet.type=ai-virtual-machine"
+      - "com.skynet.ai=claude"
+
+# ================================================================
+# 🌐 NETWORKS
+# ================================================================
+networks:
+  skynet:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.20.0.0/16
+
+# ================================================================
+# 💾 VOLUMES (optional named volumes)
+# ================================================================
+volumes:
+  mcp_data:
+    driver: local
+  mcp_logs:
+    driver: local

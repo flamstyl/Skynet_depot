@@ -1,0 +1,238 @@
+# ================================================================
+# 🤖 Fedora Server MCP - Git Ignore
+# ================================================================
+
+# ================================================================
+# 🔑 SECRETS & CREDENTIALS
+# ================================================================
+.env
+*.key
+*.pem
+*.crt
+*.csr
+secrets/
+credentials/
+*.secret
+
+# API Keys
+api_keys.txt
+anthropic_key.txt
+openai_key.txt
+google_key.txt
+
+# ================================================================
+# 💾 DATA & LOGS
+# ================================================================
+data/
+logs/
+*.log
+*.log.*
+
+# MCP Memory and Logs
+mcp/memory/logs/*.log
+mcp/memory/logs/*.md
+
+# Backup files
+*.backup
+*.bak
+backup_*/
+*.tar.gz
+*.zip
+
+# ================================================================
+# 🐳 DOCKER
+# ================================================================
+# Docker volumes
+volumes/
+
+# Docker build cache
+.docker/
+
+# ================================================================
+# 📁 GENERATED FILES
+# ================================================================
+ai_home/
+workspace/
+tmp/
+temp/
+*.tmp
+*.temp
+
+# ================================================================
+# 💻 OPERATING SYSTEM
+# ================================================================
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+
+# Linux
+*~
+.directory
+.Trash-*
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# ================================================================
+# 🔧 DEVELOPMENT
+# ================================================================
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.project
+.settings/
+.classpath
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+ENV/
+.venv
+pip-log.txt
+pip-delete-this-directory.txt
+.pytest_cache/
+.coverage
+htmlcov/
+*.egg-info/
+dist/
+build/
+
+# Node.js
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.npm
+.eslintcache
+package-lock.json
+yarn.lock
+
+# Go
+vendor/
+*.exe
+*.dll
+*.so
+*.dylib
+
+# Rust
+target/
+Cargo.lock
+
+# ================================================================
+# 📊 MONITORING & OBSERVABILITY
+# ================================================================
+prometheus/
+grafana/
+metrics/
+traces/
+
+# ================================================================
+# 🧪 TESTING
+# ================================================================
+.pytest_cache/
+.coverage
+coverage/
+test-results/
+*.test
+*.spec
+
+# ================================================================
+# 📦 PACKAGE MANAGERS
+# ================================================================
+# Ruby
+.bundle/
+vendor/bundle/
+
+# PHP
+composer.lock
+vendor/
+
+# Java
+*.class
+*.jar
+*.war
+.gradle/
+gradle/
+
+# ================================================================
+# 🗄️ DATABASES
+# ================================================================
+*.db
+*.sqlite
+*.sqlite3
+*.dump
+*.sql.gz
+
+# ================================================================
+# 🎨 MEDIA & ASSETS (large files)
+# ================================================================
+# Only ignore if you don't want to track them
+# *.mp4
+# *.avi
+# *.mov
+# *.mkv
+# *.iso
+
+# ================================================================
+# 🔒 SECURITY SCANNING
+# ================================================================
+.scannerwork/
+.sonar/
+.trivy/
+vulnerability-scan-results/
+
+# ================================================================
+# 📝 DOCUMENTATION BUILD
+# ================================================================
+docs/_build/
+site/
+.docusaurus/
+
+# ================================================================
+# 🚀 CI/CD
+# ================================================================
+.github/workflows/local-*
+.gitlab-ci-local/
+
+# ================================================================
+# 🧠 AI/ML SPECIFIC
+# ================================================================
+# Model files (if they get large)
+*.pt
+*.pth
+*.onnx
+*.h5
+*.pb
+
+# Vector databases
+chromadb/
+qdrant/
+milvus/
+
+# ================================================================
+# KEEP THESE FILES
+# ================================================================
+# Force include certain files even if they match patterns above
+!.gitkeep
+!.env.example
+!README.md
+!TODO.md
+
+# Keep MCP structure files (empty directories)
+!mcp/memory/logs/.gitkeep
+!data/.gitkeep
+!logs/.gitkeep
+!ai_home/.gitkeep
