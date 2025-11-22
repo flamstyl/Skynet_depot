@@ -1,607 +1,391 @@
-# 🛰️ Skynet FileWatcher MCP Server
+# 🔍 Skynet FileWatcher MCP
 
-[![MCP](https://img.shields.io/badge/MCP-1.0-blue)](https://modelcontextprotocol.io)
-[![Node.js](https://img.shields.io/badge/node-%3E%3D18.0.0-brightgreen)](https://nodejs.org)
-[![License](https://img.shields.io/badge/license-MIT-green)](LICENSE)
+Un serveur MCP (Model Context Protocol) pour la surveillance en temps réel de fichiers et dossiers avec logs JSON structurés.
 
-Un serveur **Model Context Protocol (MCP)** professionnel pour surveiller les changements de fichiers en temps réel et logger tous les événements dans un format JSON normalisé.
-
-## 📋 Table des matières
-
-- [Vue d'ensemble](#vue-densemble)
-- [Fonctionnalités](#fonctionnalités)
-- [Architecture](#architecture)
-- [Installation](#installation)
-- [Configuration](#configuration)
-- [Utilisation](#utilisation)
-- [Outils MCP disponibles](#outils-mcp-disponibles)
-- [Format des événements](#format-des-événements)
-- [Intégration avec Claude Code](#intégration-avec-claude-code)
-- [Tests et débogage](#tests-et-débogage)
-- [Cas d'usage](#cas-dusage)
-- [Dépannage](#dépannage)
-
----
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Node.js Version](https://img.shields.io/badge/node-%3E%3D18-brightgreen)](https://nodejs.org/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.9-blue)](https://www.typescriptlang.org/)
 
 ## 🎯 Vue d'ensemble
 
-**Skynet FileWatcher MCP** est conçu pour fournir à Claude Code (et autres clients MCP) une conscience en temps réel des changements de fichiers dans vos projets. C'est un outil essentiel pour :
+Skynet FileWatcher est un serveur MCP qui permet à Claude Code CLI de surveiller des dossiers en temps réel, détecter les changements de fichiers (création, modification, suppression), et générer des logs JSON normalisés pour intégration avec d'autres systèmes (n8n, Google Drive, moteurs de réflexion, etc.).
 
-- 🔍 **Surveillance automatique** : Détecte création, modification, suppression et renommage de fichiers
-- 📊 **Logging structuré** : Tous les événements sont enregistrés en JSON avec timestamps et métadonnées
-- 🚀 **Performance optimale** : Utilise `chokidar` v4 pour une surveillance efficace et légère
-- 🧠 **IA-friendly** : Exposé via MCP pour permettre à Claude de comprendre l'évolution de votre codebase
-- 🔐 **Hash SHA-256** : Calcul optionnel de hash pour détecter les modifications réelles
+### ✨ Fonctionnalités principales
 
----
+- 🔍 **Surveillance en temps réel** : Détection instantanée des changements via `chokidar`
+- 📊 **Logs JSON structurés** : Format JSONL avec métadonnées complètes
+- 🔐 **Calcul de hash** : SHA256/SHA1/MD5 pour détecter les modifications réelles
+- 📁 **Multi-watchers** : Surveillance de plusieurs dossiers simultanément
+- 🎯 **Filtrage avancé** : Patterns d'exclusion (node_modules, .git, etc.)
+- 📈 **Statistiques** : Analyse des événements par type, période, etc.
+- 💾 **Export** : JSON, JSONL, CSV pour intégration externe
+- ⚡ **Performant** : Gestion optimisée de la mémoire et du stockage
 
-## ✨ Fonctionnalités
+## 🛠️ Outils MCP disponibles (10 tools)
 
-### Détection d'événements
+### 🔧 Gestion des Watchers
 
-- ✅ **Création de fichiers** (`created`)
-- ✅ **Modification de fichiers** (`modified`)
-- ✅ **Suppression de fichiers** (`deleted`)
-- ✅ **Renommage de fichiers** (`renamed`) - détection heuristique
-- ✅ **Création/suppression de dossiers**
+| Outil | Description |
+|-------|-------------|
+| `start_watching` | Démarre la surveillance d'un dossier |
+| `stop_watching` | Arrête un watcher spécifique |
+| `list_watchers` | Liste tous les watchers actifs |
+| `get_watcher` | Récupère les détails d'un watcher |
+| `update_watcher` | Met à jour la configuration d'un watcher |
 
-### Logging avancé
+### 📊 Gestion des Événements
 
-- 📝 Format **JSONL** (JSON Lines) pour lecture efficace
-- 🆔 **UUID unique** pour chaque événement
-- ⏰ **Timestamps ISO 8601**
-- 📏 **Taille avant/après** pour les modifications
-- 🔐 **Hash SHA-256** optionnel pour vérifier l'intégrité
-
-### Outils MCP
-
-- 🔎 `detect_changes` - Récupère les événements avec filtres avancés
-- 📊 `get_watch_status` - Statut en temps réel du watcher
-- 📈 `get_event_stats` - Statistiques détaillées sur les événements
-- 🧹 `clean_old_events` - Nettoyage automatique des vieux logs
-- 🔍 `search_events` - Recherche avancée multi-critères
-
----
-
-## 🏗️ Architecture
-
-```
-skynet-filewatcher-mcp/
-│
-├── index.js                 # Serveur MCP principal
-├── package.json            # Dépendances et scripts
-├── config.json             # Configuration du watcher
-│
-├── tools/
-│   ├── filewatcher.js      # Logique de surveillance (chokidar)
-│   └── utils.js            # Utilitaires (hash, lecture logs, stats)
-│
-└── logs/
-    └── events.jsonl        # Fichier de log des événements
-```
-
-### Stack technique
-
-- **MCP SDK** : `@modelcontextprotocol/sdk` (officiel Anthropic)
-- **File Watcher** : `chokidar` v4 (haute performance, cross-platform)
-- **Validation** : `zod` (schema validation)
-- **UUID** : `uuid` v11 (génération d'identifiants uniques)
-- **Hash** : `crypto` (SHA-256 natif Node.js)
-
----
+| Outil | Description |
+|-------|-------------|
+| `get_events` | Récupère les événements avec filtres (date, type, limit) |
+| `get_event_stats` | Calcule des statistiques sur les événements |
+| `export_events` | Exporte les événements (JSON, JSONL, CSV) |
+| `clear_events` | Nettoie les événements avant une date |
+| `get_file_hash` | Calcule le hash d'un fichier |
 
 ## 📦 Installation
 
 ### Prérequis
 
-- **Node.js** >= 18.0.0
-- **npm** >= 8.0.0
+- **Node.js** 18+ (avec npm)
+- **Linux/macOS** (Windows supporté mais non testé)
+- **Claude Code CLI** configuré
 
 ### Installation rapide
 
 ```bash
-# Cloner ou copier le projet
+# Cloner ou naviguer vers le dossier
 cd skynet-filewatcher-mcp
 
 # Installer les dépendances
 npm install
 
-# Vérifier l'installation
-npm start
+# Compiler le TypeScript
+npm run build
+
+# Tester le serveur
+npm run dev
 ```
 
-### Installation globale (optionnel)
+### Installation automatique
 
 ```bash
-# Installer globalement pour utiliser partout
+# Utiliser le script d'installation
+chmod +x install.sh
+./install.sh
+```
+
+### Installation globale
+
+```bash
+# Installer globalement
 npm install -g .
 
-# Lancer depuis n'importe où
-skynet-filewatcher-mcp
+# Le serveur sera disponible via
+skynet-filewatcher
 ```
 
----
+## 🔧 Configuration pour Claude Code CLI
 
-## ⚙️ Configuration
+### Méthode 1 : Configuration manuelle
 
-Modifiez `config.json` pour personnaliser le comportement :
+Éditez votre fichier `~/.config/claude/config.json` (ou équivalent selon votre OS) :
 
 ```json
 {
-  "watchPath": "/home/raphael/Skynet_Drive_Core/",
-  "logPath": "./logs/events.jsonl",
-  "options": {
-    "persistent": true,
-    "ignoreInitial": true,
-    "awaitWriteFinish": {
-      "stabilityThreshold": 2000,
-      "pollInterval": 100
-    },
-    "ignored": [
-      "**/node_modules/**",
-      "**/.git/**",
-      "**/.DS_Store",
-      "**/Thumbs.db",
-      "**/*.tmp",
-      "**/*.swp"
-    ],
-    "depth": 99
-  },
-  "features": {
-    "calculateHash": true,
-    "trackFileSize": true,
-    "maxEventsInMemory": 10000
+  "mcp": {
+    "servers": {
+      "filewatcher": {
+        "command": "node",
+        "args": ["/chemin/absolu/vers/skynet-filewatcher-mcp/dist/index.js"]
+      }
+    }
   }
 }
 ```
 
-### Paramètres importants
+### Méthode 2 : Via CLI (si installé globalement)
 
-| Paramètre | Description | Valeur par défaut |
-|-----------|-------------|-------------------|
-| `watchPath` | Dossier à surveiller | `/home/raphael/Skynet_Drive_Core/` |
-| `logPath` | Fichier de log JSONL | `./logs/events.jsonl` |
-| `ignoreInitial` | Ignorer les fichiers existants au démarrage | `true` |
-| `awaitWriteFinish` | Attendre la fin d'écriture avant de déclencher | `true` |
-| `ignored` | Patterns à ignorer (glob) | `node_modules`, `.git`, etc. |
-| `depth` | Profondeur de surveillance | `99` |
-| `calculateHash` | Calculer le hash SHA-256 | `true` |
+```json
+{
+  "mcp": {
+    "servers": {
+      "filewatcher": {
+        "command": "skynet-filewatcher"
+      }
+    }
+  }
+}
+```
 
----
-
-## 🚀 Utilisation
-
-### Démarrage manuel
+### Méthode 3 : Via commande Claude CLI
 
 ```bash
-# Démarrer le serveur MCP
-npm start
-
-# Ou directement
-node index.js
+claude mcp add --transport stdio filewatcher node /chemin/vers/dist/index.js
 ```
 
-### Utilisation avec Claude Code CLI
+## 📖 Utilisation
 
-Ajoutez le serveur à votre configuration Claude Code :
+### Exemples avec Claude Code
 
-**Fichier : `~/.config/claude/mcp_config.json`** (ou équivalent)
+Une fois le serveur MCP configuré, vous pouvez demander à Claude :
 
-```json
-{
-  "mcpServers": {
-    "skynet-filewatcher": {
-      "command": "node",
-      "args": ["/chemin/vers/skynet-filewatcher-mcp/index.js"]
-    }
-  }
-}
+#### 1. Démarrer la surveillance d'un dossier
+
+```
+"Commence à surveiller le dossier /home/user/Documents/projets"
+→ Claude utilise start_watching avec path: "/home/user/Documents/projets"
 ```
 
-### Utilisation avec Claude Desktop (macOS/Windows)
+**Arguments :**
+- `path` : Chemin du dossier à surveiller
+- `recursive` : Surveiller récursivement (défaut: true)
+- `ignorePatterns` : Patterns à ignorer (ex: ["*.log", "node_modules/**"])
+- `calculateHash` : Calculer les hash (défaut: true)
+- `hashAlgorithm` : sha256, sha1, ou md5 (défaut: sha256)
 
-**Fichier : `~/Library/Application Support/Claude/claude_desktop_config.json`**
+#### 2. Lister les watchers actifs
 
-```json
-{
-  "mcpServers": {
-    "skynet-filewatcher": {
-      "command": "node",
-      "args": ["/Users/raphael/skynet-filewatcher-mcp/index.js"]
-    }
-  }
-}
+```
+"Montre-moi tous les watchers actifs"
+→ Claude utilise list_watchers
 ```
 
-Redémarrez Claude Desktop pour charger le serveur.
+#### 3. Récupérer les événements récents
 
----
-
-## 🔧 Outils MCP disponibles
-
-### 1. `detect_changes`
-
-Récupère les événements de changement avec filtres avancés.
-
-**Paramètres d'entrée :**
-
-```json
-{
-  "since_timestamp": "2025-11-22T20:00:00Z",  // Optionnel
-  "event_type": "modified",                    // Optionnel: created|modified|deleted|renamed
-  "file_pattern": ".*\\.js$",                  // Optionnel: regex
-  "limit": 100                                 // Optionnel: nombre max
-}
+```
+"Quels fichiers ont été modifiés dans les dernières 24 heures ?"
+→ Claude utilise get_events avec since: "2025-11-21T00:00:00Z"
 ```
 
-**Exemple de sortie :**
+**Filtres disponibles :**
+- `since` : Date de début (ISO 8601)
+- `until` : Date de fin
+- `event_type` : created, modified, deleted, renamed
+- `watcher_id` : Filtrer par watcher
+- `limit` : Nombre max de résultats (défaut: 100)
 
-```json
-{
-  "success": true,
-  "count": 42,
-  "events": [
-    {
-      "event_id": "550e8400-e29b-41d4-a716-446655440000",
-      "timestamp": "2025-11-22T21:35:12.456Z",
-      "event_type": "modified",
-      "file_path": "/home/raphael/Skynet_Drive_Core/project/index.js",
-      "old_size": null,
-      "new_size": 2048,
-      "hash_before": null,
-      "hash_after": "sha256:abc123..."
-    }
-  ],
-  "filters_applied": {
-    "event_type": "modified"
-  }
-}
+#### 4. Obtenir des statistiques
+
+```
+"Donne-moi des statistiques sur les événements du watcher XYZ"
+→ Claude utilise get_event_stats avec watcher_id
 ```
 
-### 2. `get_watch_status`
+#### 5. Exporter les événements
 
-Retourne le statut actuel du système de surveillance.
-
-**Paramètres d'entrée :** Aucun
-
-**Exemple de sortie :**
-
-```json
-{
-  "success": true,
-  "status": {
-    "is_watching": true,
-    "watch_path": "/home/raphael/Skynet_Drive_Core/",
-    "log_path": "/home/user/skynet-filewatcher-mcp/logs/events.jsonl",
-    "stats": {
-      "started_at": "2025-11-22T20:00:00Z",
-      "events_count": 1523,
-      "files_created": 45,
-      "files_modified": 1234,
-      "files_deleted": 12,
-      "files_renamed": 232
-    },
-    "features": {
-      "calculateHash": true,
-      "trackFileSize": true,
-      "maxEventsInMemory": 10000
-    }
-  }
-}
+```
+"Exporte tous les événements en CSV"
+→ Claude utilise export_events avec format: "csv"
 ```
 
-### 3. `get_event_stats`
+#### 6. Calculer le hash d'un fichier
 
-Calcule des statistiques détaillées sur les événements.
-
-**Paramètres d'entrée :**
-
-```json
-{
-  "since_timestamp": "2025-11-22T00:00:00Z"  // Optionnel
-}
+```
+"Calcule le SHA256 de /path/to/file.txt"
+→ Claude utilise get_file_hash avec file_path et algorithm
 ```
 
-**Exemple de sortie :**
+## 📊 Format des événements
 
-```json
-{
-  "success": true,
-  "stats": {
-    "total": 1523,
-    "by_type": {
-      "created": 45,
-      "modified": 1234,
-      "deleted": 12,
-      "renamed": 232
-    },
-    "date_range": {
-      "oldest": "2025-11-20T08:00:00Z",
-      "newest": "2025-11-22T21:35:12Z"
-    },
-    "total_size_changed": 15728640,
-    "total_size_changed_formatted": "15 MB"
-  },
-  "period": "Tous les événements"
-}
-```
-
-### 4. `clean_old_events`
-
-Supprime les événements plus anciens qu'une durée spécifiée.
-
-**Paramètres d'entrée :**
-
-```json
-{
-  "max_age_hours": 24  // Défaut: 24h
-}
-```
-
-**Exemple de sortie :**
-
-```json
-{
-  "success": true,
-  "removed_count": 342,
-  "max_age_hours": 24,
-  "message": "342 événement(s) supprimé(s)"
-}
-```
-
-### 5. `search_events`
-
-Recherche avancée avec multiples critères.
-
-**Paramètres d'entrée :**
-
-```json
-{
-  "query": "index.js",
-  "event_types": ["created", "modified"],
-  "start_date": "2025-11-22T00:00:00Z",
-  "end_date": "2025-11-22T23:59:59Z",
-  "limit": 50
-}
-```
-
----
-
-## 📄 Format des événements
-
-Chaque événement est enregistré dans `logs/events.jsonl` selon ce format :
+Chaque événement est enregistré au format JSON avec la structure suivante :
 
 ```json
 {
   "event_id": "550e8400-e29b-41d4-a716-446655440000",
-  "timestamp": "2025-11-22T21:35:12.456Z",
+  "watcher_id": "abc123...",
+  "timestamp": "2025-11-22T21:30:45.123Z",
   "event_type": "modified",
-  "file_path": "/home/raphael/Skynet_Drive_Core/project/index.js",
+  "file_path": "/home/user/Documents/projets/app.js",
+  "relative_path": "app.js",
+  "old_path": null,
+  "file_size": 2048,
   "old_size": 1024,
-  "new_size": 2048,
   "hash_before": "sha256:abc123...",
   "hash_after": "sha256:def456...",
-  "is_directory": false
+  "mime_type": "application/javascript"
 }
 ```
 
-### Champs
+### Types d'événements
 
-- **event_id** : UUID v4 unique
-- **timestamp** : ISO 8601 (UTC)
-- **event_type** : `created` | `modified` | `deleted` | `renamed`
-- **file_path** : Chemin absolu du fichier
-- **old_size** : Taille avant (octets) ou `null`
-- **new_size** : Taille après (octets)
-- **hash_before** : SHA-256 avant ou `null`
-- **hash_after** : SHA-256 après ou `null`
-- **is_directory** : `true` si c'est un dossier (optionnel)
+- `created` : Nouveau fichier créé
+- `modified` : Fichier modifié (contenu changé)
+- `deleted` : Fichier supprimé
+- `renamed` : Fichier renommé (détecté via heuristique)
 
----
-
-## 🤖 Intégration avec Claude Code
-
-### Exemple de prompts pour Claude
-
-**Voir les derniers changements :**
+## 🗂️ Structure du projet
 
 ```
-Utilise l'outil detect_changes pour me montrer les 20 derniers événements de fichiers.
+skynet-filewatcher-mcp/
+├── src/
+│   ├── index.ts              # Serveur MCP principal
+│   ├── watcher.ts            # Gestionnaire de watchers (chokidar)
+│   ├── events-store.ts       # Stockage événements (JSONL)
+│   ├── hash-utils.ts         # Utilitaires de hash
+│   └── tools/
+│       ├── watcher-tools.ts  # Tools MCP pour watchers
+│       └── events-tools.ts   # Tools MCP pour événements
+├── logs/
+│   └── events.jsonl          # Logs des événements
+├── config/
+│   └── watchers.json         # Config persistante (futur)
+├── dist/                     # Code compilé
+├── package.json
+├── tsconfig.json
+├── install.sh                # Script d'installation
+├── README.md
+└── GUIDE_FRANCAIS.md         # Guide détaillé en français
 ```
 
-**Filtrer les modifications :**
+## 🔍 Diagnostic et dépannage
 
-```
-Récupère tous les fichiers JavaScript modifiés depuis ce matin (2025-11-22T08:00:00Z).
-```
-
-**Statistiques :**
-
-```
-Montre-moi les statistiques d'activité de fichiers pour aujourd'hui.
-```
-
-**Nettoyer les logs :**
-
-```
-Supprime les événements plus vieux que 48 heures.
-```
-
-### Workflow automatisé
-
-Claude peut maintenant :
-
-1. **Détecter automatiquement** quand vous modifiez un fichier
-2. **Analyser les changements** pour comprendre le contexte
-3. **Proposer des actions** basées sur les modifications détectées
-4. **Suivre l'évolution** de votre projet en temps réel
-
----
-
-## 🧪 Tests et débogage
-
-### Tester manuellement
+### Le serveur ne démarre pas
 
 ```bash
-# Terminal 1 : Démarrer le serveur
+# Vérifier les dépendances
+npm install
+
+# Recompiler
+npm run build
+
+# Vérifier la compilation
+ls -la dist/index.js
+```
+
+### Les événements ne sont pas détectés
+
+- Vérifier les permissions sur le dossier surveillé
+- Vérifier les `ignorePatterns` (certains fichiers peuvent être exclus)
+- Vérifier que le watcher est bien actif : `list_watchers`
+
+### Performances lentes avec beaucoup de fichiers
+
+- Réduire la profondeur de récursion
+- Ajouter plus de patterns d'exclusion
+- Désactiver le calcul de hash : `calculateHash: false`
+
+### Les logs sont trop volumineux
+
+```bash
+# Nettoyer les événements avant une date
+# Via Claude : "Supprime les événements avant le 1er novembre"
+
+# Ou manuellement
+rm logs/events.jsonl
+```
+
+## 🔐 Sécurité
+
+### Bonnes pratiques
+
+1. **Ne surveiller que les dossiers nécessaires** : Éviter la racine système
+2. **Utiliser ignorePatterns** : Exclure les dossiers sensibles (.ssh, .gnupg)
+3. **Limiter les permissions** : Le serveur n'a pas besoin de sudo
+4. **Nettoyer régulièrement** : Les logs peuvent devenir volumineux
+
+### Patterns d'exclusion recommandés
+
+```javascript
+[
+  '**/node_modules/**',
+  '**/.git/**',
+  '**/dist/**',
+  '**/build/**',
+  '**/.cache/**',
+  '**/.env*',
+  '**/secrets/**',
+  '**/*.log'
+]
+```
+
+## 📈 Cas d'usage
+
+### 1. Synchronisation avec Google Drive
+
+Détecter les fichiers modifiés localement et déclencher un upload :
+
+```
+"Démarre la surveillance de ~/Skynet_Drive_Core"
+→ Chaque modification → trigger n8n workflow → upload Drive
+```
+
+### 2. Moteur de réflexion
+
+Logger tous les changements pour analyse par un agent IA :
+
+```
+→ FileWatcher détecte changement
+→ Event loggé en JSON
+→ Agent lit events.jsonl
+→ Analyse et réaction
+```
+
+### 3. Backup automatique
+
+Déclencher des backups incrémentaux :
+
+```
+→ Modification détectée
+→ get_events filtre par modified
+→ Backup uniquement les fichiers changés
+```
+
+### 4. Monitoring de développement
+
+Surveiller un projet et logger l'activité :
+
+```
+→ Watcher sur /home/dev/projets
+→ Statistiques quotidiennes
+→ Rapport d'activité de développement
+```
+
+## 🛠️ Développement
+
+### Scripts disponibles
+
+```bash
+# Développement avec rechargement auto
+npm run dev
+
+# Compiler le TypeScript
+npm run build
+
+# Compiler en mode watch
+npm run watch
+
+# Démarrer le serveur compilé
 npm start
 
-# Terminal 2 : Créer des fichiers de test
-mkdir -p /tmp/test-watch
-echo "test" > /tmp/test-watch/file1.txt
-echo "modified" > /tmp/test-watch/file1.txt
-rm /tmp/test-watch/file1.txt
+# Tests (à implémenter)
+npm test
 ```
 
-Vérifiez les logs dans `logs/events.jsonl`.
+### Ajouter un nouvel outil
 
-### Utiliser l'inspecteur MCP
+1. Créer le schema Zod dans `src/tools/`
+2. Créer le handler async
+3. Ajouter l'outil dans `src/index.ts` dans le tableau `tools`
+4. Compiler et tester
 
-```bash
-npm run inspect
-```
+## 📄 Licence
 
-Cela lance l'interface de débogage MCP officielle d'Anthropic.
+MIT - Voir le fichier LICENSE pour plus de détails
 
-### Vérifier les logs
+## 👥 Auteur
 
-```bash
-# Voir les derniers événements
-tail -f logs/events.jsonl
+**Skynet Depot**
 
-# Compter les événements
-wc -l logs/events.jsonl
+Conçu spécifiquement pour Claude Code CLI afin de surveiller le système de fichiers et faciliter l'intégration avec des systèmes de réflexion et d'automatisation.
 
-# Parser avec jq
-cat logs/events.jsonl | jq -s '.[] | select(.event_type == "modified")'
-```
+## 🙏 Remerciements
 
----
-
-## 💡 Cas d'usage
-
-### 1. Administration système automatisée
-
-Claude peut détecter quand vous installez un environnement de dev et proposer automatiquement des configurations optimales.
-
-### 2. Synchronisation Drive
-
-Surveiller un dossier Google Drive/Dropbox et notifier Claude des nouveaux fichiers pour analyse automatique.
-
-### 3. CI/CD déclenché par IA
-
-Claude détecte des modifications dans `package.json` et propose de lancer les tests ou rebuild.
-
-### 4. Audit de sécurité
-
-Détecter les modifications suspectes dans des fichiers critiques et alerter.
-
-### 5. Backup automatique
-
-Claude détecte des changements importants et propose de créer un snapshot Git.
+- [Anthropic](https://www.anthropic.com/) pour le Model Context Protocol
+- [chokidar](https://github.com/paulmillr/chokidar) pour le file watching robuste
+- La communauté open-source
 
 ---
 
-## 🐛 Dépannage
-
-### Problème : Le serveur ne démarre pas
-
-**Solution :**
-
-```bash
-# Vérifier la version de Node.js
-node --version  # Doit être >= 18.0.0
-
-# Réinstaller les dépendances
-rm -rf node_modules package-lock.json
-npm install
-```
-
-### Problème : Aucun événement détecté
-
-**Solution :**
-
-1. Vérifiez que le `watchPath` existe et est accessible
-2. Vérifiez les permissions (lecture/écriture)
-3. Assurez-vous que les fichiers ne sont pas dans `ignored`
-
-```bash
-# Tester les permissions
-ls -la /home/raphael/Skynet_Drive_Core/
-```
-
-### Problème : Trop d'événements / Performance
-
-**Solution :**
-
-1. Ajoutez plus de patterns dans `ignored`
-2. Réduisez la `depth` de surveillance
-3. Désactivez `calculateHash` si non nécessaire
-
-```json
-{
-  "features": {
-    "calculateHash": false
-  }
-}
-```
-
-### Problème : Hash toujours `null`
-
-**Raisons possibles :**
-
-- `calculateHash: false` dans la config
-- Fichier supprimé avant le calcul du hash
-- Permissions insuffisantes
-
----
-
-## 🔗 Ressources
-
-### Documentation MCP
-
-- [Spécification MCP officielle](https://modelcontextprotocol.io/specification/2025-06-18)
-- [SDK TypeScript](https://github.com/modelcontextprotocol/typescript-sdk)
-- [Serveurs MCP de référence](https://github.com/modelcontextprotocol/servers)
-
-### Bibliothèques utilisées
-
-- [Chokidar](https://github.com/paulmillr/chokidar) - File watcher
-- [Zod](https://github.com/colinhacks/zod) - Schema validation
-- [UUID](https://www.npmjs.com/package/uuid) - UUID generation
-
-### Skynet Project
-
-- [GitHub Repository](https://github.com/flamstyl/Skynet_depot)
-- [Documentation complète](https://github.com/flamstyl/Skynet_depot/tree/main/docs)
-
----
-
-## 📝 Licence
-
-MIT License - Voir le fichier [LICENSE](LICENSE) pour plus de détails.
-
----
-
-## 🙏 Contributions
-
-Les contributions sont les bienvenues ! N'hésitez pas à :
-
-- 🐛 Signaler des bugs via les [issues GitHub](https://github.com/flamstyl/Skynet_depot/issues)
-- ✨ Proposer de nouvelles fonctionnalités
-- 🔧 Soumettre des pull requests
-
----
-
-## 📧 Contact
-
-Pour toute question ou support :
-
-- **GitHub** : [@flamstyl](https://github.com/flamstyl)
-- **Project** : Skynet Depot
-
----
-
-**Fait avec ❤️ pour Claude Code et la communauté Skynet**
-
-*Ce MCP Server a été conçu par Claude Sonnet 4.5 pour Claude Code, créant ainsi une boucle de feedback parfaite pour l'amélioration continue de l'IA.*
+**Version :** 1.0.0
+**Dernière mise à jour :** 2025-11-22

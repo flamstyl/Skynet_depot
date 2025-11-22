@@ -1,2 +1,1 @@
-# Ce fichier permet de garder le dossier logs/ dans git
-# Les fichiers .jsonl réels sont ignorés par .gitignore
+# Ce fichier permet de versionner le dossier logs/ tout en ignorant son contenu

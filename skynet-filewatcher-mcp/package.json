@@ -1,36 +1,43 @@
 {
   "name": "skynet-filewatcher-mcp",
   "version": "1.0.0",
-  "description": "MCP Server pour surveiller les changements de fichiers en temps réel et logger les événements",
+  "description": "MCP Server for Real-time File System Monitoring - Skynet FileWatcher",
   "type": "module",
-  "main": "index.js",
+  "main": "dist/index.js",
   "bin": {
-    "skynet-filewatcher-mcp": "./index.js"
+    "skynet-filewatcher": "dist/index.js"
   },
   "scripts": {
-    "start": "node index.js",
-    "dev": "node index.js",
-    "inspect": "npx @modelcontextprotocol/inspector node index.js"
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "dev": "tsx src/index.ts",
+    "watch": "tsc --watch",
+    "test": "echo \"Tests à implémenter\" && exit 0"
   },
   "keywords": [
     "mcp",
-    "model-context-protocol",
     "file-watcher",
+    "file-monitoring",
+    "filesystem",
+    "events",
     "skynet",
-    "monitoring"
+    "claude"
   ],
-  "author": "Skynet Project",
+  "author": "Skynet Depot",
   "license": "MIT",
   "dependencies": {
-    "@modelcontextprotocol/sdk": "^1.0.4",
+    "@modelcontextprotocol/sdk": "^1.22.0",
     "chokidar": "^4.0.3",
     "uuid": "^11.0.3",
-    "zod": "^3.24.1"
+    "zod": "^4.1.12",
+    "zod-to-json-schema": "^3.24.1",
+    "mime-types": "^2.1.35"
   },
   "devDependencies": {
-    "@modelcontextprotocol/inspector": "^0.17.2"
-  },
-  "engines": {
-    "node": ">=18.0.0"
+    "@types/node": "^24.10.1",
+    "@types/uuid": "^10.0.0",
+    "@types/mime-types": "^2.1.4",
+    "tsx": "^4.20.6",
+    "typescript": "^5.9.3"
   }
 }

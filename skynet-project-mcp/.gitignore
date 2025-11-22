@@ -5,6 +5,3 @@ dist/
 .env
 *.swp
 *.swo
-logs/*.jsonl
-!logs/.gitkeep
-config/watchers.json
