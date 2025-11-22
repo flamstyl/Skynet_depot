@@ -1,0 +1,26 @@
+{
+  "watchPath": "/home/raphael/Skynet_Drive_Core/",
+  "logPath": "./logs/events.jsonl",
+  "options": {
+    "persistent": true,
+    "ignoreInitial": true,
+    "awaitWriteFinish": {
+      "stabilityThreshold": 2000,
+      "pollInterval": 100
+    },
+    "ignored": [
+      "**/node_modules/**",
+      "**/.git/**",
+      "**/.DS_Store",
+      "**/Thumbs.db",
+      "**/*.tmp",
+      "**/*.swp"
+    ],
+    "depth": 99
+  },
+  "features": {
+    "calculateHash": true,
+    "trackFileSize": true,
+    "maxEventsInMemory": 10000
+  }
+}
