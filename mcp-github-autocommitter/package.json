@@ -1,0 +1,52 @@
+{
+  "name": "mcp-github-autocommitter",
+  "version": "1.0.0",
+  "description": "🚀 MCP GitHub Auto-Committer - Agent Git autonome pour scan, diff, changelog, commit et push automatique",
+  "main": "server.js",
+  "type": "module",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js",
+    "test": "node --test tests/**/*.test.js",
+    "test:watch": "node --watch --test tests/**/*.test.js",
+    "build": "echo 'No build step needed for pure JS'",
+    "lint": "eslint ."
+  },
+  "bin": {
+    "github-autocommitter": "./server.js"
+  },
+  "keywords": [
+    "mcp",
+    "git",
+    "github",
+    "auto-commit",
+    "changelog",
+    "conventional-commits",
+    "ai",
+    "automation",
+    "devops",
+    "skynet"
+  ],
+  "author": "Skynet Team",
+  "license": "MIT",
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "dependencies": {
+    "simple-git": "^3.25.0",
+    "micromatch": "^4.0.5",
+    "conventional-commits-parser": "^5.0.0",
+    "uuid": "^9.0.1"
+  },
+  "devDependencies": {
+    "eslint": "^8.56.0",
+    "nodemon": "^3.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/flamstyl/Skynet_depot"
+  },
+  "bugs": {
+    "url": "https://github.com/flamstyl/Skynet_depot/issues"
+  }
+}

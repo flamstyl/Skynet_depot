@@ -1,0 +1,69 @@
+{
+  "server": {
+    "mode": "stdio",
+    "name": "GitHub Auto-Committer MCP",
+    "version": "1.0.0"
+  },
+  "git": {
+    "defaultRemote": "origin",
+    "defaultBranch": "main",
+    "author": {
+      "name": "Claude AI Agent",
+      "email": "ai@skynet.local"
+    },
+    "credentials": {
+      "preferSSH": true,
+      "useGHCLI": true,
+      "tokenEnvVar": "GITHUB_TOKEN"
+    }
+  },
+  "commit": {
+    "style": "conventional",
+    "allowEmpty": false,
+    "signCommits": false,
+    "maxMessageLength": 200
+  },
+  "push": {
+    "retry": {
+      "enabled": true,
+      "maxAttempts": 3,
+      "backoff": "exponential",
+      "initialDelay": 2000,
+      "maxDelay": 16000
+    },
+    "forcePushProtectedBranches": ["main", "master", "develop", "production"],
+    "setUpstream": true
+  },
+  "security": {
+    "validatePaths": true,
+    "scanForSecrets": true,
+    "enforceGitignore": true,
+    "maxFileSizeBytes": 104857600,
+    "blockedPatterns": [
+      "*.pem",
+      "*.key",
+      "*_rsa",
+      "*.p12",
+      "*.pfx",
+      ".env",
+      ".env.*",
+      "credentials.json",
+      "secrets.json"
+    ]
+  },
+  "changelog": {
+    "defaultFormat": "markdown",
+    "defaultStyle": "conventional-commits",
+    "includeStats": true
+  },
+  "scan": {
+    "maxFiles": 10000,
+    "includeUntracked": true,
+    "respectGitignore": true
+  },
+  "logging": {
+    "enabled": true,
+    "logFile": "data/commit_history.json",
+    "maxLogEntries": 1000
+  }
+}

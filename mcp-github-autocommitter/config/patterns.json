@@ -1,0 +1,86 @@
+{
+  "secrets": [
+    {
+      "name": "generic_api_key",
+      "pattern": "api[_-]?key\\s*[:=]\\s*['\"]?[a-zA-Z0-9]{20,}",
+      "severity": "high"
+    },
+    {
+      "name": "generic_password",
+      "pattern": "password\\s*[:=]\\s*['\"]?[^\\s\"']{8,}",
+      "severity": "medium"
+    },
+    {
+      "name": "private_key",
+      "pattern": "-----BEGIN (RSA |EC |OPENSSH |)PRIVATE KEY-----",
+      "severity": "critical"
+    },
+    {
+      "name": "github_token",
+      "pattern": "gh[pousr]_[a-zA-Z0-9]{36,}",
+      "severity": "critical"
+    },
+    {
+      "name": "aws_key",
+      "pattern": "AKIA[0-9A-Z]{16}",
+      "severity": "critical"
+    },
+    {
+      "name": "stripe_key",
+      "pattern": "sk_live_[a-zA-Z0-9]{24,}",
+      "severity": "critical"
+    },
+    {
+      "name": "slack_token",
+      "pattern": "xox[baprs]-[a-zA-Z0-9-]+",
+      "severity": "high"
+    },
+    {
+      "name": "jwt_token",
+      "pattern": "eyJ[a-zA-Z0-9_-]*\\.eyJ[a-zA-Z0-9_-]*\\.[a-zA-Z0-9_-]*",
+      "severity": "medium"
+    }
+  ],
+  "commitTypes": {
+    "feat": {
+      "description": "Nouvelle fonctionnalité",
+      "emoji": "✨"
+    },
+    "fix": {
+      "description": "Correction de bug",
+      "emoji": "🐛"
+    },
+    "docs": {
+      "description": "Documentation",
+      "emoji": "📚"
+    },
+    "style": {
+      "description": "Formatage, style",
+      "emoji": "💄"
+    },
+    "refactor": {
+      "description": "Refactorisation",
+      "emoji": "♻️"
+    },
+    "perf": {
+      "description": "Amélioration de performance",
+      "emoji": "⚡"
+    },
+    "test": {
+      "description": "Ajout/modification de tests",
+      "emoji": "✅"
+    },
+    "build": {
+      "description": "Build système ou dépendances",
+      "emoji": "🔧"
+    },
+    "ci": {
+      "description": "CI/CD",
+      "emoji": "👷"
+    },
+    "chore": {
+      "description": "Tâches diverses",
+      "emoji": "🔨"
+    }
+  }
+}
