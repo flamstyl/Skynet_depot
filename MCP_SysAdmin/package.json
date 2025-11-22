@@ -1,0 +1,28 @@
+{
+  "name": "mcp-sysadmin",
+  "version": "1.0.0",
+  "description": "MCP Server for Linux System Administration - Complete DevOps toolkit for Claude",
+  "type": "module",
+  "main": "dist/index.js",
+  "bin": {
+    "mcp-sysadmin": "dist/index.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "dev": "tsx src/index.ts",
+    "watch": "tsc --watch"
+  },
+  "keywords": ["mcp", "system-admin", "linux", "docker", "devops", "claude"],
+  "author": "Skynet Depot",
+  "license": "MIT",
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.22.0",
+    "zod": "^4.1.12"
+  },
+  "devDependencies": {
+    "@types/node": "^24.10.1",
+    "tsx": "^4.20.6",
+    "typescript": "^5.9.3"
+  }
+}

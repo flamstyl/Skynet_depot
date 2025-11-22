@@ -1,0 +1,9 @@
+{
+  "mcpServers": {
+    "sysadmin": {
+      "command": "node",
+      "args": ["/chemin/absolu/vers/MCP_SysAdmin/dist/index.js"],
+      "env": {}
+    }
+  }
+}
