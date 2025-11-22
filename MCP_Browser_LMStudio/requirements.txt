@@ -1,0 +1,21 @@
+# MCP_Browser_LMStudio - Requirements
+# Python 3.11+
+
+# FastAPI & Server
+fastapi>=0.109.0
+uvicorn[standard]>=0.27.0
+pydantic>=2.5.0
+python-multipart>=0.0.6
+
+# HTTP Client
+httpx>=0.26.0
+
+# Browser Engines
+playwright>=1.41.0
+pywebview>=4.4.0
+
+# Utilities
+python-dotenv>=1.0.0
+
+# Logging & Utils
+aiofiles>=23.2.1
