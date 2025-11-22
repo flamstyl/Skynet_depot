@@ -1,0 +1,45 @@
+# VM Images - These are large binary files that shouldn't be in git
+*.qcow2
+*.qcow
+*.vmdk
+*.vdi
+*.raw
+*.img
+
+# ISO files - Download separately
+*.iso
+
+# Snapshots
+*.snapshot
+*.snap
+
+# Logs
+*.log
+
+# Temporary files
+*.tmp
+*~
+.DS_Store
+Thumbs.db
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+*.swn
+
+# Backup files
+*.bak
+*.backup
+
+# VM runtime files
+*.pid
+*.sock
+
+# Shared folders (if using local shared directory)
+shared/
+
+# Personal notes
+notes.txt
+scratch.txt
