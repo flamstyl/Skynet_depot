@@ -1,0 +1,24 @@
+# 🟣 MCP Server — Skynet Local Bridge
+# Dépendances Python
+
+# Core Framework
+fastapi==0.109.0
+uvicorn[standard]==0.27.0
+pydantic==2.5.3
+
+# Async file operations
+aiofiles==23.2.1
+
+# HTTP client for internet endpoint
+httpx==0.26.0
+
+# Environment variables
+python-dotenv==1.0.0
+
+# Optional: Docker SDK (si vous voulez contrôler Docker via Python)
+# docker==7.0.0
+
+# Development tools (optionnel)
+# pytest==7.4.4
+# black==24.1.1
+# ruff==0.1.15

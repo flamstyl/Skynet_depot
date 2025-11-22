@@ -1,0 +1,3 @@
+"""
+Endpoints du serveur MCP
+"""
