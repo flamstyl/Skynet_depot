@@ -1,0 +1,12 @@
+{
+  "auth_token": "CHANGE_ME_PLEASE",
+  "browser_engine": "playwright",
+  "lmstudio": {
+    "host": "http://localhost:1234",
+    "model": null
+  },
+  "server": {
+    "host": "0.0.0.0",
+    "port": 8000
+  }
+}
