@@ -1,0 +1,260 @@
+# ============================================================================
+# MCP KALI LINUX - Docker Compose Configuration
+# ============================================================================
+# Environnement isolé Kali Linux pour IA de cybersécurité
+# Réseau bridge isolé par défaut
+# Ports exposés uniquement en local (127.0.0.1)
+# ============================================================================
+
+version: '3.8'
+
+services:
+  # ==========================================================================
+  # SERVICE PRINCIPAL : Kali MCP
+  # ==========================================================================
+  kali_mcp:
+    # Nom du conteneur
+    container_name: mcp_kali
+
+    # Construction depuis le Dockerfile local
+    build:
+      context: .
+      dockerfile: Dockerfile
+
+    # Image produite
+    image: mcp_kali:latest
+
+    # Garder stdin ouvert et allouer un pseudo-TTY (pour docker exec)
+    stdin_open: true
+    tty: true
+
+    # Hostname du conteneur
+    hostname: kali-mcp
+
+    # ==========================================================================
+    # VOLUMES PERSISTANTS
+    # ==========================================================================
+    volumes:
+      # Logs de sessions (persistants entre redémarrages)
+      - ./logs:/logs
+
+      # Contexte IA : missions, rapports, configs
+      - ./ai_context:/ai_context
+
+      # Workspace utilisateur (optionnel, pour projets persistants)
+      - kali_workspace:/home/ia/workspace
+
+      # Partage de fichiers avec l'hôte (optionnel, décommenter si besoin)
+      # - ./shared:/home/ia/shared
+
+    # ==========================================================================
+    # RÉSEAU ISOLÉ
+    # ==========================================================================
+    networks:
+      - kali_net
+
+    # ==========================================================================
+    # EXPOSITION DES PORTS (LOCAL UNIQUEMENT)
+    # ==========================================================================
+    # ⚠️ SÉCURITÉ : Tous les ports sont bindés sur 127.0.0.1 uniquement
+    # ⚠️ Pas d'exposition directe sur 0.0.0.0 (Internet)
+    ports:
+      # SSH (optionnel - décommenter si nécessaire)
+      # Port hôte 2222 -> port conteneur 22
+      # - "127.0.0.1:2222:22"
+
+      # TTYD (terminal web pour IA)
+      # Port hôte 7681 -> port conteneur 7681
+      - "127.0.0.1:7681:7681"
+
+      # Ports supplémentaires pour services custom (décommenter si besoin)
+      # - "127.0.0.1:8080:8080"  # HTTP custom
+      # - "127.0.0.1:5000:5000"  # API Flask/FastAPI
+
+    # ==========================================================================
+    # VARIABLES D'ENVIRONNEMENT
+    # ==========================================================================
+    environment:
+      # Timezone
+      - TZ=Europe/Paris
+
+      # Configuration MCP
+      - MCP_MODE=full
+      - MCP_LOG_LEVEL=INFO
+
+      # Désactiver les prompts interactifs
+      - DEBIAN_FRONTEND=noninteractive
+
+      # Configuration utilisateur
+      - USER=ia
+      - HOME=/home/ia
+
+    # ==========================================================================
+    # CAPABILITIES & SÉCURITÉ
+    # ==========================================================================
+    # ⚠️ OPTION 1 (RECOMMANDÉE) : Capabilities limitées
+    # Uniquement les capacités nécessaires pour le réseau et les paquets
+    cap_add:
+      - NET_ADMIN      # Pour manipulation réseau (tcpdump, scapy, etc.)
+      - NET_RAW        # Pour capture de paquets raw
+      # - SYS_PTRACE   # Décommenter si besoin de débuggage avec strace/gdb
+
+    # Capabilities à retirer pour sécurité renforcée (optionnel)
+    cap_drop:
+      - ALL
+
+    # Puis rajouter uniquement celles nécessaires avec cap_add ci-dessus
+
+    # ⚠️ OPTION 2 (NON RECOMMANDÉE) : Mode privileged
+    # ⚠️ Active TOUS les privilèges du host dans le conteneur
+    # ⚠️ À utiliser UNIQUEMENT si absolument nécessaire (docker-in-docker, etc.)
+    # ⚠️ RISQUE DE SÉCURITÉ MAJEUR - Conteneur peut compromettre l'hôte
+    # privileged: true
+
+    # Options de sécurité supplémentaires
+    security_opt:
+      # Profil AppArmor personnalisé (optionnel)
+      # - apparmor:unconfined  # ⚠️ Déconseillé en production
+
+      # Profil seccomp (optionnel, pour restrictions syscalls)
+      # - seccomp:unconfined   # ⚠️ Déconseillé en production
+
+      # Pas de nouveau privilèges
+      - no-new-privileges:true
+
+    # ==========================================================================
+    # POLITIQUES DE REDÉMARRAGE
+    # ==========================================================================
+    # unless-stopped : redémarre toujours sauf si arrêt manuel
+    restart: unless-stopped
+
+    # Alternatives :
+    # restart: "no"          # Jamais redémarrer
+    # restart: always        # Toujours redémarrer
+    # restart: on-failure    # Redémarrer uniquement si erreur
+
+    # ==========================================================================
+    # RESSOURCES LIMITÉES (optionnel mais recommandé)
+    # ==========================================================================
+    # Limite l'utilisation CPU et mémoire pour éviter saturation hôte
+    # deploy:
+    #   resources:
+    #     limits:
+    #       cpus: '2.0'      # Max 2 CPU cores
+    #       memory: 4G       # Max 4 GB RAM
+    #     reservations:
+    #       cpus: '0.5'      # Min 0.5 CPU
+    #       memory: 1G       # Min 1 GB RAM
+
+    # ==========================================================================
+    # HEALTHCHECK
+    # ==========================================================================
+    # Vérifie que le conteneur est sain (ttyd actif)
+    healthcheck:
+      test: ["CMD-SHELL", "pidof ttyd || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+
+    # ==========================================================================
+    # DÉPENDANCES (si plusieurs services)
+    # ==========================================================================
+    # depends_on:
+    #   - postgres
+    #   - redis
+
+# ============================================================================
+# RÉSEAUX
+# ============================================================================
+networks:
+  kali_net:
+    driver: bridge
+
+    # Configuration réseau personnalisée (optionnel)
+    ipam:
+      driver: default
+      config:
+        # Sous-réseau isolé pour le lab
+        - subnet: 172.28.0.0/16
+          gateway: 172.28.0.1
+
+    # Options du driver
+    driver_opts:
+      # Isolation inter-conteneurs (si plusieurs conteneurs)
+      com.docker.network.bridge.enable_icc: "true"
+
+      # Pas de connexion avec l'hôte par défaut (sécurité)
+      com.docker.network.bridge.enable_ip_masquerade: "true"
+
+    # Labels pour organisation
+    labels:
+      - "com.mcp.network=kali_security_lab"
+      - "com.mcp.environment=isolated"
+
+# ============================================================================
+# VOLUMES NOMMÉS
+# ============================================================================
+volumes:
+  # Workspace persistant pour l'utilisateur IA
+  kali_workspace:
+    driver: local
+    labels:
+      - "com.mcp.volume=workspace"
+      - "com.mcp.user=ia"
+
+# ============================================================================
+# NOTES D'UTILISATION
+# ============================================================================
+#
+# BUILD :
+#   docker compose build
+#
+# LANCEMENT :
+#   docker compose up -d
+#
+# ARRÊT :
+#   docker compose down
+#
+# LOGS :
+#   docker compose logs -f kali_mcp
+#
+# SHELL INTERACTIF :
+#   docker compose exec kali_mcp bash
+#   # ou
+#   docker exec -it mcp_kali bash
+#
+# TERMINAL WEB :
+#   http://127.0.0.1:7681
+#
+# NETTOYAGE COMPLET (⚠️ supprime volumes) :
+#   docker compose down -v
+#
+# ============================================================================
+# SÉCURITÉ ET AVERTISSEMENTS
+# ============================================================================
+#
+# ✅ CONFIGURATION ACTUELLE :
+#   - Réseau bridge isolé (172.28.0.0/16)
+#   - Ports exposés uniquement sur localhost (127.0.0.1)
+#   - Capabilities limitées (NET_ADMIN, NET_RAW uniquement)
+#   - Pas de mode privileged
+#
+# ⚠️  À NE JAMAIS FAIRE EN PRODUCTION :
+#   - Exposer les ports sur 0.0.0.0 (accessible depuis Internet)
+#   - Activer privileged: true sans raison valable
+#   - Désactiver les profils de sécurité (AppArmor, seccomp)
+#   - Lancer sur un serveur public sans VPN/Firewall
+#
+# 🎯 USAGE PRÉVU :
+#   - Environnement de test local
+#   - CTF et challenges de sécurité
+#   - Pentest autorisé sur infrastructure isolée
+#   - Apprentissage et recherche en cybersécurité
+#
+# ⚖️  CADRE LÉGAL :
+#   - Usage strictement dans un cadre autorisé
+#   - Pentest uniquement avec accord écrit du propriétaire
+#   - Respect des lois locales sur la cybersécurité
+#
+# ============================================================================

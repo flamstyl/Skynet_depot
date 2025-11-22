@@ -1,0 +1,74 @@
+{
+  "mission_id": "example_recon_001",
+  "mission_type": "reconnaissance",
+  "created_at": "2025-11-22T20:00:00Z",
+  "priority": "medium",
+  "target": "scanme.nmap.org",
+  "scope": {
+    "in_scope": [
+      "scanme.nmap.org",
+      "*.scanme.nmap.org"
+    ],
+    "out_of_scope": [
+      "Production systems",
+      "Third-party services"
+    ]
+  },
+  "objectives": [
+    "Scanner les ports ouverts sur la cible",
+    "Identifier les services et leurs versions",
+    "Énumérer les sous-domaines potentiels",
+    "Détecter les vulnérabilités web communes",
+    "Générer un rapport Markdown de synthèse avec recommandations"
+  ],
+  "constraints": [
+    "Ne pas lancer d'attaque destructive ou intrusive",
+    "Ne pas dégrader les services cibles",
+    "Utilisation uniquement d'outils de reconnaissance passive ou semi-active",
+    "Respecter les délais de rate-limiting pour éviter la saturation",
+    "Ne pas exfiltrer de données sensibles",
+    "Scanner uniquement les cibles autorisées dans le scope"
+  ],
+  "authorization": {
+    "authorized_by": "Security Team",
+    "authorization_date": "2025-11-22",
+    "authorization_reference": "PENTEST-2025-001",
+    "legal_framework": "Authorized security testing on designated test target",
+    "notes": "scanme.nmap.org is a public service provided by Nmap for testing purposes"
+  },
+  "configuration": {
+    "scan_intensity": "normal",
+    "stealth_mode": false,
+    "timing_template": "T3",
+    "max_scan_duration": "30m",
+    "tools_to_use": [
+      "nmap",
+      "nikto",
+      "gobuster",
+      "subfinder"
+    ]
+  },
+  "reporting": {
+    "format": "markdown",
+    "include_raw_output": true,
+    "include_screenshots": false,
+    "severity_threshold": "low",
+    "executive_summary": true,
+    "technical_details": true
+  },
+  "notifications": {
+    "on_completion": true,
+    "on_critical_finding": true,
+    "on_error": true
+  },
+  "metadata": {
+    "assigned_to": "MCP_Agent_IA",
+    "estimated_duration": "15-30 minutes",
+    "tags": [
+      "reconnaissance",
+      "web-scanning",
+      "network-discovery"
+    ],
+    "notes": "Exemple de mission de reconnaissance pour démonstration de l'environnement MCP Kali. La cible scanme.nmap.org est un service public fourni par Nmap spécifiquement pour tester les scanners de sécurité."
+  }
+}
