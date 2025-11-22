@@ -1,0 +1,56 @@
+# 🟣 MCP_LM_Terminal - Fichiers à ignorer
+
+# ============= PYTHON =============
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# ============= ENVIRONNEMENT VIRTUEL =============
+venv/
+env/
+ENV/
+.venv
+
+# ============= IDE =============
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# ============= LOGS =============
+*.log
+logs/
+
+# ============= CONFIG SENSIBLE =============
+# Ne pas commit le token en production
+# config.json
+
+# ============= TESTS =============
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+
+# ============= AUTRES =============
+*.bak
+*.tmp
+.cache/
