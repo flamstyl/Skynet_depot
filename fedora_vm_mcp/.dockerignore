@@ -1,0 +1,43 @@
+# VM disk images - these should never be in the build context
+*.qcow2
+*.qcow
+*.vmdk
+*.vdi
+*.raw
+
+# ISO files
+*.iso
+
+# Git
+.git
+.gitignore
+.gitattributes
+
+# Documentation (not needed in image)
+*.md
+TODO.md
+docs/
+
+# VM setup scripts (copied separately if needed)
+vm_setup/
+
+# Temporary files
+*.log
+*.tmp
+*~
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Docker
+docker-compose.yml
+.dockerignore
+
+# Backup files
+*.bak
+*.backup
