@@ -1,0 +1,52 @@
+{
+  "name": "@skynet/mcp-devops-workspace",
+  "version": "1.0.0",
+  "description": "MCP Server complet pour DevOps : dev env, Docker, système, projets, graphisme",
+  "type": "module",
+  "bin": {
+    "mcp-devops-workspace": "./build/index.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "watch": "tsc --watch",
+    "prepare": "npm run build",
+    "test": "jest",
+    "lint": "eslint src --ext .ts",
+    "dev": "tsx watch src/index.ts"
+  },
+  "keywords": [
+    "mcp",
+    "model-context-protocol",
+    "devops",
+    "docker",
+    "system-admin",
+    "ai-tools"
+  ],
+  "author": "Skynet Depot",
+  "license": "MIT",
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.0.4",
+    "zod": "^3.23.8",
+    "dockerode": "^4.0.2",
+    "systeminformation": "^5.23.5",
+    "simple-git": "^3.25.0",
+    "sharp": "^0.33.5",
+    "chalk": "^5.3.0",
+    "dotenv": "^16.4.5"
+  },
+  "devDependencies": {
+    "@types/node": "^20.14.0",
+    "@types/dockerode": "^3.3.31",
+    "@typescript-eslint/eslint-plugin": "^7.13.0",
+    "@typescript-eslint/parser": "^7.13.0",
+    "eslint": "^8.57.0",
+    "jest": "^29.7.0",
+    "@types/jest": "^29.5.12",
+    "ts-jest": "^29.1.5",
+    "tsx": "^4.15.7",
+    "typescript": "^5.5.2"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
