@@ -1,0 +1,25 @@
+/**
+ * Styles pour le content script
+ * Styles injectés dans les pages web
+ */
+
+/* Styles pour le conteneur de résultat affiché par le background script */
+#ai-assistant-result {
+  animation: slideIn 0.3s ease-out;
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+/* Styles pour la sélection de texte améliorée (optionnel) */
+::selection {
+  background-color: rgba(102, 126, 234, 0.3);
+}

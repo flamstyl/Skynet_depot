@@ -1,0 +1,31 @@
+# Fichier de configuration exemple pour l'assistant IA local
+# Ce fichier sera chiffré automatiquement lors de la sauvegarde
+
+# Fournisseur et modèle par défaut
+default_provider: "openai"  # openai, anthropic, local, custom
+default_model: "gpt-4-turbo-preview"
+
+# Clés API (seront chiffrées)
+openai_api_key: ""
+anthropic_api_key: ""
+
+# URL personnalisée pour un modèle custom
+custom_model_url: ""
+
+# Options
+enable_web_search: false
+enable_history_logging: true
+encryption_enabled: true
+
+# Préférences de génération par défaut
+default_temperature: 0.7
+default_max_tokens: 2000
+
+# Langues préférées
+preferred_language: "fr"
+translation_languages:
+  - "fr"
+  - "en"
+  - "es"
+  - "de"
+  - "it"

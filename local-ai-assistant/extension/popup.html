@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Assistant IA Local</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      width: 350px;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: #333;
+    }
+
+    .container {
+      padding: 20px;
+    }
+
+    .header {
+      text-align: center;
+      color: white;
+      margin-bottom: 20px;
+    }
+
+    .header h1 {
+      font-size: 20px;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+
+    .header p {
+      font-size: 13px;
+      opacity: 0.9;
+    }
+
+    .card {
+      background: white;
+      border-radius: 12px;
+      padding: 16px;
+      margin-bottom: 12px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .card h2 {
+      font-size: 14px;
+      font-weight: 600;
+      color: #111827;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .btn {
+      width: 100%;
+      padding: 12px;
+      border: none;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+    }
+
+    .btn-secondary {
+      background: #f3f4f6;
+      color: #374151;
+      margin-top: 8px;
+    }
+
+    .btn-secondary:hover {
+      background: #e5e7eb;
+    }
+
+    .action-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin-top: 12px;
+    }
+
+    .action-btn {
+      padding: 10px;
+      background: #f9fafb;
+      border: 1px solid #e5e7eb;
+      border-radius: 8px;
+      font-size: 12px;
+      cursor: pointer;
+      transition: all 0.2s;
+      text-align: center;
+    }
+
+    .action-btn:hover {
+      background: #f3f4f6;
+      border-color: #d1d5db;
+    }
+
+    .status {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px;
+      background: #f9fafb;
+      border-radius: 8px;
+      font-size: 13px;
+      margin-top: 12px;
+    }
+
+    .status-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+    }
+
+    .status-dot.connected {
+      background: #10b981;
+    }
+
+    .status-dot.disconnected {
+      background: #ef4444;
+    }
+
+    .token-input {
+      width: 100%;
+      padding: 8px;
+      border: 1px solid #e5e7eb;
+      border-radius: 6px;
+      font-size: 13px;
+      margin-top: 8px;
+    }
+
+    .footer {
+      text-align: center;
+      color: white;
+      font-size: 11px;
+      opacity: 0.8;
+      margin-top: 12px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>🤖 Assistant IA Local</h1>
+      <p>Votre assistant personnel intelligent</p>
+    </div>
+
+    <!-- Carte d'actions rapides -->
+    <div class="card">
+      <h2>⚡ Actions rapides</h2>
+      <button class="btn btn-primary" id="open-dashboard">
+        💬 Ouvrir le Dashboard
+      </button>
+
+      <div class="action-grid">
+        <button class="action-btn" id="summary-page">📝 Résumer</button>
+        <button class="action-btn" id="translate-page">🌐 Traduire</button>
+      </div>
+    </div>
+
+    <!-- Carte de configuration -->
+    <div class="card">
+      <h2>🔑 Configuration</h2>
+      <div class="status" id="status">
+        <span class="status-dot disconnected" id="status-dot"></span>
+        <span id="status-text">Non connecté</span>
+      </div>
+      <input
+        type="password"
+        class="token-input"
+        id="token-input"
+        placeholder="Token d'authentification"
+      >
+      <button class="btn btn-secondary" id="save-token">Sauvegarder le token</button>
+    </div>
+
+    <div class="footer">
+      Appuyez sur Ctrl+M pour ouvrir le chat
+    </div>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>
