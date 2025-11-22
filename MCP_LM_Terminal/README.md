@@ -23,9 +23,16 @@ MCP_LM_Terminal est un serveur MCP (Model Context Protocol) conçu pour :
 | Endpoint | Méthode | Description |
 |----------|---------|-------------|
 | `/status` | GET | État du serveur, modèle LM actif, info terminal |
-| `/lm/query` | POST | Transmet une requête à LM Studio et retourne la réponse |
+| `/lm/query` | POST | Transmet une requête à LM Studio et retourne la réponse **avec statistiques complètes** |
 | `/terminal/cmd` | POST | Exécute une commande shell et retourne stdout/stderr |
 | `/terminal/stream` | WebSocket | Flux interactif bi-directionnel (terminal PTY) |
+
+### 🔹 API LM Studio
+
+- **Support API native v0** : `/api/v0/*` avec statistiques avancées
+- **Support API OpenAI v1** : `/v1/*` compatible ChatGPT
+- **Statistiques complètes** : tokens/sec, TTFT, generation_time, model_info, runtime
+- **Paramètres avancés** : top_p, top_k, stop, ttl
 
 ### 🔹 Sécurité
 
@@ -91,7 +98,8 @@ pip install -r requirements.txt
   "api_token": "VOTRE_TOKEN_SECRET_ICI",
   "lmstudio": {
     "host": "http://localhost:1234",
-    "model": "default"
+    "model": "default",
+    "api_version": "v0"
   },
   "terminal": {
     "timeout": 20
@@ -103,7 +111,9 @@ pip install -r requirements.txt
 }
 ```
 
-**Changez obligatoirement le `api_token` !**
+**Paramètres de configuration :**
+- `api_token` : **Changez obligatoirement ce token !**
+- `api_version` : `"v0"` (API native avec stats) ou `"v1"` (API OpenAI-compatible)
 
 ---
 
@@ -188,16 +198,40 @@ curl -X POST http://localhost:8080/lm/query \
   }'
 ```
 
-**Réponse :**
+**Réponse (avec statistiques complètes) :**
 
 ```json
 {
   "success": true,
-  "response": "Je suis un assistant IA local exécuté via LM Studio...",
-  "model": "default",
-  "tokens": 512
+  "content": "Je suis un assistant IA local exécuté via LM Studio...",
+  "usage": {
+    "prompt_tokens": 15,
+    "completion_tokens": 48,
+    "total_tokens": 63
+  },
+  "stats": {
+    "tokens_per_second": 52.43,
+    "time_to_first_token": 0.112,
+    "generation_time": 0.915,
+    "stop_reason": "eosFound"
+  },
+  "model_info": {
+    "arch": "llama",
+    "quant": "Q4_K_M",
+    "format": "gguf",
+    "context_length": 4096
+  },
+  "runtime": {
+    "name": "llama.cpp-mac-arm64-apple-metal-advsimd",
+    "version": "1.3.0",
+    "supported_formats": ["gguf"]
+  },
+  "finish_reason": "stop",
+  "model": "default"
 }
 ```
+
+**Note** : Les champs `stats`, `model_info` et `runtime` sont disponibles uniquement avec `api_version: "v0"` (API native LM Studio). Avec `api_version: "v1"`, seuls `content`, `usage` et `finish_reason` sont retournés.
 
 ---
 
@@ -498,13 +532,35 @@ Content-Type: application/json
 }
 ```
 
-**Réponse :**
+**Réponse (avec API v0) :**
 ```json
 {
   "success": true,
-  "response": "Réponse du modèle...",
-  "model": "default",
-  "tokens": 512
+  "content": "Réponse du modèle...",
+  "usage": {
+    "prompt_tokens": 10,
+    "completion_tokens": 50,
+    "total_tokens": 60
+  },
+  "stats": {
+    "tokens_per_second": 45.2,
+    "time_to_first_token": 0.12,
+    "generation_time": 1.1,
+    "stop_reason": "eosFound"
+  },
+  "model_info": {
+    "arch": "llama",
+    "quant": "Q4_K_M",
+    "format": "gguf",
+    "context_length": 4096
+  },
+  "runtime": {
+    "name": "llama.cpp-...",
+    "version": "1.3.0",
+    "supported_formats": ["gguf"]
+  },
+  "finish_reason": "stop",
+  "model": "default"
 }
 ```
 

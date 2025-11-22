@@ -160,7 +160,7 @@ async def lm_query(
 ):
     """
     🔹 POST /lm/query
-    Transmet une requête à LM Studio et retourne la réponse
+    Transmet une requête à LM Studio et retourne la réponse complète avec statistiques
 
     Body JSON:
     {
@@ -170,6 +170,17 @@ async def lm_query(
         "model": "default" (optionnel)
     }
 
+    Returns:
+    {
+        "success": true,
+        "content": "Réponse du modèle",
+        "usage": {"prompt_tokens": 10, "completion_tokens": 50, "total_tokens": 60},
+        "stats": {"tokens_per_second": 45.2, "time_to_first_token": 0.12, "generation_time": 1.1},
+        "model_info": {"arch": "llama", "quant": "Q4_K_M", "format": "gguf"},
+        "runtime": {"name": "llama.cpp-...", "version": "1.3.0"},
+        "finish_reason": "stop"
+    }
+
     Authentification requise via Header : Authorization: Bearer <token>
     """
     verify_token(authorization)
@@ -177,8 +188,8 @@ async def lm_query(
     try:
         logger.info(f"Requête LM Studio : {request.prompt[:50]}...")
 
-        # Transmission à LM Studio
-        response = await lm_client.completion(
+        # Transmission à LM Studio (retourne un Dict complet avec stats)
+        result = await lm_client.completion(
             prompt=request.prompt,
             temperature=request.temperature,
             max_tokens=request.max_tokens,
@@ -187,9 +198,13 @@ async def lm_query(
 
         return {
             "success": True,
-            "response": response,
-            "model": request.model or config["lmstudio"]["model"],
-            "tokens": request.max_tokens
+            "content": result.get("content", ""),
+            "usage": result.get("usage", {}),
+            "stats": result.get("stats", {}),
+            "model_info": result.get("model_info", {}),
+            "runtime": result.get("runtime", {}),
+            "finish_reason": result.get("finish_reason", "unknown"),
+            "model": result.get("model", request.model or config["lmstudio"]["model"])
         }
 
     except Exception as e:

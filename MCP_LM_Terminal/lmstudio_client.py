@@ -3,7 +3,8 @@
 Client pour communiquer avec l'API locale de LM Studio
 
 Fonctionnalités :
-- Requêtes vers http://localhost:1234/v1/chat/completions
+- Support API native v0 + OpenAI-compatible v1
+- Statistiques complètes (tokens/sec, TTFT, model_info, runtime)
 - Gestion des erreurs de connexion
 - Support multi-modèles
 - Configuration flexible via config.json
@@ -20,8 +21,11 @@ class LMStudioClient:
     """
     Client pour l'API LM Studio locale
 
-    LM Studio expose une API compatible OpenAI sur http://localhost:1234
-    Ce client permet d'envoyer des requêtes de completion et de gérer les erreurs
+    LM Studio expose deux API :
+    - API native v0 : /api/v0/* (avec stats avancées)
+    - API OpenAI-compatible : /v1/* (compatible ChatGPT)
+
+    Ce client supporte les deux et retourne les statistiques complètes
     """
 
     def __init__(self, config: Dict[str, Any]):
@@ -29,17 +33,28 @@ class LMStudioClient:
         Initialise le client LM Studio
 
         Args:
-            config: Configuration LM Studio (host, model)
+            config: Configuration LM Studio (host, model, api_version)
         """
         self.host = config.get("host", "http://localhost:1234")
         self.default_model = config.get("model", "default")
+        self.api_version = config.get("api_version", "v0")  # v0 (natif) ou v1 (OpenAI)
 
         # Nettoyage de l'URL (suppression du trailing slash)
         self.host = self.host.rstrip('/')
 
-        # Endpoint de l'API
-        self.completions_url = f"{self.host}/v1/chat/completions"
-        self.models_url = f"{self.host}/v1/models"
+        # Endpoints selon la version de l'API
+        if self.api_version == "v0":
+            # API native LM Studio avec stats avancées
+            self.completions_url = f"{self.host}/api/v0/chat/completions"
+            self.text_completions_url = f"{self.host}/api/v0/completions"
+            self.embeddings_url = f"{self.host}/api/v0/embeddings"
+            self.models_url = f"{self.host}/api/v0/models"
+        else:
+            # API compatible OpenAI
+            self.completions_url = f"{self.host}/v1/chat/completions"
+            self.text_completions_url = f"{self.host}/v1/completions"
+            self.embeddings_url = f"{self.host}/v1/embeddings"
+            self.models_url = f"{self.host}/v1/models"
 
         # Configuration du client HTTP
         self.client = httpx.AsyncClient(
@@ -47,7 +62,7 @@ class LMStudioClient:
             follow_redirects=True
         )
 
-        logger.info(f"LMStudioClient initialisé : {self.host}")
+        logger.info(f"LMStudioClient initialisé : {self.host} (API {self.api_version})")
 
     async def check_status(self) -> Dict[str, Any]:
         """
@@ -99,20 +114,34 @@ class LMStudioClient:
         temperature: float = 0.7,
         max_tokens: int = 512,
         model: Optional[str] = None,
-        system_prompt: Optional[str] = None
-    ) -> str:
+        system_prompt: Optional[str] = None,
+        top_p: Optional[float] = None,
+        top_k: Optional[int] = None,
+        stop: Optional[str] = None,
+        ttl: Optional[int] = None
+    ) -> Dict[str, Any]:
         """
         Envoie une requête de completion à LM Studio
 
         Args:
             prompt: Le prompt utilisateur
             temperature: Température de génération (0.0-2.0)
-            max_tokens: Nombre maximum de tokens à générer
+            max_tokens: Nombre maximum de tokens (-1 pour unlimited)
             model: Modèle spécifique (optionnel, utilise default sinon)
             system_prompt: Prompt système optionnel
+            top_p: Nucleus sampling parameter (optionnel)
+            top_k: Top-K sampling parameter (optionnel)
+            stop: Stop sequence(s) (optionnel)
+            ttl: Time-to-live en secondes pour le modèle (optionnel)
 
         Returns:
-            La réponse générée par le modèle
+            Dict avec:
+            - content: Le texte généré
+            - usage: Statistiques d'utilisation (prompt_tokens, completion_tokens, total_tokens)
+            - stats: Statistiques de performance (tokens_per_second, time_to_first_token, generation_time)
+            - model_info: Informations sur le modèle (arch, quant, format, context_length)
+            - runtime: Informations sur le runtime (name, version, supported_formats)
+            - finish_reason: Raison d'arrêt (stop, length, tool_calls)
 
         Raises:
             ConnectionError: Si LM Studio n'est pas accessible
@@ -140,8 +169,18 @@ class LMStudioClient:
             "messages": messages,
             "temperature": temperature,
             "max_tokens": max_tokens,
-            "stream": False  # Pas de streaming pour l'instant
+            "stream": False
         }
+
+        # Paramètres optionnels
+        if top_p is not None:
+            payload["top_p"] = top_p
+        if top_k is not None:
+            payload["top_k"] = top_k
+        if stop is not None:
+            payload["stop"] = stop
+        if ttl is not None:
+            payload["ttl"] = ttl
 
         logger.debug(f"Requête LM Studio : model={model}, tokens={max_tokens}")
 
@@ -161,14 +200,36 @@ class LMStudioClient:
             # Parsing de la réponse
             data = response.json()
 
-            # Extraction du texte généré
+            # Extraction du texte généré et des métadonnées
             if "choices" in data and len(data["choices"]) > 0:
                 choice = data["choices"][0]
                 message = choice.get("message", {})
                 content = message.get("content", "")
 
+                # Construction de la réponse complète avec toutes les stats
+                result = {
+                    "content": content.strip(),
+                    "usage": data.get("usage", {}),
+                    "stats": data.get("stats", {}),
+                    "model_info": data.get("model_info", {}),
+                    "runtime": data.get("runtime", {}),
+                    "finish_reason": choice.get("finish_reason", "unknown"),
+                    "model": data.get("model", model)
+                }
+
                 logger.debug(f"Réponse LM Studio reçue : {len(content)} caractères")
-                return content.strip()
+
+                # Log des stats si disponibles
+                if "stats" in data:
+                    stats = data["stats"]
+                    logger.info(
+                        f"Stats LM Studio - "
+                        f"Tokens/sec: {stats.get('tokens_per_second', 'N/A')}, "
+                        f"TTFT: {stats.get('time_to_first_token', 'N/A')}s, "
+                        f"Gen time: {stats.get('generation_time', 'N/A')}s"
+                    )
+
+                return result
 
             else:
                 logger.error(f"Format de réponse invalide : {data}")
@@ -333,12 +394,22 @@ async def test_lm_studio():
         if status['available']:
             print("\n3️⃣ Test de completion...")
             try:
-                response = await client.completion(
+                result = await client.completion(
                     prompt="Bonjour ! Dis-moi juste 'Hello' en réponse.",
                     temperature=0.7,
                     max_tokens=50
                 )
-                print(f"Réponse : {response}")
+                print(f"Réponse : {result['content']}")
+                print(f"\nStatistiques :")
+                if result.get('stats'):
+                    print(f"  - Tokens/sec : {result['stats'].get('tokens_per_second', 'N/A')}")
+                    print(f"  - TTFT : {result['stats'].get('time_to_first_token', 'N/A')}s")
+                    print(f"  - Temps génération : {result['stats'].get('generation_time', 'N/A')}s")
+                if result.get('usage'):
+                    print(f"  - Tokens utilisés : {result['usage'].get('total_tokens', 'N/A')}")
+                if result.get('model_info'):
+                    print(f"  - Architecture : {result['model_info'].get('arch', 'N/A')}")
+                    print(f"  - Quantization : {result['model_info'].get('quant', 'N/A')}")
             except Exception as e:
                 print(f"Erreur : {str(e)}")
         else:
