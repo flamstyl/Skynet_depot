@@ -1,0 +1,38 @@
+{
+  "$schema": "https://modelcontextprotocol.io/schema/config.json",
+  "description": "Configuration complète des serveurs MCP Skynet pour Claude Code CLI",
+  "mcp": {
+    "servers": {
+      "sysadmin": {
+        "description": "Administration système Linux complète (112 tools)",
+        "command": "node",
+        "args": ["/home/user/Skynet_depot/MCP_SysAdmin/dist/index.js"],
+        "env": {}
+      },
+      "filewatcher": {
+        "description": "Surveillance temps réel de fichiers (10 tools)",
+        "command": "node",
+        "args": ["/home/user/Skynet_depot/skynet-filewatcher-mcp/dist/index.js"],
+        "env": {}
+      },
+      "project": {
+        "description": "Git workflow avancé et gestion de projets (14 tools)",
+        "command": "node",
+        "args": ["/home/user/Skynet_depot/skynet-project-mcp/dist/index.js"],
+        "env": {}
+      },
+      "creative": {
+        "description": "Traitement d'images avancé avec Sharp (7 tools)",
+        "command": "node",
+        "args": ["/home/user/Skynet_depot/skynet-creative-mcp/dist/index.js"],
+        "env": {}
+      }
+    }
+  },
+  "notes": {
+    "installation": "1. Remplacer /home/user/Skynet_depot par le chemin absolu réel de votre dépôt",
+    "activation": "2. Copier ce fichier vers ~/.config/claude/config.json (ou équivalent selon votre OS)",
+    "verification": "3. Lancer 'claude mcp list' pour vérifier que les 4 serveurs sont détectés",
+    "total_tools": "143 outils MCP disponibles au total"
+  }
+}

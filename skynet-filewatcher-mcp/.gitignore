@@ -1,0 +1,10 @@
+node_modules/
+dist/
+*.log
+.DS_Store
+.env
+*.swp
+*.swo
+logs/*.jsonl
+!logs/.gitkeep
+config/watchers.json
