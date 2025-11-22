@@ -1,0 +1,51 @@
+{
+  "name": "workspace-mcp",
+  "version": "1.0.0",
+  "description": "MCP Server - Workspace DevOps + Créatif pour Claude Code CLI",
+  "capabilities": {
+    "tools": true,
+    "resources": false,
+    "prompts": false
+  },
+  "transport": {
+    "type": "stdio",
+    "command": "node",
+    "args": ["dist/server.js"]
+  },
+  "environment": {
+    "MCP_PORT": "3100",
+    "NODE_ENV": "production"
+  },
+  "security": {
+    "dangerous_operations": false,
+    "max_file_size": 10485760,
+    "allowed_paths": [
+      "/home/user/projects",
+      "/tmp"
+    ]
+  },
+  "modules": {
+    "dev_env": {
+      "enabled": true,
+      "default_projects_path": "/home/user/projects"
+    },
+    "docker_admin": {
+      "enabled": true,
+      "socket": "/var/run/docker.sock"
+    },
+    "server_admin": {
+      "enabled": true,
+      "allow_service_control": false
+    },
+    "project_ops": {
+      "enabled": true,
+      "enable_git": true,
+      "auto_backup": true
+    },
+    "graphics_tools": {
+      "enabled": true,
+      "max_image_size": 4096,
+      "allowed_formats": ["jpg", "jpeg", "png", "webp", "gif"]
+    }
+  }
+}
