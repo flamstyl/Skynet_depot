@@ -2,7 +2,8 @@
   "api_token": "CHANGEZ_MOI_IMMEDIATEMENT",
   "lmstudio": {
     "host": "http://localhost:1234",
-    "model": "default"
+    "model": "default",
+    "api_version": "v0"
   },
   "terminal": {
     "timeout": 20
