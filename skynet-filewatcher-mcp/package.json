@@ -1,0 +1,36 @@
+{
+  "name": "skynet-filewatcher-mcp",
+  "version": "1.0.0",
+  "description": "MCP Server pour surveiller les changements de fichiers en temps réel et logger les événements",
+  "type": "module",
+  "main": "index.js",
+  "bin": {
+    "skynet-filewatcher-mcp": "./index.js"
+  },
+  "scripts": {
+    "start": "node index.js",
+    "dev": "node index.js",
+    "inspect": "npx @modelcontextprotocol/inspector node index.js"
+  },
+  "keywords": [
+    "mcp",
+    "model-context-protocol",
+    "file-watcher",
+    "skynet",
+    "monitoring"
+  ],
+  "author": "Skynet Project",
+  "license": "MIT",
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.0.4",
+    "chokidar": "^4.0.3",
+    "uuid": "^11.0.3",
+    "zod": "^3.24.1"
+  },
+  "devDependencies": {
+    "@modelcontextprotocol/inspector": "^0.17.2"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
