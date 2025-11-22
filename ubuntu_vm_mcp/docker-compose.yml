@@ -1,0 +1,168 @@
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+# 🔥 UBUNTU VM MCP - Docker Compose Configuration
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+# Orchestration complète pour environnement IA avec Ubuntu Desktop
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+version: '3.8'
+
+services:
+  # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  # 🖥️ Service Principal - Ubuntu VM MCP
+  # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  ubuntu_vm_mcp:
+    container_name: ubuntu_vm_mcp
+
+    # Build depuis le Dockerfile local
+    build:
+      context: .
+      dockerfile: Dockerfile
+
+    # Image finale (pour cache)
+    image: ubuntu_vm_mcp:latest
+
+    # Nom d'hôte du conteneur
+    hostname: ia-devbox
+
+    # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+    # 🔌 Exposition des ports
+    # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+    ports:
+      - "5900:5900"    # VNC - Interface graphique XFCE
+      - "2222:22"      # SSH - Accès terminal
+      - "8080:8080"    # Service IA local / API (optionnel)
+      - "3000:3000"    # Service web / dev server (optionnel)
+      - "8888:8888"    # Jupyter / services alternatifs (optionnel)
+
+    # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+    # 🌐 Configuration réseau
+    # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+    # Mode bridge pour accès réseau complet
+    network_mode: bridge
+
+    # DNS personnalisés (optionnel, pour améliorer la résolution)
+    dns:
+      - 8.8.8.8
+      - 8.8.4.4
+
+    # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+    # 📁 Volumes et montages
+    # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+    volumes:
+      # Données persistantes - Volume principal
+      - ./data:/data:rw
+
+      # Scripts MCP - Partagé avec l'hôte pour modification facile
+      - ./mcp:/opt/mcp:rw
+
+      # Optionnel: Home persistant pour l'utilisateur ia
+      # Décommenter pour garder config XFCE, historique bash, etc.
+      # - ./home_ia:/home/ia:rw
+
+      # Optionnel: Partage de projets depuis l'hôte
+      # Décommenter et adapter selon besoins
+      # - ~/projets:/home/ia/projets:rw
+      # - ~/code:/home/ia/code:rw
+
+    # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+    # 🔧 Variables d'environnement
+    # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+    environment:
+      # Configuration réseau
+      - TZ=Europe/Paris
+      - LANG=fr_FR.UTF-8
+
+      # Configuration VNC
+      - VNC_DISPLAY=:1
+      - VNC_PORT=5900
+      - VNC_RESOLUTION=1920x1080
+      # TODO: Permettre de personnaliser le mot de passe VNC
+      # - VNC_PASSWORD=custom_password
+
+      # Répertoires MCP
+      - MCP_DIR=/opt/mcp
+      - DATA_DIR=/data
+
+      # Optionnel: Configuration pour outils IA
+      # - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY}
+      # - OPENAI_API_KEY=${OPENAI_API_KEY}
+      # - GEMINI_API_KEY=${GEMINI_API_KEY}
+
+      # Optionnel: Configuration proxy (si besoin)
+      # - HTTP_PROXY=http://proxy.example.com:8080
+      # - HTTPS_PROXY=http://proxy.example.com:8080
+      # - NO_PROXY=localhost,127.0.0.1
+
+    # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+    # ⚙️ Capacités et privilèges
+    # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+    # Privilèges pour systemd et services système
+    # ATTENTION: N'utiliser qu'en environnement de développement contrôlé
+    privileged: false
+
+    # Capabilities spécifiques (alternative à privileged pour plus de sécurité)
+    cap_add:
+      - SYS_ADMIN      # Pour systemd
+      - NET_ADMIN      # Pour configuration réseau avancée
+      - SYS_PTRACE     # Pour debugging (optionnel)
+
+    # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+    # 🔄 Politique de redémarrage
+    # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+    # Redémarrage automatique sauf si arrêté manuellement
+    restart: unless-stopped
+
+    # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+    # 💾 Ressources allouées (optionnel, ajuster selon besoins)
+    # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+    # Décommenter et ajuster selon la machine hôte
+    # deploy:
+    #   resources:
+    #     limits:
+    #       cpus: '4'              # Limite à 4 CPU cores
+    #       memory: 8G             # Limite à 8GB de RAM
+    #     reservations:
+    #       cpus: '2'              # Réserve minimum 2 cores
+    #       memory: 4G             # Réserve minimum 4GB
+
+    # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+    # 📊 Healthcheck (optionnel)
+    # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+    healthcheck:
+      test: ["CMD", "pgrep", "-u", "ia", "Xvnc"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+# 📦 Volumes nommés (optionnel, pour persistence avancée)
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+# Décommenter si vous voulez utiliser des volumes Docker nommés
+# volumes:
+#   ia_home:
+#     driver: local
+#   ia_data:
+#     driver: local
+
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+# 🌐 Réseaux personnalisés (optionnel, pour configuration avancée)
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+# Décommenter pour créer un réseau personnalisé
+# networks:
+#   ai_network:
+#     driver: bridge
+#     ipam:
+#       config:
+#         - subnet: 172.28.0.0/16
