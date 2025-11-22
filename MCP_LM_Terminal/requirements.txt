@@ -1,0 +1,26 @@
+# 🟣 MCP_LM_Terminal - Dépendances Python
+# Installation : pip install -r requirements.txt
+
+# ============= SERVEUR WEB =============
+fastapi>=0.104.0
+uvicorn[standard]>=0.24.0
+pydantic>=2.5.0
+
+# ============= CLIENT HTTP =============
+httpx>=0.25.0
+
+# ============= WEBSOCKETS =============
+websockets>=12.0
+
+# ============= TERMINAL PTY (Linux/Mac) =============
+# Note: ptyprocess ne fonctionne que sur Linux/Mac
+# Sur Windows, le code utilise subprocess automatiquement
+ptyprocess>=0.7.0; sys_platform != 'win32'
+
+# ============= CONFIGURATION =============
+python-dotenv>=1.0.0
+
+# ============= OPTIONNEL - MONITORING =============
+# Décommentez si vous voulez du monitoring avancé
+# prometheus-client>=0.19.0
+# psutil>=5.9.0
