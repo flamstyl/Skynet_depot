@@ -1,0 +1,15 @@
+{
+  "mcpServers": {
+    "skynet-workspace": {
+      "type": "stdio",
+      "command": "node",
+      "args": [
+        "/home/user/Skynet_depot/skynet-mcp-workspace/dist/index.js"
+      ],
+      "env": {
+        "DEBUG": "false"
+      },
+      "description": "Skynet MCP Workspace - DevOps + Graphics tools for AI"
+    }
+  }
+}

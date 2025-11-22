@@ -1,0 +1,12 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "Node16",
+    "moduleResolution": "Node16",
+    "outDir": "./dist-electron",
+    "noEmit": false
+  },
+  "include": ["electron/**/*"],
+  "exclude": ["node_modules", "dist", "renderer"]
+}

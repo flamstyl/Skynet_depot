@@ -1,0 +1,6 @@
+#!/bin/sh
+# Launcher script for Google Drive Space Analyzer
+
+export PYTHONPATH="@pkgdatadir@:$PYTHONPATH"
+
+exec @PYTHON@ -m src.main "$@"
