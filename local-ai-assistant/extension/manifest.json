@@ -1,0 +1,58 @@
+{
+  "manifest_version": 3,
+  "name": "Assistant IA Local",
+  "version": "1.0.0",
+  "description": "Assistant personnel IA fonctionnant localement - Clone de Monica",
+  "permissions": [
+    "activeTab",
+    "contextMenus",
+    "storage",
+    "scripting"
+  ],
+  "host_permissions": [
+    "http://127.0.0.1:3333/*",
+    "http://localhost:3333/*",
+    "<all_urls>"
+  ],
+  "background": {
+    "service_worker": "scripts/background.js"
+  },
+  "action": {
+    "default_popup": "popup.html",
+    "default_icon": {
+      "16": "icons/icon-16.png",
+      "32": "icons/icon-32.png",
+      "48": "icons/icon-48.png",
+      "128": "icons/icon-128.png"
+    }
+  },
+  "icons": {
+    "16": "icons/icon-16.png",
+    "32": "icons/icon-32.png",
+    "48": "icons/icon-48.png",
+    "128": "icons/icon-128.png"
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["scripts/contentScript.js"],
+      "css": ["styles/content.css"],
+      "run_at": "document_idle"
+    }
+  ],
+  "commands": {
+    "open-chat": {
+      "suggested_key": {
+        "default": "Ctrl+M",
+        "mac": "Command+M"
+      },
+      "description": "Ouvrir le chat IA"
+    }
+  },
+  "web_accessible_resources": [
+    {
+      "resources": ["popup.html", "styles/*"],
+      "matches": ["<all_urls>"]
+    }
+  ]
+}
