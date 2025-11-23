@@ -1,0 +1,20 @@
+{
+  "name": "@gemini-flow/gemini-agent",
+  "version": "1.0.0",
+  "description": "Google Gemini integration - autonomous workflow generation and analysis",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "clean": "rm -rf dist"
+  },
+  "dependencies": {
+    "@gemini-flow/shared-types": "*",
+    "@google/generative-ai": "^0.21.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.6.3",
+    "@types/node": "^22.5.0"
+  }
+}
