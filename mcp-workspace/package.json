@@ -1,0 +1,32 @@
+{
+  "name": "mcp-workspace",
+  "version": "1.0.0",
+  "description": "MCP Servers collection : DevOps Workspace + LM Studio Gmail",
+  "private": true,
+  "workspaces": [
+    "packages/*"
+  ],
+  "scripts": {
+    "build": "npm run build -ws",
+    "test": "npm run test -ws",
+    "lint": "npm run lint -ws",
+    "dev:devops": "npm run dev -w packages/devops-workspace",
+    "dev:gmail": "npm run dev -w packages/lmstudio-gmail",
+    "install:devops": "bash scripts/install-devops.sh",
+    "install:gmail": "bash scripts/install-gmail.sh"
+  },
+  "keywords": [
+    "mcp",
+    "model-context-protocol",
+    "claude-code",
+    "devops",
+    "gmail",
+    "lm-studio"
+  ],
+  "author": "flamstyl",
+  "license": "MIT",
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=9.0.0"
+  }
+}
