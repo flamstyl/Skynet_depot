@@ -1,0 +1,31 @@
+{
+  "name": "gemini-flow-orchestrator",
+  "version": "1.0.0",
+  "description": "⚙️ Gemini Flow Orchestrator — n8n+Gemini Automation Engine - AI-powered workflow automation platform",
+  "private": true,
+  "workspaces": [
+    "packages/*",
+    "apps/*"
+  ],
+  "scripts": {
+    "dev": "turbo run dev --parallel",
+    "build": "turbo run build",
+    "test": "turbo run test",
+    "lint": "turbo run lint",
+    "clean": "turbo run clean && rm -rf node_modules",
+    "db:migrate": "cd apps/backend && npm run db:migrate",
+    "mcp:dev": "cd apps/mcp-server && npm run dev"
+  },
+  "devDependencies": {
+    "turbo": "^2.2.1",
+    "typescript": "^5.6.3",
+    "@types/node": "^22.5.0",
+    "prettier": "^3.3.3",
+    "eslint": "^9.11.0"
+  },
+  "engines": {
+    "node": ">=20.0.0",
+    "npm": ">=10.0.0"
+  },
+  "packageManager": "npm@10.0.0"
+}
