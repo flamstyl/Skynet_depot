@@ -52,22 +52,27 @@ RUN apt-get update && apt-get install -y \
     python3-wheel \
     && rm -rf /var/lib/apt/lists/*
 
-# Install common Python packages
-RUN pip3 install --no-cache-dir --break-system-packages \
-    pytest \
-    requests \
-    numpy \
-    pandas \
-    flask \
-    fastapi \
-    uvicorn \
-    black \
-    pylint \
-    mypy
+# Create and activate Python virtual environment, then install common Python packages
+RUN python3 -m venv /opt/venv && \
+    /opt/venv/bin/pip install --upgrade pip setuptools wheel && \
+    /opt/venv/bin/pip install --no-cache-dir \
+        pytest \
+        requests \
+        numpy \
+        pandas \
+        flask \
+        fastapi \
+        uvicorn \
+        black \
+        pylint \
+        mypy
 
-# Create symlinks
-RUN ln -s /usr/bin/python3 /usr/bin/python && \
-    ln -s /usr/bin/pip3 /usr/bin/pip
+# Set PATH to use virtual environment by default
+ENV PATH="/opt/venv/bin:${PATH}"
+
+# Create symlinks for python and pip to point to the virtual environment
+RUN ln -sf /opt/venv/bin/python /usr/bin/python && \
+    ln -sf /opt/venv/bin/pip /usr/bin/pip
 
 # ============= NODE.JS =============
 RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash - && \
@@ -156,7 +161,7 @@ RUN apt-get update && apt-get install -y \
 
 # Create non-root user 'devbox'
 RUN useradd -m -s /bin/bash -u 1000 devbox && \
-    echo "devbox:devbox" | chpasswd && \
+    passwd -l devbox && \
     usermod -aG sudo devbox || true
 
 # Create workspace directory

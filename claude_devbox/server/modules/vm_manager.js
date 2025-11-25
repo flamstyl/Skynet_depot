@@ -60,14 +60,14 @@ async function testInLinuxVM(code, language) {
     const vmPath = `/home/${vmUser}/test/${filename}`;
 
     logger.info('Copying code to Linux VM...');
-    await execAsync(`scp -P ${vmPort} ${localPath} ${vmUser}@${vmHost}:${vmPath}`);
+    await execAsync(`scp -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -P ${vmPort} ${localPath} ${vmUser}@${vmHost}:${vmPath}`);
 
     // Execute code in VM via SSH
     const runCommand = getLinuxRunCommand(language, filename);
     logger.info(`Executing in Linux VM: ${runCommand}`);
 
     const { stdout, stderr } = await execAsync(
-      `ssh -p ${vmPort} ${vmUser}@${vmHost} '${runCommand}'`
+      `ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -p ${vmPort} ${vmUser}@${vmHost} '${runCommand}'`
     );
 
     const duration = Date.now() - startTime;
