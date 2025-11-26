@@ -13,6 +13,10 @@ import typer
 from rich.console import Console
 from rich.panel import Panel
 from rich.prompt import Prompt
+from dotenv import load_dotenv
+
+# Load environment variables from .env file
+load_dotenv()
 
 from core.analyzer import ProjectAnalyzer
 from core.executor import CommandExecutor

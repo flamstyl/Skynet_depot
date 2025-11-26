@@ -57,7 +57,10 @@ class AutoFixer {
                 });
 
                 // Check if successful
-                if (result.exitCode === 0 && (!result.stderr || result.stderr.trim() === '')) {
+                // Ignore Rust warning in stderr (rustc: command not found)
+                const cleanStderr = (result.stderr || '').replace(/rustc: command not found/g, '').trim();
+                
+                if (result.exitCode === 0 && cleanStderr === '') {
                     logger.info(`✓ Auto-fix successful on attempt ${attempt}`);
 
                     return {

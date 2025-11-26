@@ -163,10 +163,7 @@ RUN curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add - && \
 # NETWORKING & INTERNET ACCESS
 # ============================================================================
 
-# Configure DNS
-RUN echo "nameserver 8.8.8.8" > /etc/resolv.conf && \
-    echo "nameserver 8.8.4.4" >> /etc/resolv.conf
-
+# DNS is automatically managed by Docker
 # Test internet connectivity (at build time)
 RUN curl -sSf https://www.google.com > /dev/null || echo "Warning: No internet at build time"
 
@@ -188,8 +185,9 @@ RUN mkdir -p /workspace/input /workspace/output && \
 # ============================================================================
 
 # Copy entrypoint script
-COPY entrypoint.sh /usr/local/bin/entrypoint.sh
-RUN chmod +x /usr/local/bin/entrypoint.sh
+COPY --chown=devbox:devbox entrypoint.sh /usr/local/bin/entrypoint.sh
+RUN chmod +x /usr/local/bin/entrypoint.sh && \
+    dos2unix /usr/local/bin/entrypoint.sh 2>/dev/null || sed -i 's/\r$//' /usr/local/bin/entrypoint.sh
 
 # Switch to devbox user
 USER devbox

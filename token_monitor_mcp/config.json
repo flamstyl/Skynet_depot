@@ -1,0 +1,42 @@
+{
+  "port": 3003,
+  "database": "./logs/token_monitor.db",
+  "pricing": {
+    "claude-sonnet-4.5": {
+      "input": 0.000003,
+      "output": 0.000015
+    },
+    "claude-sonnet-3.5": {
+      "input": 0.000003,
+      "output": 0.000015
+    },
+    "claude-opus-3": {
+      "input": 0.000015,
+      "output": 0.000075
+    }
+  },
+  "budgets": {
+    "daily_limit_tokens": 1000000,
+    "daily_limit_usd": 20.0,
+    "alert_threshold_percent": 80,
+    "critical_threshold_percent": 95
+  },
+  "waste_detection": {
+    "large_request_threshold": 50000,
+    "large_output_threshold": 10000,
+    "duplicate_window_minutes": 5,
+    "redundant_tool_calls": 3
+  },
+  "auto_logging": {
+    "enabled": true,
+    "log_directory": "./logs",
+    "retention_days": 30,
+    "export_format": "json"
+  },
+  "dashboard": {
+    "enabled": true,
+    "refresh_interval_ms": 2000,
+    "show_cost": true,
+    "show_waste": true
+  }
+}

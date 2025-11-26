@@ -37,9 +37,9 @@ cd ../..
 
 sleep 3
 
-echo "[*] Starting Electron UI..."
-cd app/electron
-npm start
+# echo "[*] Starting Electron UI..."
+# cd app/electron
+# npm start
 
 # Cleanup on exit
 kill $BACKEND_PID 2>/dev/null

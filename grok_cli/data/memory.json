@@ -1,0 +1,424 @@
+{
+  "project_analysis": {
+    "key": "project_analysis",
+    "value": {
+      "name": "",
+      "path": "C:\\Users\\rapha\\IA\\Skynet_depot\\grok_cli",
+      "structure": {
+        "name": "",
+        "type": "directory",
+        "children": [
+          {
+            "name": ".gitignore",
+            "type": "file",
+            "extension": "",
+            "size": 620,
+            "path": ".gitignore"
+          },
+          {
+            "name": "__init__.py",
+            "type": "file",
+            "extension": ".py",
+            "size": 718,
+            "path": "__init__.py"
+          },
+          {
+            "name": "api",
+            "type": "directory",
+            "children": [
+              {
+                "name": "__init__.py",
+                "type": "file",
+                "extension": ".py",
+                "size": 94,
+                "path": "api\\__init__.py"
+              },
+              {
+                "name": "routes",
+                "type": "directory",
+                "children": [
+                  {
+                    "name": "__init__.py",
+                    "type": "file",
+                    "extension": ".py",
+                    "size": 115,
+                    "path": "api\\routes\\__init__.py"
+                  }
+                ],
+                "files": 1,
+                "size": 115
+              },
+              {
+                "name": "server.py",
+                "type": "file",
+                "extension": ".py",
+                "size": 10959,
+                "path": "api\\server.py"
+              }
+            ],
+            "files": 3,
+            "size": 11168
+          },
+          {
+            "name": "ARCHITECTURE.md",
+            "type": "file",
+            "extension": ".md",
+            "size": 18094,
+            "path": "ARCHITECTURE.md"
+          },
+          {
+            "name": "cli.py",
+            "type": "file",
+            "extension": ".py",
+            "size": 8481,
+            "path": "cli.py"
+          },
+          {
+            "name": "config",
+            "type": "directory",
+            "children": [
+              {
+                "name": "__init__.py",
+                "type": "file",
+                "extension": ".py",
+                "size": 636,
+                "path": "config\\__init__.py"
+              },
+              {
+                "name": "default_config.yaml",
+                "type": "file",
+                "extension": ".yaml",
+                "size": 2010,
+                "path": "config\\default_config.yaml"
+              }
+            ],
+            "files": 2,
+            "size": 2646
+          },
+          {
+            "name": "core",
+            "type": "directory",
+            "children": [
+              {
+                "name": "__init__.py",
+                "type": "file",
+                "extension": ".py",
+                "size": 362,
+                "path": "core\\__init__.py"
+              },
+              {
+                "name": "analyzer.py",
+                "type": "file",
+                "extension": ".py",
+                "size": 11203,
+                "path": "core\\analyzer.py"
+              },
+              {
+                "name": "diagnostics.py",
+                "type": "file",
+                "extension": ".py",
+                "size": 12540,
+                "path": "core\\diagnostics.py"
+              },
+              {
+                "name": "executor.py",
+                "type": "file",
+                "extension": ".py",
+                "size": 10069,
+                "path": "core\\executor.py"
+              },
+              {
+                "name": "generator.py",
+                "type": "file",
+                "extension": ".py",
+                "size": 10514,
+                "path": "core\\generator.py"
+              },
+              {
+                "name": "memory.py",
+                "type": "file",
+                "extension": ".py",
+                "size": 8247,
+                "path": "core\\memory.py"
+              }
+            ],
+            "files": 6,
+            "size": 52935
+          },
+          {
+            "name": "dashboard",
+            "type": "directory",
+            "children": [
+              {
+                "name": "app.py",
+                "type": "file",
+                "extension": ".py",
+                "size": 13794,
+                "path": "dashboard\\app.py"
+              },
+              {
+                "name": "components",
+                "type": "directory",
+                "children": [
+                  {
+                    "name": "__init__.py",
+                    "type": "file",
+                    "extension": ".py",
+                    "size": 64,
+                    "path": "dashboard\\components\\__init__.py"
+                  }
+                ],
+                "files": 1,
+                "size": 64
+              }
+            ],
+            "files": 2,
+            "size": 13858
+          },
+          {
+            "name": "docker",
+            "type": "directory",
+            "children": [
+              {
+                "name": "__init__.py",
+                "type": "file",
+                "extension": ".py",
+                "size": 105,
+                "path": "docker\\__init__.py"
+              },
+              {
+                "name": "docker-compose.yml",
+                "type": "file",
+                "extension": ".yml",
+                "size": 915,
+                "path": "docker\\docker-compose.yml"
+              },
+              {
+                "name": "Dockerfile.sandbox",
+                "type": "file",
+                "extension": ".sandbox",
+                "size": 1255,
+                "path": "docker\\Dockerfile.sandbox"
+              },
+              {
+                "name": "security.py",
+                "type": "file",
+                "extension": ".py",
+                "size": 8240,
+                "path": "docker\\security.py"
+              }
+            ],
+            "files": 4,
+            "size": 10515
+          },
+          {
+            "name": "grok.py",
+            "type": "file",
+            "extension": ".py",
+            "size": 313,
+            "path": "grok.py"
+          },
+          {
+            "name": "mcp",
+            "type": "directory",
+            "children": [
+              {
+                "name": "config.mcp.json",
+                "type": "file",
+                "extension": ".json",
+                "size": 4428,
+                "path": "mcp\\config.mcp.json"
+              },
+              {
+                "name": "package.json",
+                "type": "file",
+                "extension": ".json",
+                "size": 648,
+                "path": "mcp\\package.json"
+              },
+              {
+                "name": "server.js",
+                "type": "file",
+                "extension": ".js",
+                "size": 7110,
+                "path": "mcp\\server.js"
+              }
+            ],
+            "files": 3,
+            "size": 12186
+          },
+          {
+            "name": "prompts",
+            "type": "directory",
+            "children": [
+              {
+                "name": "system_prompt.md",
+                "type": "file",
+                "extension": ".md",
+                "size": 3128,
+                "path": "prompts\\system_prompt.md"
+              }
+            ],
+            "files": 1,
+            "size": 3128
+          },
+          {
+            "name": "QUICKSTART.md",
+            "type": "file",
+            "extension": ".md",
+            "size": 6624,
+            "path": "QUICKSTART.md"
+          },
+          {
+            "name": "rag",
+            "type": "directory",
+            "children": [
+              {
+                "name": "__init__.py",
+                "type": "file",
+                "extension": ".py",
+                "size": 254,
+                "path": "rag\\__init__.py"
+              },
+              {
+                "name": "embeddings.py",
+                "type": "file",
+                "extension": ".py",
+                "size": 2855,
+                "path": "rag\\embeddings.py"
+              },
+              {
+                "name": "retriever.py",
+                "type": "file",
+                "extension": ".py",
+                "size": 3033,
+                "path": "rag\\retriever.py"
+              },
+              {
+                "name": "vectorstore.py",
+                "type": "file",
+                "extension": ".py",
+                "size": 9424,
+                "path": "rag\\vectorstore.py"
+              }
+            ],
+            "files": 4,
+            "size": 15566
+          },
+          {
+            "name": "README.md",
+            "type": "file",
+            "extension": ".md",
+            "size": 10754,
+            "path": "README.md"
+          },
+          {
+            "name": "requirements.txt",
+            "type": "file",
+            "extension": ".txt",
+            "size": 957,
+            "path": "requirements.txt"
+          },
+          {
+            "name": "setup.sh",
+            "type": "file",
+            "extension": ".sh",
+            "size": 4092,
+            "path": "setup.sh"
+          },
+          {
+            "name": "tests",
+            "type": "directory",
+            "children": [
+              {
+                "name": "__init__.py",
+                "type": "file",
+                "extension": ".py",
+                "size": 26,
+                "path": "tests\\__init__.py"
+              },
+              {
+                "name": "test_analyzer.py",
+                "type": "file",
+                "extension": ".py",
+                "size": 2187,
+                "path": "tests\\test_analyzer.py"
+              },
+              {
+                "name": "test_memory.py",
+                "type": "file",
+                "extension": ".py",
+                "size": 2672,
+                "path": "tests\\test_memory.py"
+              }
+            ],
+            "files": 3,
+            "size": 4885
+          }
+        ],
+        "files": 37,
+        "size": 177540
+      },
+      "file_count": 0,
+      "dir_count": 0,
+      "total_size": 0,
+      "languages": {
+        "Python": 24,
+        "JavaScript": 1
+      },
+      "types": [
+        "python"
+      ],
+      "dependencies": {
+        "python": [
+          "pydantic>=2.0.0",
+          "pyyaml>=6.0",
+          "python-dotenv>=1.0.0",
+          "rich>=13.0.0",
+          "typer>=0.9.0",
+          "asyncio>=3.4.3",
+          "pathlib>=1.0.1",
+          "gitpython>=3.1.40",
+          "tree-sitter>=0.20.0",
+          "ast-parser>=1.0.0",
+          "openai>=1.0.0",
+          "anthropic>=0.25.0",
+          "langchain>=0.1.0",
+          "langchain-community>=0.0.13",
+          "chromadb>=0.4.0",
+          "sentence-transformers>=2.2.2",
+          "faiss-cpu>=1.7.4",
+          "tiktoken>=0.5.0",
+          "docker>=7.0.0",
+          "python-on-whales>=0.68.0",
+          "fastapi>=0.109.0",
+          "uvicorn[standard]>=0.27.0",
+          "pydantic-settings>=2.0.0",
+          "python-multipart>=0.0.6",
+          "streamlit>=1.31.0",
+          "plotly>=5.18.0",
+          "pandas>=2.0.0",
+          "pytest>=7.4.0",
+          "pytest-asyncio>=0.21.0",
+          "pytest-cov>=4.1.0",
+          "nodejs>=18.0.0  # Note: installed via system, not pip",
+          "websockets>=12.0",
+          "httpx>=0.26.0",
+          "tenacity>=8.2.3",
+          "psutil>=5.9.0",
+          "watchdog>=3.0.0"
+        ]
+      },
+      "entry_points": [],
+      "config_files": [],
+      "critical_files": [
+        "README.md",
+        "requirements.txt",
+        ".gitignore"
+      ]
+    },
+    "timestamp": "2025-11-19T18:42:43.921061",
+    "category": "general",
+    "metadata": {}
+  }
+}
